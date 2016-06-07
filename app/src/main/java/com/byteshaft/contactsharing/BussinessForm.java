@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.byteshaft.contactsharing.database.CardsDatabase;
+
 public class BussinessForm  extends Fragment {
 
     private View mBaseView;
@@ -19,6 +21,7 @@ public class BussinessForm  extends Fragment {
     private EditText mOrganization;
     private EditText mAddress;
     private Button mSaveButton;
+    private CardsDatabase cardsDatabase;
 
     @Nullable
     @Override
@@ -26,6 +29,7 @@ public class BussinessForm  extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         mBaseView = inflater.inflate(R.layout.business_card_form, container, false);
+        cardsDatabase = new CardsDatabase(AppGlobals.getContext());
 
         mName = (EditText) mBaseView.findViewById(R.id.et_name);
         mJobTitle = (EditText) mBaseView.findViewById(R.id.et_job_title);
@@ -37,8 +41,16 @@ public class BussinessForm  extends Fragment {
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = mName.getText().toString();
+                String jobTitle = mJobTitle.getText().toString();
+                int contactNumber = Integer.parseInt(mContactNumber.getText().toString());
+                String emailAddress = mEmailAddress.getText().toString();
+                String organization = mOrganization.getText().toString();
+                String address = mAddress.getText().toString();
 
-                System.out.println(mName.getText().toString());
+                cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
+                        organization);
+                System.out.println("Entry added");
             }
         });
 
