@@ -16,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/et_address"
+                android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -29,9 +29,22 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp" />
 
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawablePadding="9dp"
+                android:hint="Address"
+                android:inputType="textPersonName"
+                android:padding="15dp"
+                android:singleLine="true"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/et_post_code"
+                android:id="@+id/et_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -45,7 +58,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/et_default_property"
+                android:id="@+id/et_contact_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -60,7 +73,7 @@
 
 
             <EditText
-                android:id="@+id/et_residential"
+                android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -74,13 +87,13 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/et_owner"
+                android:id="@+id/et_organization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/edit_text_bg"
                 android:drawablePadding="9dp"
-                android:hint="Owner / Occupier / Tennanted"
+                android:hint="Organization/Company"
                 android:inputType="text"
                 android:padding="15dp"
                 android:singleLine="true"
