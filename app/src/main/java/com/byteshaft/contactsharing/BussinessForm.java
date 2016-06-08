@@ -30,7 +30,6 @@ public class BussinessForm  extends Fragment {
 
         mBaseView = inflater.inflate(R.layout.business_card_form, container, false);
         cardsDatabase = new CardsDatabase(AppGlobals.getContext());
-
         mName = (EditText) mBaseView.findViewById(R.id.et_name);
         mJobTitle = (EditText) mBaseView.findViewById(R.id.et_job_title);
         mContactNumber = (EditText) mBaseView.findViewById(R.id.et_contact_number);
@@ -39,6 +38,7 @@ public class BussinessForm  extends Fragment {
         mAddress = (EditText) mBaseView.findViewById(R.id.et_address);
         mSaveButton = (Button) mBaseView.findViewById(R.id.save_button);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 String name = mName.getText().toString();
