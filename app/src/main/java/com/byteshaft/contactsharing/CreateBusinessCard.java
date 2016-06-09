@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class CreateBussinessCard extends Fragment implements View.OnClickListener {
+public class CreateBusinessCard extends Fragment implements View.OnClickListener {
 
     private View mBaseView;
     private Button formButton;
