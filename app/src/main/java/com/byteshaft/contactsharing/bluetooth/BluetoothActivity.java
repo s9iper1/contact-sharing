@@ -18,11 +18,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +51,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     private String mConnectedDeviceName = null;
     public ViewHolder holder;
     public ListView listView;
+    private MenuItem refreshItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,58 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 Log.i("TAG", ""+ bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.refresh, menu);
+        refreshItem = menu.findItem(R.id.action_refresh);
+        refresh();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_refresh) {
+            refresh();
+            discoverDevices();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void refresh() {
+     /* Attach a rotating ImageView to the refresh item as an ActionView */
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ImageView iv = (ImageView) inflater.inflate(R.layout.refresh_image, null);
+
+        Animation rotation = AnimationUtils.loadAnimation(this, R.anim.refresh_animation);
+        rotation.setRepeatCount(Animation.INFINITE);
+        iv.startAnimation(rotation);
+
+        refreshItem.setActionView(iv);
+
+        //TODO trigger loading
+    }
+
+    public void completeRefresh() {
+        refreshItem.getActionView().clearAnimation();
+        refreshItem.setActionView(null);
+    }
+
+    private boolean checkDeviceDiscoverState() {
+        BluetoothAdapter bAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            // device is discoverable & connectable
+            return true;
+        } else {
+            // device is not discoverable & connectable
+            return false;
+        }
     }
 
     private void setStatus(int resId) {
@@ -171,10 +229,6 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-            // Start the Bluetooth chat services
-            mChatService.start();
-        }
         listView.setAdapter(null);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             checkBluetoothAndEnable();
@@ -208,6 +262,11 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
+            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
+                // Start the Bluetooth chat services
+                mChatService.start();
+
+            }
             discoverDevices();
         }
     }
@@ -225,6 +284,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
 //        makeDiscoverAble();
         Log.i(TAG, "Discover");
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothDevice.ACTION_UUID);
         registerReceiver(mReceiver, filter);
     }
@@ -246,6 +306,8 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                         Log.i(TAG, device.getName() + "\n" + device.getAddress());
                     }
                 }
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                completeRefresh();
             }
             Adapter adapter = new Adapter(getApplicationContext(), R.layout.bluetooth_delegate,
                     bluetoothDeviceArrayList);
