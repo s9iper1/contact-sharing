@@ -1,5 +1,6 @@
 package com.byteshaft.contactsharing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -72,13 +73,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            loadFragment(new BussinessForm());
+        } else if (id == R.id.nav_create_card) {
+            loadFragment(new CreateBusinessCard());
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+            startActivity(new Intent(this, RegisterActivity.class));
 
         } else if (id == R.id.nav_share) {
+            startActivity(new Intent(this, LoginActivity.class));
 
         } else if (id == R.id.nav_send) {
 

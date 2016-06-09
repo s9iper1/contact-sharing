@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.byteshaft.contactsharing.RegisterActivity">
+
+    <ScrollView
+        android:overScrollMode="always"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <EditText
+            android:id="@+id/first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawablePadding="9dp"
+            android:drawableLeft="@mipmap/username"
+            android:drawableStart="@mipmap/username"
+            android:hint="First name"
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+
+        <EditText
+            android:id="@+id/last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawablePadding="9dp"
+            android:drawableLeft="@mipmap/username"
+            android:drawableStart="@mipmap/username"
+            android:hint="Last name"
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawableLeft="@mipmap/email"
+            android:drawableStart="@mipmap/email"
+            android:drawablePadding="9dp"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/mobile_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawablePadding="9dp"
+            android:drawableLeft="@mipmap/mobile"
+            android:drawableStart="@mipmap/mobile"
+            android:hint="Mobile number"
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawablePadding="9dp"
+            android:drawableStart="@mipmap/password"
+            android:drawableLeft="@mipmap/password"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg"
+            android:layout_marginBottom="30dp"
+            android:hint="Register"
+            android:padding="15dp"
+            android:textSize="14sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
