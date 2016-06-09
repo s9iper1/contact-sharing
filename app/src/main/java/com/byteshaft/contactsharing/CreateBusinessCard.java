@@ -1,6 +1,8 @@
 package com.byteshaft.contactsharing;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +17,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private Button formButton;
     private Button picButton;
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Nullable
     @Override
@@ -38,6 +41,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 break;
             case R.id.button_pic:
                 System.out.println("pic Button");
+                dispatchTakePictureIntent();
                 break;
 
         }
@@ -47,5 +51,12 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.commit();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 }
