@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
-import com.byteshaft.contactsharing.utils.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -41,7 +40,7 @@ public class BusinessCardsList extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
+//        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         return mBaseView;
     }
 
@@ -93,7 +92,10 @@ public class BusinessCardsList extends Fragment {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
-            mViewHolder.textView.setText(cardList.get(position));
+            String itemFromArray = cardList.get(position);
+            String card =  itemFromArray.substring(0, 1).toUpperCase() + itemFromArray.substring(1);
+            mViewHolder.textView.setText(card);
+            mViewHolder.textView.setTypeface(AppGlobals.typeface);
 
         }
 
