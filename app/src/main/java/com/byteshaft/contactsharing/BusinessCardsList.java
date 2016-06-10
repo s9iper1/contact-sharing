@@ -17,13 +17,15 @@ import android.widget.TextView;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class BusinessCardsList extends Fragment {
 
     private View mBaseView;
     private CardsAdapter mCardsAdapter;
-    private ArrayList<String> sCategoriesList;
+    private ArrayList<HashMap<Integer, String>> nameData;
+    private ArrayList<Integer> idsList;
     private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
     private CardsDatabase cardsDatabase;
@@ -40,6 +42,8 @@ public class BusinessCardsList extends Fragment {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
+        idsList = cardsDatabase.getIdOfSavedCards();
+        nameData = cardsDatabase.getNamesOfSavedCards();
 //        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         return mBaseView;
     }
@@ -47,13 +51,14 @@ public class BusinessCardsList extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mCardsAdapter = new CardsAdapter(cardsDatabase.getNamesOfSavedCards());
+        mCardsAdapter = new CardsAdapter(idsList, nameData);
         mRecyclerView.setAdapter(mCardsAdapter);
-        mRecyclerView.addOnItemTouchListener(new CardsAdapter(getActivity()
+        mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, nameData,
+                getActivity()
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
-            public void onItem(String item) {
-                Log.i("TAG", item);
+            public void onItem(Integer item) {
+                Log.i("TAG", String.valueOf(item));
             }
         }));
     }
@@ -61,13 +66,17 @@ public class BusinessCardsList extends Fragment {
     class CardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
             RecyclerView.OnItemTouchListener {
 
-        private ArrayList<String> cardList;
+        private ArrayList<Integer> cardList;
         private OnItemClickListener mListener;
         private GestureDetector mGestureDetector;
+        private ArrayList<HashMap<Integer, String>> nameData;
 
-        public CardsAdapter(Context context,
+        public CardsAdapter(ArrayList<Integer> cardList, ArrayList<HashMap<Integer, String>> nameData,
+                            Context context,
                              OnItemClickListener listener) {
             mListener = listener;
+            this.cardList = cardList;
+            this.nameData = nameData;
             mGestureDetector = new GestureDetector(context,
                     new GestureDetector.SimpleOnGestureListener() {
                         @Override
@@ -77,8 +86,9 @@ public class BusinessCardsList extends Fragment {
                     });
         }
 
-        public CardsAdapter(ArrayList<String> cardList)   {
+        public CardsAdapter(ArrayList<Integer> cardList, ArrayList<HashMap<Integer, String>> nameData)   {
             this.cardList = cardList;
+            this.nameData = nameData;
         }
 
         @Override
@@ -92,11 +102,12 @@ public class BusinessCardsList extends Fragment {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
-            String itemFromArray = cardList.get(position);
+            int currentIndex = cardList.get(position);
+            mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
+            String itemFromArray = nameData.get(position).get(currentIndex);
             String card =  itemFromArray.substring(0, 1).toUpperCase() + itemFromArray.substring(1);
             mViewHolder.textView.setText(card);
             mViewHolder.textView.setTypeface(AppGlobals.typeface);
-
         }
 
         @Override
@@ -127,15 +138,18 @@ public class BusinessCardsList extends Fragment {
 
     // custom class getting view cardList by giving view in constructor.
     public static class CustomView extends RecyclerView.ViewHolder {
+
+        public TextView hiddenId;
         public TextView textView;
 
         public CustomView(View itemView) {
             super(itemView);
+            hiddenId = (TextView) itemView.findViewById(R.id.hidden_id);
             textView = (TextView) itemView.findViewById(R.id.card_owner_name);
         }
     }
 
     public interface OnItemClickListener {
-        void onItem(String item);
+        void onItem(Integer item);
     }
 }
