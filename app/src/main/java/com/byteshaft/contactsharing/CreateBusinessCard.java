@@ -20,8 +20,8 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mBaseView = inflater.inflate(R.layout.creat_bussiness_card, container, false);
         formButton = (Button) mBaseView.findViewById(R.id.button_form);
         picButton = (Button) mBaseView.findViewById(R.id.button_pic);
@@ -35,11 +35,9 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_form:
-                System.out.println("form Button");
                 startActivity(new Intent(getActivity(), BussinessForm.class));
                 break;
             case R.id.button_pic:
-                System.out.println("pic Button");
                 dispatchTakePictureIntent();
                 break;
 
