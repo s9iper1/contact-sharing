@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity"/>
+        <activity android:name=".bluetooth.BluetoothActivity"/>
         <activity android:name=".BussinessForm"/>
     </application>
 

@@ -41,6 +41,22 @@ public class CardsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<String> getNamesOfSavedCards() {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<String> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.NAME_COLUMN));
+            list.add(name);
+        }
+        db.close();
+        cursor.close();
+        return list;
+
+    }
+
     public ArrayList<HashMap> getAllRecords() {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME;
