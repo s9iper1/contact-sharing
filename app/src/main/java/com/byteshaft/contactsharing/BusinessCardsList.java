@@ -1,6 +1,7 @@
 package com.byteshaft.contactsharing;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,9 +16,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
+import com.byteshaft.contactsharing.utils.BitmapWithCharacter;
+import com.byteshaft.contactsharing.utils.SquareImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 
 public class BusinessCardsList extends Fragment {
@@ -108,6 +112,11 @@ public class BusinessCardsList extends Fragment {
             String card =  itemFromArray.substring(0, 1).toUpperCase() + itemFromArray.substring(1);
             mViewHolder.textView.setText(card);
             mViewHolder.textView.setTypeface(AppGlobals.typeface);
+            int[] array = getResources().getIntArray(R.array.letter_tile_colors);
+            final BitmapWithCharacter tileProvider = new BitmapWithCharacter();
+            final Bitmap letterTile = tileProvider.getLetterTile(card,
+                    String.valueOf(array[new Random().nextInt(array.length)]), 100, 100);
+            mViewHolder.squareImageView.setImageBitmap(letterTile);
         }
 
         @Override
@@ -141,11 +150,13 @@ public class BusinessCardsList extends Fragment {
 
         public TextView hiddenId;
         public TextView textView;
+        public SquareImageView squareImageView;
 
         public CustomView(View itemView) {
             super(itemView);
             hiddenId = (TextView) itemView.findViewById(R.id.hidden_id);
             textView = (TextView) itemView.findViewById(R.id.card_owner_name);
+            squareImageView = (SquareImageView) itemView.findViewById(R.id.square_image_view);
         }
     }
 
