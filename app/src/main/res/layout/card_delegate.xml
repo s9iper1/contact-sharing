@@ -25,6 +25,8 @@
             android:id="@+id/square_image_view"
             android:layout_height="60dp"
             android:layout_width="60dp"
+            android:background="@color/tale_light"
+            android:layout_marginLeft="8dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/hidden_id"
             android:layout_toEndOf="@+id/hidden_id">
@@ -34,15 +36,15 @@
 
         <TextView
             android:id="@+id/card_owner_name"
-            android:layout_toRightOf="@+id/square_image_view"
-            android:layout_gravity="center|center_vertical"
-            android:gravity="center_vertical"
             android:text="sample"
-            android:padding="5dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/square_image_view"
+            android:layout_toRightOf="@+id/square_image_view"
+            android:layout_toEndOf="@+id/square_image_view" />
 
         <ImageView
             android:layout_width="40dp"
