@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.button_form:
                 System.out.println("form Button");
-                loadFragment(new BussinessForm());
+                startActivity(new Intent(getActivity(), BussinessForm.class));
                 break;
             case R.id.button_pic:
                 System.out.println("pic Button");
@@ -45,12 +44,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 break;
 
         }
-    }
-
-    public void loadFragment (Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.commit();
     }
 
     private void dispatchTakePictureIntent() {

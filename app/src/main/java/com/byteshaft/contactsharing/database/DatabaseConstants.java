@@ -23,7 +23,7 @@ public class DatabaseConstants {
             + NAME_COLUMN + " TEXT,"
             + ADDRESS_COLUMN + " TEXT,"
             + JOB_TITLE_COULMN + " TEXT,"
-            + CONTACT_NUMBER_COULMN + " INTEGER,"
+            + CONTACT_NUMBER_COULMN + " TEXT,"
             + EMAIL_ADDRESS_COULMN + " TEXT,"
             + ORGANIZATION_COULMN + " TEXT"
             + CLOSING_BRACE;

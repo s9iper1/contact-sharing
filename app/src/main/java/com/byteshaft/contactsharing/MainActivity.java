@@ -1,6 +1,5 @@
 package com.byteshaft.contactsharing;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -58,9 +57,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -71,15 +70,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_cards) {
             // Handle the camera action
         } else if (id == R.id.nav_create_card) {
             loadFragment(new CreateBusinessCard());
         } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(this, RegisterActivity.class));
 
         } else if (id == R.id.nav_share) {
-            startActivity(new Intent(this, LoginActivity.class));
 
         } else if (id == R.id.nav_send) {
 

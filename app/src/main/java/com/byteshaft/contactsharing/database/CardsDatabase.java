@@ -27,7 +27,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void createNewEntry(String name, String address, String jobTitle, int contactNumber,
+    public void createNewEntry(String name, String address, String jobTitle, String contactNumber,
                                String emailAddress, String organization) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
