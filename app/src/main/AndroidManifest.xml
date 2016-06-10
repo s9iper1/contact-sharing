@@ -28,6 +28,9 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".bluetooth.BluetoothActivity"/>
         <activity android:name=".BussinessForm"/>
+        <activity
+            android:name=".CardDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

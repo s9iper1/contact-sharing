@@ -2,6 +2,7 @@ package com.byteshaft.contactsharing.bluetooth;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -248,7 +249,11 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
+        try {
+            unregisterReceiver(mReceiver);
+        } catch (IllegalArgumentException e) {
+
+        }
     }
 
     private void checkBluetoothAndEnable() {
@@ -275,7 +280,11 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_ENABLE_BT) {
-            discoverDevices();
+            if (resultCode == Activity.RESULT_OK) {
+                discoverDevices();
+            } else {
+                finish();
+            }
         }
     }
 
