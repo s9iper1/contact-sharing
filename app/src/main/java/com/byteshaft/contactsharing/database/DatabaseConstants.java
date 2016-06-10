@@ -5,6 +5,7 @@ public class DatabaseConstants {
     public static final String DATABASE_NAME = "BusinessCards.db";
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_NAME = "CardsDatabase";
+    public static final String JOBZI_ID = "jobzi_id";
     public static final String NAME_COLUMN = "NAME";
     public static final String ADDRESS_COLUMN = "ADDRESS";
     public static final String JOB_TITLE_COULMN = "JOB_TITLE";
@@ -21,6 +22,7 @@ public class DatabaseConstants {
             + OPENING_BRACE
             + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + NAME_COLUMN + " TEXT,"
+            + JOBZI_ID + " TEXT,"
             + ADDRESS_COLUMN + " TEXT,"
             + JOB_TITLE_COULMN + " TEXT,"
             + CONTACT_NUMBER_COULMN + " TEXT,"

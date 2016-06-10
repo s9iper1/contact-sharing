@@ -58,6 +58,20 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:id="@+id/jobzi_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawablePadding="9dp"
+                android:hint="Jobzy ID"
+                android:inputType="text"
+                android:padding="15dp"
+                android:singleLine="true"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp" />
+
+            <EditText
                 android:id="@+id/et_contact_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

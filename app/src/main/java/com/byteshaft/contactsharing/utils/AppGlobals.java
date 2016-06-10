@@ -1,4 +1,4 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.utils;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,6 +9,7 @@ public class AppGlobals extends Application {
 
     private static Context sContext;
     public static Typeface typeface;
+    public static boolean sNewEntryCreated = false;
 
     @Override
     public void onCreate() {
