@@ -81,8 +81,9 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="54dp"
-        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_alignBottom="@+id/linearLayout"
         android:layout_alignRight="@+id/tv_name"
         android:layout_alignEnd="@+id/tv_name">
@@ -100,9 +101,10 @@
             android:id="@+id/tv_jobzy_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:textStyle="italic"
             android:text="Jobzy ID"
             android:textSize="15sp"
             android:textColor="@color/lightColor"/>
-
     </LinearLayout>
 </RelativeLayout>
