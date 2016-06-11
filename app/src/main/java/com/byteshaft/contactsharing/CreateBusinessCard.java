@@ -1,6 +1,8 @@
 package com.byteshaft.contactsharing;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,10 +10,18 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
@@ -55,7 +65,8 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 startActivity(new Intent(getActivity(), BusinessForm.class));
                 break;
             case R.id.button_pic:
-                dispatchTakePictureIntent();
+//                enterNameDialog();
+//                dispatchTakePictureIntent();
                 break;
 
         }
@@ -88,4 +99,49 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         return new File(internalFolder);
     }
 
+    private void enterNameDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        // Setting Dialog Title
+        alertDialog.setTitle("Set Name for this Card");
+        alertDialog.setMessage("Enter name");
+
+        // outside touch disable
+        alertDialog.setCancelable(true);
+
+        final EditText input = new EditText(getActivity());
+        InputMethodManager imm = (InputMethodManager) AppGlobals.getContext().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+        input.requestFocus();
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+        input.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        input.setFilters(new InputFilter[] {new InputFilter.LengthFilter.LengthFilter(4)});
+        input.setHint("Type Card ");
+        alertDialog.setView(input);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+
+                    }
+                });
+
+        final AlertDialog dialog = alertDialog.create();
+        dialog.show();
+        // Showing Alert Message
+        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = input.getText().toString().trim();
+
+                if (name.equals("")) {
+                    Toast.makeText(getActivity(), "Incorrect password", Toast.LENGTH_SHORT).show();
+                } else {
+
+                }
+            }
+        });
+    }
 }
