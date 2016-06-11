@@ -22,6 +22,8 @@ public class CardDetailsActivity extends Activity {
     private TextView phoneNumber;
     private TextView emailAddress;
     private TextView address;
+    private TextView organization;
+    private TextView jobzyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +42,24 @@ public class CardDetailsActivity extends Activity {
         phoneNumber = (TextView) findViewById(R.id.phone_number);
         emailAddress = (TextView) findViewById(R.id.email_address);
         address = (TextView) findViewById(R.id.location);
+        organization = (TextView) findViewById(R.id.tv_organization);
+        jobzyId = (TextView) findViewById(R.id.tv_jobzy_id);
+
         personName.setText(carddata.get(AppGlobals.NAME));
         jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
         phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
         emailAddress.setText(carddata.get(AppGlobals.EMAIL));
         address.setText(carddata.get(AppGlobals.ADDRESS));
+        organization.setText(carddata.get(AppGlobals.ORG));
+        jobzyId.setText(carddata.get(AppGlobals.JOBZY_ID));
 
         address.setTypeface(AppGlobals.typeface);
         personName.setTypeface(AppGlobals.typeface);
         jobTitle.setTypeface(AppGlobals.typeface);
         phoneNumber.setTypeface(AppGlobals.typeface);
         emailAddress.setTypeface(AppGlobals.typeface);
+        organization.setTypeface(AppGlobals.typeface);
+        jobzyId.setTypeface(AppGlobals.typeface);
     }
 
     @Override
