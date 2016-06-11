@@ -120,6 +120,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
                     jsonObject.put(AppGlobals.JOB_TITLE, jobTitle.getText().toString());
                     jsonObject.put(AppGlobals.ORG, organization.getText().toString());
                     jsonObject.put(AppGlobals.JOBZY_ID, jobzyId.getText().toString());
+                    jsonObject.put(AppGlobals.NUMBER, phoneNumber.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
