@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -36,6 +37,7 @@ public class BusinessCardsList extends Fragment {
     private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
     private CardsDatabase cardsDatabase;
+    private HashMap<Integer, String> colorHashMap;
 
     @Nullable
     @Override
@@ -43,6 +45,7 @@ public class BusinessCardsList extends Fragment {
                              Bundle savedInstanceState) {
         mBaseView = inflater.inflate(R.layout.business_card_list, container, false);
         cardsDatabase = new CardsDatabase(getActivity().getApplicationContext());
+        colorHashMap = new HashMap<>();
         mBaseView.setTag("RecyclerViewFragment");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView = (RecyclerView) mBaseView.findViewById(R.id.card_list);
@@ -79,10 +82,12 @@ public class BusinessCardsList extends Fragment {
                 getActivity()
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
-            public void onItem(Integer item) {
+            public void onItem(Integer item, String color) {
                 Intent intent = new Intent(getActivity().getApplicationContext(),
                         CardDetailsActivity.class);
                 intent.putExtra(AppGlobals.CARD_ID, item);
+                Log.i("TAG", " "+ color);
+                intent.putExtra(AppGlobals.CURRENT_COLOR, color);
                 startActivity(intent);
             }
         }));
@@ -135,8 +140,15 @@ public class BusinessCardsList extends Fragment {
             mViewHolder.textView.setTypeface(AppGlobals.typeface);
             int[] array = getResources().getIntArray(R.array.letter_tile_colors);
             final BitmapWithCharacter tileProvider = new BitmapWithCharacter();
+            final String color = String.valueOf(array[new Random().nextInt(array.length)]);
+            Log.i("Tag", color);
+            Log.i("parse", "" + Integer.parseInt(color));
+            int constantColor = tileProvider.pickColor(color);
+            String hexColor = "#" + Integer.toHexString(constantColor).substring(2);
+            Log.i("Random", hexColor);
+            colorHashMap.put(currentIndex, hexColor);
             final Bitmap letterTile = tileProvider.getLetterTile(card,
-                    String.valueOf(array[new Random().nextInt(array.length)]), 100, 100);
+                    constantColor, 100, 100);
             mViewHolder.squareImageView.setImageBitmap(letterTile);
         }
 
@@ -149,7 +161,8 @@ public class BusinessCardsList extends Fragment {
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
             View childView = rv.findChildViewUnder(e.getX(), e.getY());
             if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-                mListener.onItem(cardList.get(rv.getChildPosition(childView)));
+                mListener.onItem(cardList.get(rv.getChildPosition(childView)),
+                        String.valueOf(colorHashMap.get(cardList.get(rv.getChildPosition(childView)))));
                 return true;
             }
             return false;
@@ -182,6 +195,6 @@ public class BusinessCardsList extends Fragment {
     }
 
     public interface OnItemClickListener {
-        void onItem(Integer item);
+        void onItem(Integer item, String color);
     }
 }

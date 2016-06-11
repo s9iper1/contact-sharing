@@ -26,10 +26,12 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity"/>
-        <activity android:name=".bluetooth.BluetoothActivity"/>
+        <activity android:name=".bluetooth.BluetoothActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".BusinessForm"/>
         <activity
             android:name=".CardDetailsActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
