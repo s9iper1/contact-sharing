@@ -77,8 +77,10 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 Log.i("TAG", ""+ i);
                 Log.i("TAG", "" + bluetoothDeviceArrayList.get(i));
                 Log.i("TAG", ""+ bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
-                if (!dataToBeSent.trim().isEmpty()) {
-                    connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                if (dataToBeSent != null) {
+                    if (!dataToBeSent.trim().isEmpty()) {
+                        connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                    }
                 }
             }
         });
@@ -128,7 +130,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         Log.i("TAG", "" + checkDeviceDiscoverState() + "  button" + compoundButton.isChecked());
         switch (compoundButton.getId()) {
             case R.id.discovery_switch:
-                if (!compoundButton.isChecked()) {
+                if (compoundButton.isChecked()) {
 
                 } else {
                     if (checkDeviceDiscoverState()) {
@@ -266,11 +268,6 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-//        if (checkDeviceDiscoverState()) {
-//            discoverSwitch.setChecked(true);
-//        } else {
-//            discoverSwitch.setChecked(false);
-//        }
         listView.setAdapter(null);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             checkBluetoothAndEnable();
@@ -403,6 +400,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         // Get the BluetoothDevice object
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(macAddress);
         // Attempt to connect to the device
+        mBluetoothAdapter.cancelDiscovery();
         mChatService.connect(device, secure);
     }
 
