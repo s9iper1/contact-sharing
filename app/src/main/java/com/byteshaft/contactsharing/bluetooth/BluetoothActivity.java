@@ -27,18 +27,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.byteshaft.contactsharing.R;
+import com.byteshaft.contactsharing.utils.AppGlobals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BluetoothActivity extends AppCompatActivity implements View.OnClickListener {
+public class BluetoothActivity extends AppCompatActivity implements View.OnClickListener,
+        CompoundButton.OnCheckedChangeListener {
 
     public static final String TAG = BluetoothActivity.class.getSimpleName();
     public static final int REQUEST_ENABLE_BT = 1;
@@ -46,23 +49,22 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private ArrayList<String> bluetoothDeviceArrayList;
     private HashMap<String, String> bluetoothMacAddress;
-    private Button button;
-    private Button send;
     private BluetoothChatService mChatService = null;
     private String mConnectedDeviceName = null;
     public ViewHolder holder;
     public ListView listView;
     private MenuItem refreshItem;
+    private String dataToBeSent = "";
+    private Switch discoverSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bluetooth_activity);
-        button = (Button) findViewById(R.id.button);
-        send = (Button) findViewById(R.id.send);
-        button.setOnClickListener(this);
-        send.setOnClickListener(this);
+        dataToBeSent = getIntent().getStringExtra(AppGlobals.DATA_TO_BE_SENT);
         listView = (ListView) findViewById(R.id.devicesList);
+        discoverSwitch = (Switch) findViewById(R.id.discovery_switch);
+        discoverSwitch.setOnCheckedChangeListener(this);
         bluetoothDeviceArrayList = new ArrayList<>();
         bluetoothMacAddress = new HashMap<>();
         mChatService = new BluetoothChatService(getApplicationContext(), mHandler);
@@ -94,15 +96,19 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
             discoverDevices();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     public void refresh() {
      /* Attach a rotating ImageView to the refresh item as an ActionView */
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView iv = (ImageView) inflater.inflate(R.layout.refresh_image, null);
-
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.refresh_animation);
         rotation.setRepeatCount(Animation.INFINITE);
         iv.startAnimation(rotation);
@@ -112,9 +118,30 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         //TODO trigger loading
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        Log.i("TAG", "" + checkDeviceDiscoverState());
+        switch (compoundButton.getId()) {
+            case R.id.discovery_switch:
+                if (!compoundButton.isChecked()) {
+
+                } else {
+                    makeDiscoverAble();
+                    if (checkDeviceDiscoverState()) {
+                        compoundButton.setChecked(true);
+                    } else {
+                        compoundButton.setChecked(false);
+                    }
+                }
+        }
+
+    }
+
     public void completeRefresh() {
-        refreshItem.getActionView().clearAnimation();
-        refreshItem.setActionView(null);
+        if (refreshItem.getActionView() != null) {
+            refreshItem.getActionView().clearAnimation();
+            refreshItem.setActionView(null);
+        }
     }
 
     private boolean checkDeviceDiscoverState() {
@@ -220,7 +247,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                     checkBluetoothAndEnable();
                 } else {
                     Toast.makeText(getApplicationContext(), "Permission denied!"
-                            , Toast.LENGTH_LONG).show();
+                            , Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -292,6 +319,9 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         mBluetoothAdapter.startDiscovery();
 //        makeDiscoverAble();
         Log.i(TAG, "Discover");
+        bluetoothDeviceArrayList = new ArrayList<>();
+        bluetoothMacAddress = new HashMap<>();
+        listView.setAdapter(null);
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothDevice.ACTION_UUID);
@@ -334,15 +364,15 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button:
+//            case R.id.button:
 //                new ConnectThread(bluetoothDeviceArrayList.get(0));
 //                BluetoothDevice bluetoothDevice = bluetoothDeviceArrayList.get(0);
 //                connectDevice(bluetoothDevice.getAddress(), true);
-                break;
-            case R.id.send:
-                byte[] message = "this is a test".getBytes();
-                mChatService.write(message);
-                break;
+//                break;
+//            case R.id.send:
+//                byte[] message = "this is a test".getBytes();
+//                mChatService.write(message);
+//                break;
         }
     }
 

@@ -59,12 +59,15 @@ public class BitmapWithCharacter {
      *         alphabet or digit, if there is no letter or digit available, a
      *         default image is shown instead
      */
-    public Bitmap getLetterTile(String displayName, String key, int width, int height) {
+    public Bitmap getLetterTile(String displayName, int key, int width, int height) {
         final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final char firstChar = displayName.charAt(0);
         final Canvas canvas = mCanvas;
         canvas.setBitmap(bitmap);
-        canvas.drawColor(pickColor(key));
+//        int color = pickColor(key);
+//        Log.i("key in method", key);
+//        Log.i("COLOR", "" + color);
+        canvas.drawColor(key);
 
         if (isEnglishLetterOrDigit(firstChar)) {
             mFirstChar[0] = Character.toUpperCase(firstChar);
@@ -92,7 +95,8 @@ public class BitmapWithCharacter {
      * @return A new or previously chosen color for <code>key</code> used as the
      *         tile background color
      */
-    private int pickColor(String key) {
+
+    public int pickColor(String key) {
         final int color = Math.abs(key.hashCode()) % NUM_OF_TILE_COLORS;
         try {
             return mColors.getColor(color, Color.BLACK);
