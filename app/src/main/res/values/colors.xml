@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#009688</color>
     <color name="tale_light">#B2DFDB</color>
+
+
+    <!--//color for business card Text View-->
+    <color name="lighColor">#CCCCCC</color>
 </resources>
