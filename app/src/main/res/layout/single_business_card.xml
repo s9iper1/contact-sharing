@@ -41,7 +41,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="35dp"
         android:layout_marginLeft="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -77,25 +77,18 @@
             android:textColor="@color/lightColor"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_alignBottom="@+id/linearLayout"
-        android:layout_alignRight="@+id/tv_name"
-        android:layout_alignEnd="@+id/tv_name">
-
         <TextView
             android:id="@+id/tv_organization"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Organization"
-            android:layout_marginBottom="10dp"
             android:textSize="25sp"
-            android:textColor="@color/lightColor"/>
+            android:textColor="@color/lightColor"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_alignRight="@+id/tv_name"
+            android:layout_alignEnd="@+id/tv_name"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp" />
 
         <TextView
             android:id="@+id/tv_jobzy_id"
@@ -105,8 +98,10 @@
             android:textStyle="italic"
             android:text="Jobzy ID"
             android:textSize="15sp"
-            android:textColor="@color/lightColor"/>
-    </LinearLayout>
+            android:textColor="@color/lightColor"
+            android:layout_below="@+id/tv_organization"
+            android:layout_alignRight="@+id/tv_organization"
+            android:layout_alignEnd="@+id/tv_organization" />
 
     <FrameLayout
         android:id="@+id/buttons"
@@ -133,4 +128,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </FrameLayout>
+
 </RelativeLayout>
