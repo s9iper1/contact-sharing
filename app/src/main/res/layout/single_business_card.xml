@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Job Title"
-        android:textColor="@color/lighColor"
+        android:textColor="@color/lightColor"
         android:textStyle="bold"
         android:textSize="25sp"
         android:layout_below="@+id/tv_name"
@@ -39,13 +39,15 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="25dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:id="@+id/linearLayout">
 
 
         <TextView
@@ -55,7 +57,7 @@
             android:layout_marginBottom="10dp"
             android:text="+923006860746"
             android:textSize="20sp"
-            android:textColor="@color/lighColor" />
+            android:textColor="@color/lightColor" />
 
         <TextView
             android:id="@+id/email_address"
@@ -64,7 +66,7 @@
             android:layout_marginBottom="10dp"
             android:text="shahidghafoor@gmail.com"
             android:textSize="20sp"
-            android:textColor="@color/lighColor"/>
+            android:textColor="@color/lightColor"/>
 
         <TextView
             android:id="@+id/location"
@@ -72,6 +74,35 @@
             android:layout_height="wrap_content"
             android:text="Khan center, Abdali Road, Multan"
             android:textSize="20sp"
-            android:textColor="@color/lighColor"/>
+            android:textColor="@color/lightColor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="54dp"
+        android:layout_marginEnd="54dp"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignRight="@+id/tv_name"
+        android:layout_alignEnd="@+id/tv_name">
+
+        <TextView
+            android:id="@+id/tv_organization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Organization"
+            android:layout_marginBottom="10dp"
+            android:textSize="25sp"
+            android:textColor="@color/lightColor"/>
+
+        <TextView
+            android:id="@+id/tv_jobzy_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jobzy ID"
+            android:textSize="15sp"
+            android:textColor="@color/lightColor"/>
+
     </LinearLayout>
 </RelativeLayout>
