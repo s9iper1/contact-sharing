@@ -3,13 +3,13 @@ package com.byteshaft.contactsharing;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -80,7 +80,10 @@ public class BusinessCardsList extends Fragment {
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
-                Log.i("TAG", String.valueOf(item));
+                Intent intent = new Intent(getActivity().getApplicationContext(),
+                        CardDetailsActivity.class);
+                intent.putExtra(AppGlobals.CARD_ID, item);
+                startActivity(intent);
             }
         }));
     }

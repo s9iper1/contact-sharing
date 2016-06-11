@@ -39,7 +39,7 @@
                 android:inputType="textPersonName"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <EditText
@@ -53,7 +53,7 @@
                 android:inputType="text"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <EditText
@@ -67,7 +67,7 @@
                 android:inputType="text"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <EditText
@@ -96,7 +96,7 @@
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
             <EditText
@@ -110,7 +110,7 @@
                 android:inputType="text"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
 
@@ -123,7 +123,7 @@
                 android:layout_marginBottom="30dp"
                 android:hint="Add"
                 android:padding="15dp"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
         </LinearLayout>

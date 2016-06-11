@@ -10,6 +10,15 @@ public class AppGlobals extends Application {
     private static Context sContext;
     public static Typeface typeface;
     public static boolean sNewEntryCreated = false;
+    public static String CARD_ID = "card_id";
+    public static String NAME = "name";
+    public static String ID = "id";
+    public static String ADDRESS = "address";
+    public static String JOB_TITLE = "job_title";
+    public static String JOBZY_ID = "jobzy_id";
+    public static String NUMBER = "number";
+    public static String EMAIL = "email";
+    public static String ORG = "org";
 
     @Override
     public void onCreate() {
