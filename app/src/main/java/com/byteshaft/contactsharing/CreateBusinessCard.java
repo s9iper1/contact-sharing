@@ -1,7 +1,8 @@
 package com.byteshaft.contactsharing;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,7 +16,8 @@ import android.widget.Button;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateBusinessCard extends Fragment implements View.OnClickListener {
 
@@ -62,31 +64,28 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            Uri uriSavedImage = Uri.fromFile(createDirectoryAndSaveFile());
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
-    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
-
-        File direct = new File(Environment.getExternalStorageDirectory() + "/DirName");
-
-        if (!direct.exists()) {
-            File wallpaperDirectory = new File("/sdcard/DirName/");
-            wallpaperDirectory.mkdirs();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
         }
+    }
 
-        File file = new File(new File("/sdcard/DirName/"), fileName);
-        if (file.exists()) {
-            file.delete();
+    private File createDirectoryAndSaveFile() {
+        String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String internalFolder = Environment.getExternalStorageDirectory()+
+                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
+        File file = new File(internalFolder);
+        if (!file.exists()) {
+            file.mkdirs();
         }
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        internalFolder = internalFolder + File.separator +  fileName + ".jpg";
+        return new File(internalFolder);
     }
 
 }
