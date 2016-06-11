@@ -6,7 +6,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:padding="5dp"
+        android:gravity="start"
         android:textColor="@color/colorPrimary"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/textView" />

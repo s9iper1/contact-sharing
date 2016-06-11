@@ -5,7 +5,6 @@
     <color name="colorAccent">#009688</color>
     <color name="tale_light">#B2DFDB</color>
 
-
     <!--//color for business card Text View-->
-    <color name="lightColor">#CCCCCC</color>
+    <color name="lightColor">#ffffff</color>
 </resources>
