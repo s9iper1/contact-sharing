@@ -30,7 +30,7 @@
         <activity android:name=".BusinessForm"/>
         <activity
             android:name=".CardDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
 </manifest>

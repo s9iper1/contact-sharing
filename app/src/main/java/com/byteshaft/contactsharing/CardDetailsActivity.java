@@ -3,6 +3,7 @@ package com.byteshaft.contactsharing;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
@@ -44,6 +45,22 @@ public class CardDetailsActivity extends Activity {
         phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
         emailAddress.setText(carddata.get(AppGlobals.EMAIL));
         address.setText(carddata.get(AppGlobals.ADDRESS));
+
+        address.setTypeface(AppGlobals.typeface);
+        personName.setTypeface(AppGlobals.typeface);
+        jobTitle.setTypeface(AppGlobals.typeface);
+        phoneNumber.setTypeface(AppGlobals.typeface);
+        emailAddress.setTypeface(AppGlobals.typeface);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Log.i("TAG", "click");
+                return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override
