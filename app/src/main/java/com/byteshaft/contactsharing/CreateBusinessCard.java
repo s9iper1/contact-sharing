@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.byteshaft.contactsharing.utils.AppGlobals;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -37,10 +39,18 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (AppGlobals.sNewEntryCreated) {
+            MainActivity.getInstance().loadFragment(new BusinessCardsList());
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_form:
-                startActivity(new Intent(getActivity(), BussinessForm.class));
+                startActivity(new Intent(getActivity(), BusinessForm.class));
                 break;
             case R.id.button_pic:
                 dispatchTakePictureIntent();

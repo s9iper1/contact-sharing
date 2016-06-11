@@ -11,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 
-import com.byteshaft.contactsharing.AppGlobals;
 import com.byteshaft.contactsharing.R;
 
 /**

@@ -13,15 +13,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static MainActivity sInstance;
+
+
+    public static MainActivity getInstance() {
+        return sInstance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sInstance = this;
         loadFragment(new BusinessCardsList());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+            startActivity(new Intent(getApplicationContext(), CardDetailsActivity.class));
             return true;
         }
 
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_cards) {
             // Handle the camera action
+            loadFragment(new BusinessCardsList());
         } else if (id == R.id.nav_create_card) {
             loadFragment(new CreateBusinessCard());
         } else if (id == R.id.nav_logout) {

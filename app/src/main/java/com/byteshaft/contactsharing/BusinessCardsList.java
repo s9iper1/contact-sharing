@@ -1,13 +1,15 @@
 package com.byteshaft.contactsharing;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
+import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.BitmapWithCharacter;
 import com.byteshaft.contactsharing.utils.SquareImageView;
 
@@ -47,6 +50,21 @@ public class BusinessCardsList extends Fragment {
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
+        if (idsList.size() == 0) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setTitle("Create Business card");
+                alertDialogBuilder
+                        .setMessage("Create your new Business card now")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                MainActivity.getInstance().loadFragment(new CreateBusinessCard());
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+        }
         nameData = cardsDatabase.getNamesOfSavedCards();
 //        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         return mBaseView;
@@ -62,7 +80,10 @@ public class BusinessCardsList extends Fragment {
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
-                Log.i("TAG", String.valueOf(item));
+                Intent intent = new Intent(getActivity().getApplicationContext(),
+                        CardDetailsActivity.class);
+                intent.putExtra(AppGlobals.CARD_ID, item);
+                startActivity(intent);
             }
         }));
     }

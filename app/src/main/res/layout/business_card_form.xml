@@ -19,15 +19,14 @@
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/edit_text_bg"
                 android:drawablePadding="9dp"
                 android:hint="Name"
                 android:inputType="textPersonName"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et_address"
@@ -40,8 +39,8 @@
                 android:inputType="textPersonName"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et_job_title"
@@ -54,8 +53,22 @@
                 android:inputType="text"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/jobzi_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawablePadding="9dp"
+                android:hint="Jobzy ID"
+                android:inputType="text"
+                android:padding="15dp"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et_contact_number"
@@ -69,7 +82,7 @@
                 android:padding="15dp"
                 android:singleLine="true"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
 
             <EditText
@@ -83,8 +96,8 @@
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et_organization"
@@ -97,8 +110,8 @@
                 android:inputType="text"
                 android:padding="15dp"
                 android:singleLine="true"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
 
             <Button
@@ -110,8 +123,8 @@
                 android:layout_marginBottom="30dp"
                 android:hint="Add"
                 android:padding="15dp"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>
