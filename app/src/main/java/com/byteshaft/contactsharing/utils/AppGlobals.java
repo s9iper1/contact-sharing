@@ -7,6 +7,10 @@ import android.os.Environment;
 
 public class AppGlobals extends Application {
 
+    public static final String BASE_URL = "";
+    public static final String LOGIN_URL = "";
+    public static final String REGISTER_URL = "";
+
     private static Context sContext;
     public static Typeface typeface;
     public static boolean sNewEntryCreated = false;
