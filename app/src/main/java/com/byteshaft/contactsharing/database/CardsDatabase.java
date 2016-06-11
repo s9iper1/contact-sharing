@@ -35,10 +35,10 @@ public class CardsDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DatabaseConstants.NAME_COLUMN, name);
         values.put(DatabaseConstants.ADDRESS_COLUMN, address);
-        values.put(DatabaseConstants.JOB_TITLE_COULMN, jobTitle);
-        values.put(DatabaseConstants.CONTACT_NUMBER_COULMN, contactNumber);
-        values.put(DatabaseConstants.EMAIL_ADDRESS_COULMN, emailAddress);
-        values.put(DatabaseConstants.ORGANIZATION_COULMN, organization);
+        values.put(DatabaseConstants.JOB_TITLE_COLUMN, jobTitle);
+        values.put(DatabaseConstants.CONTACT_NUMBER_COLUMN, contactNumber);
+        values.put(DatabaseConstants.EMAIL_ADDRESS_COLUMN, emailAddress);
+        values.put(DatabaseConstants.ORGANIZATION_COLUMN, organization);
         values.put(DatabaseConstants.JOBZI_ID, jobzyId);
         db.insert(DatabaseConstants.TABLE_NAME, null, values);
         db.close();
@@ -92,19 +92,19 @@ public class CardsDatabase extends SQLiteOpenHelper {
             String address = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.ADDRESS_COLUMN));
             String jobTitle = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COLUMN));
 
             String jobzyId = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.JOBZI_ID));
 
             String contactNumber = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COLUMN));
 
             String emailAddress = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COLUMN));
 
             String organization = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COLUMN));
 
             hashMap.put(AppGlobals.ID, String.valueOf(unique_id));
             hashMap.put(AppGlobals.NAME, name);
@@ -133,16 +133,16 @@ public class CardsDatabase extends SQLiteOpenHelper {
             String address = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.ADDRESS_COLUMN));
             String jobTitle = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COLUMN));
 
             int contactNumber = cursor.getInt(
-                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COLUMN));
 
             String emailAddress = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COLUMN));
 
             String organization = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COULMN));
+                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COLUMN));
 
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("unique_id", String.valueOf(unique_id));

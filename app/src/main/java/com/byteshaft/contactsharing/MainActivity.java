@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -88,6 +90,8 @@ public class MainActivity extends AppCompatActivity
             loadFragment(new CreateBusinessCard());
         } else if (id == R.id.nav_logout) {
 
+        } else if (id == R.id.nav_bluetooth) {
+            startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

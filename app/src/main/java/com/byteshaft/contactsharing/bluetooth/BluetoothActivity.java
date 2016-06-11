@@ -1,7 +1,6 @@
 package com.byteshaft.contactsharing.bluetooth;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -35,7 +34,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.byteshaft.contactsharing.R;
+import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,6 +77,9 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 Log.i("TAG", ""+ i);
                 Log.i("TAG", "" + bluetoothDeviceArrayList.get(i));
                 Log.i("TAG", ""+ bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
+                if (!dataToBeSent.trim().isEmpty()) {
+                    connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                }
             }
         });
     }
@@ -112,7 +118,6 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         Animation rotation = AnimationUtils.loadAnimation(this, R.anim.refresh_animation);
         rotation.setRepeatCount(Animation.INFINITE);
         iv.startAnimation(rotation);
-
         refreshItem.setActionView(iv);
 
         //TODO trigger loading
@@ -120,14 +125,14 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        Log.i("TAG", "" + checkDeviceDiscoverState());
+        Log.i("TAG", "" + checkDeviceDiscoverState() + "  button" + compoundButton.isChecked());
         switch (compoundButton.getId()) {
             case R.id.discovery_switch:
                 if (!compoundButton.isChecked()) {
 
                 } else {
-                    makeDiscoverAble();
                     if (checkDeviceDiscoverState()) {
+                        makeDiscoverAble();
                         compoundButton.setChecked(true);
                     } else {
                         compoundButton.setChecked(false);
@@ -160,11 +165,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         if (null == activity) {
             return;
         }
-        final ActionBar actionBar = activity.getActionBar();
-        if (null == actionBar) {
-            return;
-        }
-        actionBar.setSubtitle(resId);
+        Toast.makeText(BluetoothActivity.this, getResources().getString(resId) , Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -177,11 +178,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         if (null == activity) {
             return;
         }
-        final ActionBar actionBar = activity.getActionBar();
-        if (null == actionBar) {
-            return;
-        }
-        actionBar.setSubtitle(subTitle);
+        Toast.makeText(BluetoothActivity.this, String.valueOf(subTitle) , Toast.LENGTH_SHORT).show();
     }
 
     private final Handler mHandler = new Handler() {
@@ -192,7 +189,10 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
                             setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-//                            mConversationArrayAdapter.clear();
+                            if (dataToBeSent != null) {
+                                byte[] message = dataToBeSent.getBytes();
+                                mChatService.write(message);
+                            }
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
                             setStatus(R.string.title_connecting);
@@ -207,15 +207,24 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                    Log.i("TAG", writeMessage);
-//                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+                    Log.i("WRITE", writeMessage);
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    Log.i("TAG", readMessage);
-//                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    Log.i("READ", readMessage);
+                    try {
+                        JSONObject jsonObject = new JSONObject(readMessage);
+                        CardsDatabase cardsData = new CardsDatabase(getApplicationContext());
+                        cardsData.createNewEntry(jsonObject.getString(AppGlobals.NAME),
+                                jsonObject.getString(AppGlobals.ADDRESS), jsonObject.getString(
+                                        AppGlobals.JOB_TITLE), jsonObject.getString(AppGlobals.NUMBER),
+                                jsonObject.getString(AppGlobals.EMAIL), jsonObject.getString(AppGlobals.ORG),
+                                jsonObject.getString(AppGlobals.JOBZY_ID));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -257,6 +266,11 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
+//        if (checkDeviceDiscoverState()) {
+//            discoverSwitch.setChecked(true);
+//        } else {
+//            discoverSwitch.setChecked(false);
+//        }
         listView.setAdapter(null);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             checkBluetoothAndEnable();
@@ -308,7 +322,13 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
-                discoverDevices();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        discoverDevices();
+                    }
+                }, 3000);
             } else {
                 finish();
             }
@@ -359,6 +379,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
         startActivity(discoverableIntent);
+        discoverSwitch.setChecked(true);
     }
 
     @Override
