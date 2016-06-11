@@ -3,7 +3,6 @@ package com.byteshaft.contactsharing;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -52,8 +51,6 @@ public class BusinessCardsList extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
         if (idsList.size() == 0) {
-                final Intent intent = new Intent();
-                final String action = "";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                 alertDialogBuilder.setTitle("Create Business card");
                 alertDialogBuilder

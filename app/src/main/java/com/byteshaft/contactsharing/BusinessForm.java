@@ -42,17 +42,18 @@ public class BusinessForm extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                validateEditTexts();
-                String jobTitle = mJobTitle.getText().toString();
-                String emailAddress = mEmailAddress.getText().toString();
-                String organization = mOrganization.getText().toString();
-                String address = mAddress.getText().toString();
-                String jobzyId = mJobzyId.getText().toString();
-                contactNumber = mContactNumber.getText().toString();
-                cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
+                if (validateEditTexts()) {
+                    String jobTitle = mJobTitle.getText().toString();
+                    String emailAddress = mEmailAddress.getText().toString();
+                    String organization = mOrganization.getText().toString();
+                    String address = mAddress.getText().toString();
+                    String jobzyId = mJobzyId.getText().toString();
+                    contactNumber = mContactNumber.getText().toString();
+                    cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
                             organization, jobzyId);
-                AppGlobals.sNewEntryCreated = true;
-                finish();
+                    AppGlobals.sNewEntryCreated = true;
+                    finish();
+                }
             }
         });
     }
