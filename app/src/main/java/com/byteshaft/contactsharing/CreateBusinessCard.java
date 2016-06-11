@@ -11,9 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.text.InputFilter;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +24,6 @@ import android.widget.Toast;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class CreateBusinessCard extends Fragment implements View.OnClickListener {
 
@@ -35,6 +31,8 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private Button formButton;
     private Button picButton;
 
+    private String fileName;
+    EditText input;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Nullable
@@ -65,8 +63,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 startActivity(new Intent(getActivity(), BusinessForm.class));
                 break;
             case R.id.button_pic:
-//                enterNameDialog();
-//                dispatchTakePictureIntent();
+                enterNameDialog();
                 break;
 
         }
@@ -88,7 +85,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     }
 
     private File createDirectoryAndSaveFile() {
-        String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String internalFolder = Environment.getExternalStorageDirectory()+
                 File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
         File file = new File(internalFolder);
@@ -106,18 +102,15 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         alertDialog.setMessage("Enter name");
 
         // outside touch disable
-        alertDialog.setCancelable(true);
 
-        final EditText input = new EditText(getActivity());
+        input = new EditText(getActivity());
         InputMethodManager imm = (InputMethodManager) AppGlobals.getContext().
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
         input.requestFocus();
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        input.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        input.setFilters(new InputFilter[] {new InputFilter.LengthFilter.LengthFilter(4)});
-        input.setHint("Type Card ");
+        input.setHint("type here ");
         alertDialog.setView(input);
 
         // Setting Positive "Yes" Button
@@ -129,6 +122,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 });
 
         final AlertDialog dialog = alertDialog.create();
+        dialog.setCancelable(false);
         dialog.show();
         // Showing Alert Message
         dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -137,8 +131,11 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 String name = input.getText().toString().trim();
 
                 if (name.equals("")) {
-                    Toast.makeText(getActivity(), "Incorrect password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter a name", Toast.LENGTH_SHORT).show();
                 } else {
+                    fileName = name;
+                    dispatchTakePictureIntent();
+                    dialog.dismiss();
 
                 }
             }
