@@ -74,6 +74,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 Log.i("TAG", ""+ i);
                 Log.i("TAG", "" + bluetoothDeviceArrayList.get(i));
                 Log.i("TAG", ""+ bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
+                connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
             }
         });
     }
@@ -160,11 +161,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         if (null == activity) {
             return;
         }
-        final ActionBar actionBar = activity.getActionBar();
-        if (null == actionBar) {
-            return;
-        }
-        actionBar.setSubtitle(resId);
+        Toast.makeText(BluetoothActivity.this, String.valueOf(resId) , Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -8,11 +8,12 @@ public class DatabaseConstants {
     public static final String JOBZI_ID = "jobzi_id";
     public static final String NAME_COLUMN = "NAME";
     public static final String ADDRESS_COLUMN = "ADDRESS";
-    public static final String JOB_TITLE_COULMN = "JOB_TITLE";
-    public static final String CONTACT_NUMBER_COULMN = "CONTACT_NUMBER";
-    public static final String EMAIL_ADDRESS_COULMN = "EMAIL";
-    public static final String ORGANIZATION_COULMN = "ORGANIZATION";
+    public static final String JOB_TITLE_COLUMN = "JOB_TITLE";
+    public static final String CONTACT_NUMBER_COLUMN = "CONTACT_NUMBER";
+    public static final String EMAIL_ADDRESS_COLUMN = "EMAIL";
+    public static final String ORGANIZATION_COLUMN = "ORGANIZATION";
     public static final String ID_COLUMN = "ID";
+    public static final String IMG_COLUMN = "image_column";
 
     private static final String OPENING_BRACE = "(";
     private static final String CLOSING_BRACE = ")";
@@ -24,9 +25,10 @@ public class DatabaseConstants {
             + NAME_COLUMN + " TEXT,"
             + JOBZI_ID + " TEXT,"
             + ADDRESS_COLUMN + " TEXT,"
-            + JOB_TITLE_COULMN + " TEXT,"
-            + CONTACT_NUMBER_COULMN + " TEXT,"
-            + EMAIL_ADDRESS_COULMN + " TEXT,"
-            + ORGANIZATION_COULMN + " TEXT"
+            + JOB_TITLE_COLUMN + " TEXT,"
+            + CONTACT_NUMBER_COLUMN + " TEXT,"
+            + EMAIL_ADDRESS_COLUMN + " TEXT,"
+            + ORGANIZATION_COLUMN + " TEXT,"
+            + IMG_COLUMN + " TEXT"
             + CLOSING_BRACE;
 }
