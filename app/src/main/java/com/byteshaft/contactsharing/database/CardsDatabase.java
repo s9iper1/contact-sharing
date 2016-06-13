@@ -44,6 +44,11 @@ public class CardsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    public boolean deleteEntry(Integer id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(DatabaseConstants.TABLE_NAME, DatabaseConstants.ID_COLUMN + "=" + id, null) > 0;
+    }
+
     public void imageEntry(String name, String uri) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
