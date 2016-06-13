@@ -48,8 +48,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BluetoothActivity extends AppCompatActivity implements View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+public class BluetoothActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     public static final String TAG = BluetoothActivity.class.getSimpleName();
     public static final int REQUEST_ENABLE_BT = 1;
@@ -449,21 +448,6 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
             }
         }, 3000);
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-//            case R.id.button:
-//                new ConnectThread(bluetoothDeviceArrayList.get(0));
-//                BluetoothDevice bluetoothDevice = bluetoothDeviceArrayList.get(0);
-//                connectDevice(bluetoothDevice.getAddress(), true);
-//                break;
-//            case R.id.send:
-//                byte[] message = "this is a test".getBytes();
-//                mChatService.write(message);
-//                break;
-        }
     }
 
     private void connectDevice(String macAddress, boolean secure) {
