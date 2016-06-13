@@ -2,6 +2,9 @@ package com.byteshaft.contactsharing.bluetooth;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,6 +37,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.byteshaft.contactsharing.MainActivity;
 import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
@@ -59,6 +64,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     private MenuItem refreshItem;
     private String dataToBeSent = "";
     private Switch discoverSwitch;
+    private TextView currentState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,24 +72,35 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.bluetooth_activity);
         dataToBeSent = getIntent().getStringExtra(AppGlobals.DATA_TO_BE_SENT);
         listView = (ListView) findViewById(R.id.devicesList);
+        currentState = (TextView) findViewById(R.id.current_state);
         discoverSwitch = (Switch) findViewById(R.id.discovery_switch);
         discoverSwitch.setOnCheckedChangeListener(this);
         bluetoothDeviceArrayList = new ArrayList<>();
         bluetoothMacAddress = new HashMap<>();
-        mChatService = new BluetoothChatService(getApplicationContext(), mHandler);
+        mChatService = new BluetoothChatService(mHandler);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i("TAG", ""+ i);
+                Log.i("TAG", "" + i);
                 Log.i("TAG", "" + bluetoothDeviceArrayList.get(i));
-                Log.i("TAG", ""+ bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
+                Log.i("TAG", "" + bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
                 if (dataToBeSent != null) {
                     if (!dataToBeSent.trim().isEmpty()) {
-                        connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+                            connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                        } else {
+                            byte[] message = dataToBeSent.getBytes();
+                            mChatService.write(message);
+                        }
                     }
                 }
             }
         });
+        if (checkDeviceDiscoverState()) {
+            discoverSwitch.setChecked(true);
+        } else {
+            discoverSwitch.setChecked(false);
+        }
     }
 
     @Override
@@ -110,6 +127,9 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.disable();
+        }
         finish();
     }
 
@@ -131,17 +151,22 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         switch (compoundButton.getId()) {
             case R.id.discovery_switch:
                 if (compoundButton.isChecked()) {
+                    if (checkDeviceDiscoverState()) {
+                        compoundButton.setChecked(true);
+                    } else {
+                        makeDiscoverAble();
+                        compoundButton.setChecked(false);
+                    }
 
                 } else {
                     if (checkDeviceDiscoverState()) {
-                        makeDiscoverAble();
                         compoundButton.setChecked(true);
                     } else {
                         compoundButton.setChecked(false);
                     }
+
                 }
         }
-
     }
 
     public void completeRefresh() {
@@ -153,7 +178,7 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
 
     private boolean checkDeviceDiscoverState() {
         BluetoothAdapter bAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+        if (bAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             // device is discoverable & connectable
             return true;
         } else {
@@ -162,26 +187,26 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void setStatus(int resId) {
-        BluetoothActivity activity = this;
-        if (null == activity) {
-            return;
-        }
-        Toast.makeText(BluetoothActivity.this, getResources().getString(resId) , Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Updates the status on the action bar.
-     *
-     * @param subTitle status
-     */
-    private void setStatus(CharSequence subTitle) {
-        BluetoothActivity activity = this;
-        if (null == activity) {
-            return;
-        }
-        Toast.makeText(BluetoothActivity.this, String.valueOf(subTitle) , Toast.LENGTH_SHORT).show();
-    }
+//    private void setStatus(int resId) {
+//        BluetoothActivity activity = this;
+//        if (null == activity) {
+//            return;
+//        }
+//        Toast.makeText(BluetoothActivity.this, getResources().getString(resId), Toast.LENGTH_SHORT).show();
+//    }
+//
+//    /**
+//     * Updates the status on the action bar.
+//     *
+//     * @param subTitle status
+//     */
+//    private void setStatus(CharSequence subTitle) {
+//        BluetoothActivity activity = this;
+//        if (null == activity) {
+//            return;
+//        }
+//        Toast.makeText(BluetoothActivity.this, String.valueOf(subTitle), Toast.LENGTH_SHORT).show();
+//    }
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -190,43 +215,51 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
-                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+//                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+//                            currentState.setText(getString(R.string.title_connected_to, mConnectedDeviceName));
                             if (dataToBeSent != null) {
                                 byte[] message = dataToBeSent.getBytes();
                                 mChatService.write(message);
                             }
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-                            setStatus(R.string.title_connecting);
+//                            setStatus(R.string.title_connecting);
+                            currentState.setText(getString(R.string.title_connecting));
                             break;
                         case BluetoothChatService.STATE_LISTEN:
                         case BluetoothChatService.STATE_NONE:
-                            setStatus(R.string.title_not_connected);
+//                            setStatus(R.string.title_not_connected);
+                            currentState.setText(getString(R.string.title_not_connected));
                             break;
                     }
                     break;
                 case Constants.MESSAGE_WRITE:
+                    currentState.setText(getString(R.string.writing_data));
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     Log.i("WRITE", writeMessage);
+                    mChatService.stop();
                     break;
                 case Constants.MESSAGE_READ:
+                    currentState.setText(getString(R.string.reading_data));
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     Log.i("READ", readMessage);
                     try {
-                        JSONObject jsonObject = new JSONObject(readMessage);
+                        JSONObject jsonCard = new JSONObject(readMessage);
                         CardsDatabase cardsData = new CardsDatabase(getApplicationContext());
-                        cardsData.createNewEntry(jsonObject.getString(AppGlobals.NAME),
-                                jsonObject.getString(AppGlobals.ADDRESS), jsonObject.getString(
-                                        AppGlobals.JOB_TITLE), jsonObject.getString(AppGlobals.NUMBER),
-                                jsonObject.getString(AppGlobals.EMAIL), jsonObject.getString(AppGlobals.ORG),
-                                jsonObject.getString(AppGlobals.JOBZY_ID));
+                        cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
+                                jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
+                                        AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
+                                jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
+                                jsonCard.getString(AppGlobals.JOBZY_ID));
+                        showNotification();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    mChatService.stop();
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -245,6 +278,33 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
             }
         }
     };
+
+    private void showNotification() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_cards)
+                        .setContentTitle("New Card Received")
+                        .setAutoCancel(true)
+                        .setContentText("New Business Card Received. Click to open");
+        mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+// Sets an ID for the notification
+        int mNotificationId = 2112;
+// Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -287,6 +347,9 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.disable();
+        }
         try {
             unregisterReceiver(mReceiver);
         } catch (IllegalArgumentException e) {
@@ -327,14 +390,12 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                     }
                 }, 3000);
             } else {
-                finish();
             }
         }
     }
 
     private void discoverDevices() {
         mBluetoothAdapter.startDiscovery();
-//        makeDiscoverAble();
         Log.i(TAG, "Discover");
         bluetoothDeviceArrayList = new ArrayList<>();
         bluetoothMacAddress = new HashMap<>();
@@ -376,7 +437,18 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
         startActivity(discoverableIntent);
-        discoverSwitch.setChecked(true);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (checkDeviceDiscoverState()) {
+                    discoverSwitch.setChecked(true);
+                } else {
+                    discoverSwitch.setChecked(false);
+                }
+            }
+        }, 3000);
+
     }
 
     @Override

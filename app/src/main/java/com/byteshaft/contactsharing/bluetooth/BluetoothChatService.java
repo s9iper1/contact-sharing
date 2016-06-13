@@ -71,9 +71,9 @@ public class BluetoothChatService {
      * Constructor. Prepares a new BluetoothChat session.
      *
      * @param context The UI Activity Context
-//     * @param handler A Handler to send messages back to the UI Activity
+    //     * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothChatService(Context context, Handler handler) {
+    public BluetoothChatService(Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
@@ -325,7 +325,9 @@ public class BluetoothChatService {
                 try {
                     // This is a blocking call and will only return on a
                     // successful connection or an exception
-                    socket = mmServerSocket.accept();
+                    if (mmServerSocket != null) {
+                        socket = mmServerSocket.accept();
+                    }
                 } catch (IOException e) {
                     Log.e(TAG, "Socket Type: " + mSocketType + "accept() failed", e);
                     break;
@@ -411,7 +413,9 @@ public class BluetoothChatService {
             try {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
-                mmSocket.connect();
+                if (!mmSocket.isConnected()) {
+                    mmSocket.connect();
+                }
             } catch (IOException e) {
                 // Close the socket
                 try {

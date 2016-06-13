@@ -15,6 +15,7 @@ public class AppGlobals extends Application {
     public static Typeface regularTypeface;
     public static boolean sNewEntryCreated = false;
     public static String CARD_ID = "card_id";
+    // bluetooth
     public static final String NAME = "name";
     public static final String ID = "id";
     public static final String ADDRESS = "address";
@@ -24,6 +25,7 @@ public class AppGlobals extends Application {
     public static final String EMAIL = "email";
     public static final String ORG = "org";
     public static final String DATA_TO_BE_SENT = "data_to_be_sent";
+    // -->
     public static final String CURRENT_COLOR = "current_color";
 
     @Override

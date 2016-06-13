@@ -141,11 +141,8 @@ public class BusinessCardsList extends Fragment {
             int[] array = getResources().getIntArray(R.array.letter_tile_colors);
             final BitmapWithCharacter tileProvider = new BitmapWithCharacter();
             final String color = String.valueOf(array[new Random().nextInt(array.length)]);
-            Log.i("Tag", color);
-            Log.i("parse", "" + Integer.parseInt(color));
             int constantColor = tileProvider.pickColor(color);
             String hexColor = "#" + Integer.toHexString(constantColor).substring(2);
-            Log.i("Random", hexColor);
             colorHashMap.put(currentIndex, hexColor);
             final Bitmap letterTile = tileProvider.getLetterTile(card,
                     constantColor, 100, 100);
