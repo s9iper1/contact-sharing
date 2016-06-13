@@ -44,6 +44,20 @@ public class CardsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    public boolean deleteEntry(Integer id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(DatabaseConstants.TABLE_NAME, DatabaseConstants.ID_COLUMN + "=" + id, null) > 0;
+    }
+
+    public void imageEntry(String name, String uri) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseConstants.NAME_COLUMN, name);
+        values.put(DatabaseConstants.IMG_COLUMN, uri);
+        db.insert(DatabaseConstants.TABLE_NAME, null, values);
+        db.close();
+    }
+
     public ArrayList<HashMap<Integer, String>> getNamesOfSavedCards() {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME;
