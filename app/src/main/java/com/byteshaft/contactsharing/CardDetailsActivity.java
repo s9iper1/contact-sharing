@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     private TextView address;
     private TextView organization;
     private TextView jobzyId;
+    private ImageView cardImage;
     private FrameLayout frameLayout;
     private ImageButton editButton;
     private ImageButton shareButton;
@@ -65,6 +67,8 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         frameLayout = (FrameLayout) findViewById(R.id.buttons);
         editButton = (ImageButton) findViewById(R.id.edit_button);
         shareButton = (ImageButton) findViewById(R.id.share_button);
+        cardImage = (ImageView) findViewById(R.id.card_image);
+
         editButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
 
