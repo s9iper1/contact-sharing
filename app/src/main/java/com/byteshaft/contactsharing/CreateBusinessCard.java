@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
 import java.io.File;
@@ -31,14 +32,17 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private Button formButton;
     private Button picButton;
 
+    private CardsDatabase cardsDatabase;
     private String fileName;
-    EditText input;
+    private EditText input;
+    private Uri uriSavedImage;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        cardsDatabase = new CardsDatabase(AppGlobals.getContext());
         mBaseView = inflater.inflate(R.layout.creat_bussiness_card, container, false);
         formButton = (Button) mBaseView.findViewById(R.id.button_form);
         picButton = (Button) mBaseView.findViewById(R.id.button_pic);
@@ -72,8 +76,9 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            Uri uriSavedImage = Uri.fromFile(createDirectoryAndSaveFile());
+            uriSavedImage = Uri.fromFile(createDirectoryAndSaveFile());
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+            System.out.println(uriSavedImage);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
@@ -81,6 +86,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            cardsDatabase.imageEntry(fileName, uriSavedImage.toString());
         }
     }
 
