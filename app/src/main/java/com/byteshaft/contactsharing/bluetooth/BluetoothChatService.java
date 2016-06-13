@@ -38,7 +38,6 @@ import java.util.UUID;
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-
 public class BluetoothChatService {
     // Debugging
     private static final String TAG = "BluetoothChatService";
@@ -72,9 +71,9 @@ public class BluetoothChatService {
      * Constructor. Prepares a new BluetoothChat session.
      *
      * @param context The UI Activity Context
-//     * @param handler A Handler to send messages back to the UI Activity
+    //     * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothChatService(Context context, Handler handler) {
+    public BluetoothChatService(Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
@@ -138,7 +137,6 @@ public class BluetoothChatService {
      * @param device The BluetoothDevice to connect
      * @param secure Socket Security type - Secure (true) , Insecure (false)
      */
-
     public synchronized void connect(BluetoothDevice device, boolean secure) {
         Log.d(TAG, "connect to: " + device);
 
@@ -327,7 +325,9 @@ public class BluetoothChatService {
                 try {
                     // This is a blocking call and will only return on a
                     // successful connection or an exception
-                    socket = mmServerSocket.accept();
+                    if (mmServerSocket != null) {
+                        socket = mmServerSocket.accept();
+                    }
                 } catch (IOException e) {
                     Log.e(TAG, "Socket Type: " + mSocketType + "accept() failed", e);
                     break;
@@ -413,7 +413,9 @@ public class BluetoothChatService {
             try {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
-                mmSocket.connect();
+                if (!mmSocket.isConnected()) {
+                    mmSocket.connect();
+                }
             } catch (IOException e) {
                 // Close the socket
                 try {
@@ -448,7 +450,6 @@ public class BluetoothChatService {
      * This thread runs during a connection with a remote device.
      * It handles all incoming and outgoing transmissions.
      */
-
     private class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
@@ -502,7 +503,6 @@ public class BluetoothChatService {
          *
          * @param buffer The bytes to write
          */
-
         public void write(byte[] buffer) {
             try {
                 mmOutStream.write(buffer);
