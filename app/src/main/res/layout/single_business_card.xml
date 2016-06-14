@@ -25,6 +25,9 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_below="@+id/tv_name"
+            android:scaleType="center"
+            android:background="@drawable/border_image"
+            android:cropToPadding="true"
             android:src="@drawable/ic_logout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
