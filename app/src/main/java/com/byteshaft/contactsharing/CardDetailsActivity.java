@@ -46,17 +46,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_business_card);
-        cardsDatabase = new CardsDatabase(getApplicationContext());
-        mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
-        cardId = getIntent().getIntExtra(AppGlobals.CARD_ID, 0);
-        color = getIntent().getStringExtra(AppGlobals.CURRENT_COLOR);
-        if (cardId == 0) {
-            finish();
-        } else {
-            Log.i("TAG", "" +cardsDatabase.getSingleBusinessCard(cardId));
-            carddata = cardsDatabase.getSingleBusinessCard(cardId);
-        }
-        mainLayout.setBackgroundColor(Color.parseColor(color));
+
         personName = (TextView) findViewById(R.id.tv_name);
         jobTitle = (TextView) findViewById(R.id.job_title);
         phoneNumber = (TextView) findViewById(R.id.phone_number);
@@ -68,10 +58,28 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         editButton = (ImageButton) findViewById(R.id.edit_button);
         shareButton = (ImageButton) findViewById(R.id.share_button);
         cardImage = (ImageView) findViewById(R.id.card_image);
+        mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 
         editButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
+        cardsDatabase = new CardsDatabase(getApplicationContext());
 
+        cardId = getIntent().getIntExtra(AppGlobals.CARD_ID, 0);
+        color = getIntent().getStringExtra(AppGlobals.CURRENT_COLOR);
+        mainLayout.setBackgroundColor(Color.parseColor(color));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (cardId == 0) {
+            finish();
+        } else {
+            Log.i("TAG", "" +cardsDatabase.getSingleBusinessCard(cardId));
+            carddata = cardsDatabase.getSingleBusinessCard(cardId);
+        }
         personName.setText(carddata.get(AppGlobals.NAME));
         jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
         phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
@@ -113,7 +121,10 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.edit_button:
-
+                Intent editIntent = new Intent(CardDetailsActivity.this, BusinessForm.class);
+                editIntent.putExtra("id", cardId);
+                System.out.println(cardId);
+                startActivity(editIntent);
                 break;
             case R.id.share_button:
                 JSONObject jsonObject = new JSONObject();
