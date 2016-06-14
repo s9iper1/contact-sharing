@@ -74,10 +74,20 @@ public class BusinessCardsList extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        mRecyclerView.setAdapter(null);
+        idsList = new ArrayList<>();
+        nameData = new ArrayList<>();
+        idsList = cardsDatabase.getIdOfSavedCards();
+        nameData = cardsDatabase.getNamesOfSavedCards();
         mCardsAdapter = new CardsAdapter(idsList, nameData);
         mRecyclerView.setAdapter(mCardsAdapter);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, nameData,
                 getActivity()
                 .getApplicationContext(), new OnItemClickListener() {

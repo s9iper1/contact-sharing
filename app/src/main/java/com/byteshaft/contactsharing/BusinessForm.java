@@ -1,5 +1,6 @@
 package com.byteshaft.contactsharing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,6 +25,9 @@ public class BusinessForm extends AppCompatActivity {
     private String name;
     private String contactNumber;
 
+    private int id;
+    private int defaultValue = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,20 +42,37 @@ public class BusinessForm extends AppCompatActivity {
         mAddress = (EditText) findViewById(R.id.et_address);
         mJobzyId = (EditText) findViewById(R.id.jobzi_id);
         mSaveButton = (Button) findViewById(R.id.save_button);
+        Intent idIntent = getIntent();
+        id = idIntent.getIntExtra("id", defaultValue);
+        if (id != defaultValue) {
+            mSaveButton.setText("Update Card");
+        }
         mSaveButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if (validateEditTexts()) {
+                if (id == defaultValue) {
+                    if (validateEditTexts()) {
+                        String jobTitle = mJobTitle.getText().toString();
+                        String emailAddress = mEmailAddress.getText().toString();
+                        String organization = mOrganization.getText().toString();
+                        String address = mAddress.getText().toString();
+                        String jobzyId = mJobzyId.getText().toString();
+                        contactNumber = mContactNumber.getText().toString();
+                        cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
+                                organization, jobzyId);
+                        AppGlobals.sNewEntryCreated = true;
+                        finish();
+                    }
+                } else {
+                    validateEditTexts();
                     String jobTitle = mJobTitle.getText().toString();
                     String emailAddress = mEmailAddress.getText().toString();
                     String organization = mOrganization.getText().toString();
                     String address = mAddress.getText().toString();
                     String jobzyId = mJobzyId.getText().toString();
-                    contactNumber = mContactNumber.getText().toString();
-                    cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-                            organization, jobzyId);
-                    AppGlobals.sNewEntryCreated = true;
+                    cardsDatabase.updateEntries(id, name, address, jobTitle,
+                            contactNumber, emailAddress, organization, jobzyId );
                     finish();
                 }
             }
@@ -59,7 +80,6 @@ public class BusinessForm extends AppCompatActivity {
     }
 
     private boolean validateEditTexts() {
-
         boolean valid = true;
         name = mName.getText().toString();
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
@@ -47,6 +48,24 @@ public class CardsDatabase extends SQLiteOpenHelper {
     public boolean deleteEntry(Integer id) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(DatabaseConstants.TABLE_NAME, DatabaseConstants.ID_COLUMN + "=" + id, null) > 0;
+    }
+
+    public void updateEntries(
+            Integer id, String name, String address, String jobTitle,
+                              String contactNumber, String emailAddress, String organization,
+                              String jobzyId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseConstants.NAME_COLUMN, name);
+        values.put(DatabaseConstants.ADDRESS_COLUMN, address);
+        values.put(DatabaseConstants.JOB_TITLE_COLUMN, jobTitle);
+        values.put(DatabaseConstants.CONTACT_NUMBER_COLUMN, contactNumber);
+        values.put(DatabaseConstants.EMAIL_ADDRESS_COLUMN, emailAddress);
+        values.put(DatabaseConstants.ORGANIZATION_COLUMN, organization);
+        values.put(DatabaseConstants.JOBZI_ID, jobzyId);
+        db.update(DatabaseConstants.TABLE_NAME, values, DatabaseConstants.ID_COLUMN + "=" + id, null);
+        Log.i("Database", "Updated.......");
+        db.close();
     }
 
     public void imageEntry(String name, String uri) {
