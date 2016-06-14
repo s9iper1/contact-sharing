@@ -1,11 +1,14 @@
 package com.byteshaft.contactsharing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.byteshaft.contactsharing.utils.AppGlobals;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.signup_text:
                 // TODO: 09/06/2016
                 System.out.println("sign up");
+                startActivity(new Intent(AppGlobals.getContext(), RegisterActivity.class));
                 break;
         }
     }
