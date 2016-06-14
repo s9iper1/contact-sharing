@@ -60,7 +60,7 @@ public class BusinessForm extends AppCompatActivity {
                         String jobzyId = mJobzyId.getText().toString();
                         contactNumber = mContactNumber.getText().toString();
                         cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-                                organization, jobzyId);
+                                organization, jobzyId, "", 0);
                         AppGlobals.sNewEntryCreated = true;
                         finish();
                     }

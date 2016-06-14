@@ -31,7 +31,8 @@ public class CardsDatabase extends SQLiteOpenHelper {
     }
 
     public void createNewEntry(String name, String address, String jobTitle, String contactNumber,
-                               String emailAddress, String organization, String jobzyId) {
+                               String emailAddress, String organization, String jobzyId,
+                               String imgUri, Integer isImagCard) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseConstants.NAME_COLUMN, name);
@@ -41,6 +42,8 @@ public class CardsDatabase extends SQLiteOpenHelper {
         values.put(DatabaseConstants.EMAIL_ADDRESS_COLUMN, emailAddress);
         values.put(DatabaseConstants.ORGANIZATION_COLUMN, organization);
         values.put(DatabaseConstants.JOBZI_ID, jobzyId);
+        values.put(DatabaseConstants.IMG_COLUMN, imgUri);
+        values.put(DatabaseConstants.IS_IMAGE_CARD_COLUMN, isImagCard);
         db.insert(DatabaseConstants.TABLE_NAME, null, values);
         db.close();
     }
@@ -68,14 +71,14 @@ public class CardsDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void imageEntry(String name, String uri) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DatabaseConstants.NAME_COLUMN, name);
-        values.put(DatabaseConstants.IMG_COLUMN, uri);
-        db.insert(DatabaseConstants.TABLE_NAME, null, values);
-        db.close();
-    }
+//    public void imageEntry(String name, String uri) {
+//        SQLiteDatabase db = getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(DatabaseConstants.NAME_COLUMN, name);
+//        values.put(DatabaseConstants.IMG_COLUMN, uri);
+//        db.insert(DatabaseConstants.TABLE_NAME, null, values);
+//        db.close();
+//    }
 
     public ArrayList<HashMap<Integer, String>> getNamesOfSavedCards() {
         SQLiteDatabase db = getReadableDatabase();
@@ -139,6 +142,12 @@ public class CardsDatabase extends SQLiteOpenHelper {
             String organization = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COLUMN));
 
+            int isImage = cursor.getInt(
+                    cursor.getColumnIndex(DatabaseConstants.IS_IMAGE_CARD_COLUMN));
+
+            String imageUri = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
+
             hashMap.put(AppGlobals.ID, String.valueOf(unique_id));
             hashMap.put(AppGlobals.NAME, name);
             hashMap.put(AppGlobals.ADDRESS, address);
@@ -147,6 +156,8 @@ public class CardsDatabase extends SQLiteOpenHelper {
             hashMap.put(AppGlobals.NUMBER, contactNumber);
             hashMap.put(AppGlobals.EMAIL, emailAddress);
             hashMap.put(AppGlobals.ORG, organization);
+            hashMap.put(AppGlobals.IS_IMAGE, String.valueOf(isImage));
+            hashMap.put(AppGlobals.IMG_URI, imageUri);
         }
         db.close();
         cursor.close();
