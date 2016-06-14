@@ -2,7 +2,10 @@ package com.byteshaft.contactsharing;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -41,6 +44,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     private ImageButton shareButton;
     private RelativeLayout mainLayout;
     private String color;
+    private Uri imgUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         frameLayout = (FrameLayout) findViewById(R.id.buttons);
         editButton = (ImageButton) findViewById(R.id.edit_button);
         shareButton = (ImageButton) findViewById(R.id.share_button);
-        cardImage = (ImageView) findViewById(R.id.card_image);
+        cardImage = (ImageView) findViewById(R.id.card_img_view);
         mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 
         editButton.setOnClickListener(this);
@@ -80,21 +84,42 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
             Log.i("TAG", "" +cardsDatabase.getSingleBusinessCard(cardId));
             carddata = cardsDatabase.getSingleBusinessCard(cardId);
         }
-        personName.setText(carddata.get(AppGlobals.NAME));
-        jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
-        phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
-        emailAddress.setText(carddata.get(AppGlobals.EMAIL));
-        address.setText(carddata.get(AppGlobals.ADDRESS));
-        organization.setText(carddata.get(AppGlobals.ORG));
-        jobzyId.setText(carddata.get(AppGlobals.JOBZY_ID));
+        if (carddata.get(AppGlobals.IS_IMAGE).equals("0")) {
+            personName.setText(carddata.get(AppGlobals.NAME));
+            jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
+            phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
+            emailAddress.setText(carddata.get(AppGlobals.EMAIL));
+            address.setText(carddata.get(AppGlobals.ADDRESS));
+            organization.setText(carddata.get(AppGlobals.ORG));
+            jobzyId.setText(carddata.get(AppGlobals.JOBZY_ID));
 
-        address.setTypeface(AppGlobals.regularTypeface);
-        personName.setTypeface(AppGlobals.regularTypeface);
-        jobTitle.setTypeface(AppGlobals.regularTypeface);
-        phoneNumber.setTypeface(AppGlobals.regularTypeface);
-        emailAddress.setTypeface(AppGlobals.regularTypeface);
-        organization.setTypeface(AppGlobals.regularTypeface);
-        jobzyId.setTypeface(AppGlobals.regularTypeface);
+            address.setTypeface(AppGlobals.regularTypeface);
+            personName.setTypeface(AppGlobals.regularTypeface);
+            jobTitle.setTypeface(AppGlobals.regularTypeface);
+            phoneNumber.setTypeface(AppGlobals.regularTypeface);
+            emailAddress.setTypeface(AppGlobals.regularTypeface);
+            organization.setTypeface(AppGlobals.regularTypeface);
+            jobzyId.setTypeface(AppGlobals.regularTypeface);
+
+        } else if (carddata.get(AppGlobals.IS_IMAGE).equals("1")) {
+            mainLayout.setBackgroundColor(Color.TRANSPARENT);
+            editButton.setVisibility(View.GONE);
+            personName.setVisibility(View.GONE);
+            jobTitle.setVisibility(View.GONE);
+            phoneNumber.setVisibility(View.GONE);
+            emailAddress.setVisibility(View.GONE);
+            address.setVisibility(View.GONE);
+            organization.setVisibility(View.GONE);
+            jobzyId.setVisibility(View.GONE);
+            cardImage.setVisibility(View.VISIBLE);
+            imgUri = Uri.parse(carddata.get(AppGlobals.IMG_URI));
+            Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
+            int height = 1024;
+            int width = 640;
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
+            cardImage.setImageBitmap(scaled);
+//            cardImage.setImageURI(imgUri);
+        }
     }
 
     @Override

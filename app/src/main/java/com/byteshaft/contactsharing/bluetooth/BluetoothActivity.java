@@ -249,11 +249,11 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                     try {
                         JSONObject jsonCard = new JSONObject(readMessage);
                         CardsDatabase cardsData = new CardsDatabase(getApplicationContext());
-                        cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
-                                jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
-                                        AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
-                                jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
-                                jsonCard.getString(AppGlobals.JOBZY_ID));
+//                        cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
+//                                jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
+//                                        AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
+//                                jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
+//                                jsonCard.getString(AppGlobals.JOBZY_ID));
                         showNotification();
                     } catch (JSONException e) {
                         e.printStackTrace();

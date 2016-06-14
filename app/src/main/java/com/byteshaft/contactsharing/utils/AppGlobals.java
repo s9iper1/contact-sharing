@@ -28,6 +28,8 @@ public class AppGlobals extends Application {
     public static final String NUMBER = "number";
     public static final String EMAIL = "email";
     public static final String ORG = "org";
+    public static final String IMG_URI = "img_uri";
+    public static final String IS_IMAGE =  "is_image";
     public static final String DATA_TO_BE_SENT = "data_to_be_sent";
     // -->
     public static final String CURRENT_COLOR = "current_color";
