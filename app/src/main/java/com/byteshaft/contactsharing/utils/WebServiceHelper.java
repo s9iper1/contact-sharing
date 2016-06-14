@@ -63,6 +63,30 @@ public class WebServiceHelper {
         return object.toString();
     }
 
+    public static String userLogin(String email, String password) throws IOException, JSONException {
+        String data = getLoginData(email, password);
+        System.out.println(data);
+        String url = "http://178.62.37.43:8000/api/login";
+        HttpURLConnection connection = openConnectionForUrl(url, "POST");
+        sendRequestData(connection, data);
+        AppGlobals.setResponseCode(connection.getResponseCode());
+        JSONObject jsonObj = readResponse(connection);
+        return (String)jsonObj.get("token");
+    }
+
+    public static String getLoginData(String email, String password) {
+        JSONObject object = new JSONObject();
+
+        try {
+            object.put("username", email);
+            object.put("password", password);
+        } catch (JSONException var4) {
+            var4.printStackTrace();
+        }
+
+        return object.toString();
+    }
+
     private static void sendRequestData(HttpURLConnection connection, String body) throws IOException {
         byte[] outputInBytes = body.getBytes("UTF-8");
         OutputStream os = connection.getOutputStream();

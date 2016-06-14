@@ -6,14 +6,13 @@ import android.graphics.Typeface;
 
 public class AppGlobals extends Application {
 
-    public static final String BASE_URL = "";
-    public static final String LOGIN_URL = "";
-    public static final String REGISTER_URL = "";
-
     //register
 
     public static final String KEY_FULLNAME = "full_name";
     public static final String KEY_EMAIL = "email";
+
+    //login
+    public static final String KEY_USER_TOKEN = "token";
 
     private static Context sContext;
     public static Typeface typeface;
