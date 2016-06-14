@@ -68,6 +68,7 @@
             android:textStyle="italic"
             android:clickable="true"
             android:layout_marginTop="15dp"
+            android:paddingBottom="25dp"
             android:text="Sign up"
             android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>

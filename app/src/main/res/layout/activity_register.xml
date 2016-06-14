@@ -18,7 +18,7 @@
         android:layout_margin="16dp">
 
         <EditText
-            android:id="@+id/first_name"
+            android:id="@+id/full_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -26,23 +26,7 @@
             android:drawablePadding="9dp"
             android:drawableLeft="@mipmap/username"
             android:drawableStart="@mipmap/username"
-            android:hint="First name"
-            android:inputType="textPersonName"
-            android:padding="15dp"
-            android:singleLine="true"
-            android:textSize="14sp" />
-
-
-        <EditText
-            android:id="@+id/last_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/edit_text_bg"
-            android:drawablePadding="9dp"
-            android:drawableLeft="@mipmap/username"
-            android:drawableStart="@mipmap/username"
-            android:hint="Last name"
+            android:hint="Full name"
             android:inputType="textPersonName"
             android:padding="15dp"
             android:singleLine="true"
@@ -58,21 +42,6 @@
             android:drawableStart="@mipmap/email"
             android:drawablePadding="9dp"
             android:hint="Email"
-            android:inputType="textPersonName"
-            android:padding="15dp"
-            android:singleLine="true"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/mobile_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/edit_text_bg"
-            android:drawablePadding="9dp"
-            android:drawableLeft="@mipmap/mobile"
-            android:drawableStart="@mipmap/mobile"
-            android:hint="Mobile number"
             android:inputType="textPersonName"
             android:padding="15dp"
             android:singleLine="true"
