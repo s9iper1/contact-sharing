@@ -13,6 +13,7 @@ public class AppGlobals extends Application {
 
     //login
     public static final String KEY_USER_TOKEN = "token";
+    public static final String KEY_USER_LOGIN = "user_login";
 
     private static Context sContext;
     public static Typeface typeface;

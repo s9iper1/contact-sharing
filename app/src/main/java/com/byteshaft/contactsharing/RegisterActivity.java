@@ -112,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Helpers.saveDataToSharedPreferences(AppGlobals.KEY_FULLNAME, first_name);
                         Log.i("Full name", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME));
                         Helpers.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
+                        Helpers.saveUserLogin(true);
 
                     }
                 } catch (IOException | JSONException e) {
@@ -136,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(AppGlobals.getContext(),
                         "Account Created Successfully",
                         Toast.LENGTH_LONG).show();
+                finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
                 Toast.makeText(AppGlobals.getContext(), "Registration failed. Email already in use",
