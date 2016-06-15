@@ -67,10 +67,21 @@
             android:textSize="25dp"
             android:textStyle="italic"
             android:clickable="true"
-            android:layout_marginTop="15dp"
-            android:paddingBottom="25dp"
+            android:layout_marginTop="25dp"
+            android:paddingBottom="10dp"
             android:text="Sign up"
             android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/tv_login_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="italic"
+                android:paddingBottom="50dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Forgot Password? Recover"/>
         </LinearLayout>
     </ScrollView>
 

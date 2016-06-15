@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
+import com.byteshaft.contactsharing.utils.Helpers;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,9 +90,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_create_card) {
             loadFragment(new CreateBusinessCard());
         } else if (id == R.id.nav_logout) {
-
         } else if (id == R.id.nav_bluetooth) {
             startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+        } else if (id == R.id.nav_login){
+            System.out.println("working");
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

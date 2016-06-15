@@ -130,7 +130,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 });
 
         final AlertDialog dialog = alertDialog.create();
-        dialog.setCancelable(false);
         dialog.show();
         // Showing Alert Message
         dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {

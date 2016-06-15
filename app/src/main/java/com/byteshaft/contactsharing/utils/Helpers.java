@@ -28,15 +28,15 @@ public class Helpers  {
         return sharedPreferences.getString(key, "");
     }
 
-//    public static void saveUserLogin(boolean value) {
-//        SharedPreferences sharedPreferences = getPreferenceManager();
-//        sharedPreferences.edit().putBoolean(AppGlobals.KEY_USER_LOGIN, value).apply();
-//    }
-//
-//    public static boolean isUserLoggedIn() {
-//        SharedPreferences sharedPreferences = getPreferenceManager();
-//        return sharedPreferences.getBoolean(AppGlobals.KEY_USER_LOGIN, false);
-//    }
+    public static void saveUserLogin(boolean value) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().putBoolean(AppGlobals.KEY_USER_LOGIN, value).apply();
+    }
+
+    public static boolean isUserLoggedIn() {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        return sharedPreferences.getBoolean(AppGlobals.KEY_USER_LOGIN, false);
+    }
 
     public static void alertDialog(Activity activity, String title, String msg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
