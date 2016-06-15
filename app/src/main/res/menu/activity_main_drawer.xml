@@ -10,15 +10,16 @@
             android:id="@+id/nav_create_card"
             android:icon="@drawable/ic_card"
             android:title="Create Card" />
+
+        <item
+            android:id="@+id/nav_bluetooth"
+            android:icon="@drawable/bluetooth"
+            android:title="Bluetooth" />
+
     </group>
 
     <item android:title="Communicate">
         <menu>
-
-            <item
-                android:id="@+id/nav_bluetooth"
-                android:icon="@drawable/bluetooth"
-                android:title="Bluetooth" />
 
             <item
                 android:id="@+id/nav_logout"
