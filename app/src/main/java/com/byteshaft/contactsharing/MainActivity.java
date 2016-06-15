@@ -88,11 +88,14 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             loadFragment(new BusinessCardsList());
         } else if (id == R.id.nav_create_card) {
+
             loadFragment(new CreateBusinessCard());
+
         } else if (id == R.id.nav_logout) {
+
         } else if (id == R.id.nav_bluetooth) {
             startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
-        } else if (id == R.id.nav_login){
+        } else if (id == R.id.nav_login) {
             System.out.println("working");
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
@@ -102,8 +105,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void loadFragment (Fragment fragment) {
-        FragmentTransaction  transaction = getSupportFragmentManager().beginTransaction();
+    public void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.commit();
     }

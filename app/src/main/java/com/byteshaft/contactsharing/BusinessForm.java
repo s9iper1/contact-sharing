@@ -43,6 +43,7 @@ public class BusinessForm extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateEditTexts()) {
+
                     String jobTitle = mJobTitle.getText().toString();
                     String emailAddress = mEmailAddress.getText().toString();
                     String organization = mOrganization.getText().toString();
