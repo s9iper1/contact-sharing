@@ -37,6 +37,7 @@
         <activity android:name=".bluetooth.BluetoothActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".BusinessForm"/>
+        <activity android:name=".ForgotPasswordActivity"/>
         <activity
             android:name=".CardDetailsActivity"
             android:screenOrientation="landscape"

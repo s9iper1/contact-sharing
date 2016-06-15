@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText mEmailAddress;
     private EditText mPassword;
     private TextView mSignUpText;
+    private TextView mForgotPasswordTextView;
 
 
     private String mEmail;
@@ -35,13 +36,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         mEmailAddress = (EditText) findViewById(R.id.email_address);
         mPassword = (EditText) findViewById(R.id.password_entry);
         mLoginButton = (Button) findViewById(R.id.login);
         mSignUpText = (TextView) findViewById(R.id.signup_text);
+        mForgotPasswordTextView = (TextView) findViewById(R.id.tv_login_forgot_password);
         mLoginButton.setOnClickListener(this);
         mSignUpText.setOnClickListener(this);
+        mForgotPasswordTextView.setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +64,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // TODO: 09/06/2016
                 System.out.println("sign up");
                 startActivity(new Intent(AppGlobals.getContext(), RegisterActivity.class));
+                break;
+            case R.id.tv_login_forgot_password:
+                System.out.println("forgot password");
+                startActivity(new Intent(AppGlobals.getContext(), ForgotPasswordActivity.class));
                 break;
         }
     }
@@ -101,9 +107,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected String doInBackground(String... params) {
             String data = null;
-            if (WebServiceHelper.isNetworkAvailable() && WebServiceHelper.isInternetWorking()) {
+              if (WebServiceHelper.isNetworkAvailable() && WebServiceHelper.isInternetWorking()) {
                 try {
                     data = WebServiceHelper.userLogin(mEmail, mPasswordEntry);
+                    System.out.println(data + "working");
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -123,6 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Helpers.saveDataToSharedPreferences(AppGlobals.KEY_USER_TOKEN, response);
                 Log.i("Token", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
+                Helpers.saveUserLogin(true);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } else {
                 Toast.makeText(AppGlobals.getContext(), "Login Failed! Invalid Email or Password",
