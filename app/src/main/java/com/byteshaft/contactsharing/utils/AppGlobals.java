@@ -20,6 +20,7 @@ public class AppGlobals extends Application {
     public static Typeface regularTypeface;
     public static boolean sNewEntryCreated = false;
     public static String CARD_ID = "card_id";
+
     // bluetooth
     public static final String NAME = "name";
     public static final String ID = "id";

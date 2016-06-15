@@ -61,7 +61,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         frameLayout = (FrameLayout) findViewById(R.id.buttons);
         editButton = (ImageButton) findViewById(R.id.edit_button);
         shareButton = (ImageButton) findViewById(R.id.share_button);
-        cardImage = (ImageView) findViewById(R.id.card_img_view);
+        cardImage = (ImageView) findViewById(R.id.card_image);
         mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 
         editButton.setOnClickListener(this);
@@ -114,8 +114,8 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
             cardImage.setVisibility(View.VISIBLE);
             imgUri = Uri.parse(carddata.get(AppGlobals.IMG_URI));
             Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
-            int height = 1024;
-            int width = 640;
+            int height = 1920;
+            int width = 1080;
             Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
             cardImage.setImageBitmap(scaled);
 //            cardImage.setImageURI(imgUri);

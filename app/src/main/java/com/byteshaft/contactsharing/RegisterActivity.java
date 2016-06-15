@@ -139,6 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
                 Toast.makeText(AppGlobals.getContext(), "Registration failed. Email already in use",
                         Toast.LENGTH_SHORT).show();
