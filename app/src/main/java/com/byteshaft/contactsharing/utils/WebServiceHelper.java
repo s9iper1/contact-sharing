@@ -18,9 +18,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by husnain on 6/14/16.
- */
 public class WebServiceHelper {
 
     private static ProgressDialog progressDialog;
