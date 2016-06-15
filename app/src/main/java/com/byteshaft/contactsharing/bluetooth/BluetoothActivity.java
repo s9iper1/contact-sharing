@@ -12,14 +12,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +50,9 @@ import com.byteshaft.contactsharing.utils.AppGlobals;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,7 +64,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private ArrayList<String> bluetoothDeviceArrayList;
     private HashMap<String, String> bluetoothMacAddress;
-    private BluetoothChatService mChatService = null;
+    private BluetoothService mService = null;
     private String mConnectedDeviceName = null;
     public ViewHolder holder;
     public ListView listView;
@@ -64,32 +72,50 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     private String dataToBeSent = "";
     private Switch discoverSwitch;
     private TextView currentState;
+    private JSONObject jsonObject;
+    private int isImageShare = 0;
+    private String filePath = "";
+    private String jsonPictureData = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bluetooth_activity);
         dataToBeSent = getIntent().getStringExtra(AppGlobals.DATA_TO_BE_SENT);
+        Log.i("TAG", "" + dataToBeSent);
+        if (dataToBeSent != null) {
+            try {
+                jsonObject = new JSONObject(dataToBeSent);
+                if (jsonObject.getInt(AppGlobals.IS_IMAGE_SHARE) == 1) {
+                    isImageShare = jsonObject.getInt(AppGlobals.IS_IMAGE_SHARE);
+                    filePath = jsonObject.getString(AppGlobals.IMG_URI);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         listView = (ListView) findViewById(R.id.devicesList);
         currentState = (TextView) findViewById(R.id.current_state);
         discoverSwitch = (Switch) findViewById(R.id.discovery_switch);
         discoverSwitch.setOnCheckedChangeListener(this);
         bluetoothDeviceArrayList = new ArrayList<>();
         bluetoothMacAddress = new HashMap<>();
-        mChatService = new BluetoothChatService(mHandler);
+        mService = new BluetoothService(mHandler);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i("TAG", "" + i);
-                Log.i("TAG", "" + bluetoothDeviceArrayList.get(i));
-                Log.i("TAG", "" + bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)));
-                if (dataToBeSent != null) {
-                    if (!dataToBeSent.trim().isEmpty()) {
-                        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-                            connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
-                        } else {
-                            byte[] message = dataToBeSent.getBytes();
-                            mChatService.write(message);
+                if (isImageShare == 1) {
+                    connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                    new BitmapCreationTask().execute();
+                } else if (isImageShare == 0) {
+                    if (dataToBeSent != null) {
+                        if (!dataToBeSent.trim().isEmpty()) {
+                            if (mService.getState() != BluetoothService.STATE_CONNECTED) {
+                                connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
+                            } else {
+                                byte[] message = dataToBeSent.getBytes();
+                                mService.write(message);
+                            }
                         }
                     }
                 }
@@ -186,47 +212,31 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         }
     }
 
-//    private void setStatus(int resId) {
-//        BluetoothActivity activity = this;
-//        if (null == activity) {
-//            return;
-//        }
-//        Toast.makeText(BluetoothActivity.this, getResources().getString(resId), Toast.LENGTH_SHORT).show();
-//    }
-//
-//    /**
-//     * Updates the status on the action bar.
-//     *
-//     * @param subTitle status
-//     */
-//    private void setStatus(CharSequence subTitle) {
-//        BluetoothActivity activity = this;
-//        if (null == activity) {
-//            return;
-//        }
-//        Toast.makeText(BluetoothActivity.this, String.valueOf(subTitle), Toast.LENGTH_SHORT).show();
-//    }
-
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
-                        case BluetoothChatService.STATE_CONNECTED:
+                        case BluetoothService.STATE_CONNECTED:
 //                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
 //                            currentState.setText(getString(R.string.title_connected_to, mConnectedDeviceName));
                             if (dataToBeSent != null) {
-                                byte[] message = dataToBeSent.getBytes();
-                                mChatService.write(message);
+                                if (isImageShare == 0) {
+                                    byte[] message = dataToBeSent.getBytes();
+                                    mService.write(message);
+                                } else if (isImageShare == 1) {
+                                    byte[] image = jsonPictureData.getBytes();
+                                    mService.write(image);
+                                }
                             }
                             break;
-                        case BluetoothChatService.STATE_CONNECTING:
+                        case BluetoothService.STATE_CONNECTING:
 //                            setStatus(R.string.title_connecting);
                             currentState.setText(getString(R.string.title_connecting));
                             break;
-                        case BluetoothChatService.STATE_LISTEN:
-                        case BluetoothChatService.STATE_NONE:
+                        case BluetoothService.STATE_LISTEN:
+                        case BluetoothService.STATE_NONE:
 //                            setStatus(R.string.title_not_connected);
                             currentState.setText(getString(R.string.title_not_connected));
                             break;
@@ -238,7 +248,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     Log.i("WRITE", writeMessage);
-                    mChatService.stop();
+                    mService.stop();
                     break;
                 case Constants.MESSAGE_READ:
                     currentState.setText(getString(R.string.reading_data));
@@ -249,16 +259,29 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                     try {
                         JSONObject jsonCard = new JSONObject(readMessage);
                         CardsDatabase cardsData = new CardsDatabase(getApplicationContext());
-//                        cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
-//                                jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
-//                                        AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
-//                                jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
-//                                jsonCard.getString(AppGlobals.JOBZY_ID));
+                        int isImageShare = jsonCard.getInt(AppGlobals.IS_IMAGE_SHARE);
+                        if (isImageShare == 1) {
+                            String image = (String) jsonCard.get(AppGlobals.IMAGE);
+                            byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,
+                                    decodedString.length);
+
+                            cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
+                                   "","", "", "", "", "", saveImage(decodedByte, jsonCard.getString
+                                            (AppGlobals.NAME)), 1);
+                        } else if (isImageShare == 0) {
+                            cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
+                                    jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
+                                            AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
+                                    jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
+                                    jsonCard.getString(AppGlobals.JOBZY_ID), "", 0);
+                        }
+
                         showNotification();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    mChatService.stop();
+                    mService.stop();
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -277,6 +300,25 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             }
         }
     };
+
+    private String saveImage(Bitmap finalBitmap, String name) {
+
+        String internalFolder = Environment.getExternalStorageDirectory() +
+                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
+        File myDir = new File(internalFolder);
+        File file = new File (myDir, name);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file.getAbsolutePath();
+    }
 
     private void showNotification() {
         NotificationCompat.Builder mBuilder =
@@ -318,6 +360,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                 } else {
                     Toast.makeText(getApplicationContext(), "Permission denied!"
                             , Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 return;
             }
@@ -346,8 +389,10 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.disable();
+        if (mBluetoothAdapter != null) {
+            if (mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.disable();
+            }
         }
         try {
             unregisterReceiver(mReceiver);
@@ -367,9 +412,9 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
+            if (mService.getState() == BluetoothService.STATE_NONE) {
                 // Start the Bluetooth chat services
-                mChatService.start();
+                mService.start();
 
             }
             discoverDevices();
@@ -389,6 +434,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                     }
                 }, 3000);
             } else {
+                finish();
             }
         }
     }
@@ -457,7 +503,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(macAddress);
         // Attempt to connect to the device
         mBluetoothAdapter.cancelDiscovery();
-        mChatService.connect(device, secure);
+        mService.connect(device, secure);
     }
 
     class Adapter extends ArrayAdapter<String> {
@@ -494,6 +540,32 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
 
     static class ViewHolder {
         public TextView bluetoothName;
+    }
+
+    class BitmapCreationTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            Log.i("TAG", filePath);
+            Bitmap icon = BitmapFactory.decodeFile(filePath);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            icon.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+            byte[] image = bytes.toByteArray();
+            Log.i("TAG", String.valueOf(bytes));
+
+            JSONObject toBeSentJson  = new JSONObject();
+            try {
+                toBeSentJson.put(AppGlobals.IS_IMAGE_SHARE, 1);
+                toBeSentJson.put(AppGlobals.NAME, jsonObject.getString(AppGlobals.NAME));
+                String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+                toBeSentJson.put(AppGlobals.IMAGE, encodedImage);
+                Log.i("TAG", String.valueOf(toBeSentJson));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            jsonPictureData = toBeSentJson.toString();
+            return null;
+        }
     }
 
 }

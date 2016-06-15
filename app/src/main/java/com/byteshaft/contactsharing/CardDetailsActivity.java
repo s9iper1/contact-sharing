@@ -45,6 +45,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     private RelativeLayout mainLayout;
     private String color;
     private Uri imgUri;
+    private boolean isImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
             jobzyId.setTypeface(AppGlobals.regularTypeface);
 
         } else if (carddata.get(AppGlobals.IS_IMAGE).equals("1")) {
+            isImage = true;
             mainLayout.setBackgroundColor(Color.TRANSPARENT);
             editButton.setVisibility(View.GONE);
             personName.setVisibility(View.GONE);
@@ -153,16 +155,27 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
                 break;
             case R.id.share_button:
                 JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(AppGlobals.NAME, personName.getText().toString());
-                    jsonObject.put(AppGlobals.ADDRESS, address.getText().toString());
-                    jsonObject.put(AppGlobals.EMAIL, emailAddress.getText().toString());
-                    jsonObject.put(AppGlobals.JOB_TITLE, jobTitle.getText().toString());
-                    jsonObject.put(AppGlobals.ORG, organization.getText().toString());
-                    jsonObject.put(AppGlobals.JOBZY_ID, jobzyId.getText().toString());
-                    jsonObject.put(AppGlobals.NUMBER, phoneNumber.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (isImage) {
+                    try {
+                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
+                        jsonObject.put(AppGlobals.NAME, personName.getText().toString());
+                        jsonObject.put(AppGlobals.IMG_URI, carddata.get(AppGlobals.IMG_URI));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
+                        jsonObject.put(AppGlobals.NAME, personName.getText().toString());
+                        jsonObject.put(AppGlobals.ADDRESS, address.getText().toString());
+                        jsonObject.put(AppGlobals.EMAIL, emailAddress.getText().toString());
+                        jsonObject.put(AppGlobals.JOB_TITLE, jobTitle.getText().toString());
+                        jsonObject.put(AppGlobals.ORG, organization.getText().toString());
+                        jsonObject.put(AppGlobals.JOBZY_ID, jobzyId.getText().toString());
+                        jsonObject.put(AppGlobals.NUMBER, phoneNumber.getText().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 finish();
                 Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);

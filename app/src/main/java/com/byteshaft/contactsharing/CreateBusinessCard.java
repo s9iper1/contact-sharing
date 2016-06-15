@@ -1,17 +1,21 @@
 package com.byteshaft.contactsharing;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +40,9 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private String fileName;
     private EditText input;
     private Uri uriSavedImage;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 0;
+    private String filePath = "";
 
     @Nullable
     @Override
@@ -67,16 +73,43 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                 startActivity(new Intent(getActivity(), BusinessForm.class));
                 break;
             case R.id.button_pic:
-                enterNameDialog();
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                } else {
+                    enterNameDialog();
+                }
                 break;
 
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+
+                if (grantResults.length > 0) {
+                    Log.i("TAG", "permissions  granted");
+                    enterNameDialog();
+                } else {
+                    Log.i("TAG", "permissions not granted");
+                    Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            uriSavedImage = Uri.fromFile(createDirectoryAndSaveFile());
+            Log.i("TAG", createDirectoryAndSaveFile());
+            filePath = createDirectoryAndSaveFile();
+            uriSavedImage = Uri.fromFile(new File(filePath));
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
             System.out.println(uriSavedImage);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -88,19 +121,20 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 //            cardsDatabase.imageEntry(fileName, uriSavedImage.toString());
             cardsDatabase.createNewEntry(fileName, "", "", "", "", "", "",
-                    uriSavedImage.toString(), 1);
+                    filePath, 1);
+            MainActivity.getInstance().loadFragment(new BusinessCardsList());
         }
     }
 
-    private File createDirectoryAndSaveFile() {
-        String internalFolder = Environment.getExternalStorageDirectory()+
+    private String createDirectoryAndSaveFile() {
+        String internalFolder = Environment.getExternalStorageDirectory() +
                 File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
         File file = new File(internalFolder);
         if (!file.exists()) {
             file.mkdirs();
         }
-        internalFolder = internalFolder + File.separator +  fileName + ".jpg";
-        return new File(internalFolder);
+        internalFolder = internalFolder + File.separator + fileName + ".jpg";
+        return new File(internalFolder).getAbsolutePath();
     }
 
     private void enterNameDialog() {
@@ -118,13 +152,12 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         input.requestFocus();
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        input.setHint("type here ");
         alertDialog.setView(input);
 
         // Setting Positive "Yes" Button
         alertDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int which) {
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 });
