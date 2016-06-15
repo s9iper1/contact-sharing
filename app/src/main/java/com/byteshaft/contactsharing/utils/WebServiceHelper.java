@@ -63,12 +63,58 @@ public class WebServiceHelper {
     public static String userLogin(String email, String password) throws IOException, JSONException {
         String data = getLoginData(email, password);
         System.out.println(data);
-        String url = "http://178.62.37.43:8000/api/login";
+        String url = "http://128.199.195.245:8000/api/login";
         HttpURLConnection connection = openConnectionForUrl(url, "POST");
         sendRequestData(connection, data);
         AppGlobals.setResponseCode(connection.getResponseCode());
         JSONObject jsonObj = readResponse(connection);
+        System.out.println(jsonObj);
         return (String)jsonObj.get("token");
+    }
+
+    public static Integer forgotPassword(String email) throws IOException, JSONException {
+        String data = getForgotPassword(email);
+        System.out.println(data);
+        String url = "http://128.199.195.245:8000/api/forgot_password";
+        HttpURLConnection connection = openConnectionForUrl(url, "POST");
+        sendRequestData(connection, data);
+        AppGlobals.setResponseCode(connection.getResponseCode());
+        return connection.getResponseCode();
+    }
+
+    public static String getForgotPassword(String email) {
+        JSONObject object = new JSONObject();
+
+        try {
+            object.put("email", email);
+        } catch (JSONException var8) {
+            var8.printStackTrace();
+        }
+        return object.toString();
+    }
+
+    public static Integer changePassword(String email, String resetkey, String newpassword) throws IOException, JSONException {
+        String data = changePasswordData(email, resetkey, newpassword);
+        System.out.println(data);
+        String url = "http://128.199.195.245:8000/api/change_password";
+        HttpURLConnection connection = openConnectionForUrl(url, "POST");
+        sendRequestData(connection, data);
+        AppGlobals.setResponseCode(connection.getResponseCode());
+        return connection.getResponseCode();
+    }
+
+    public static String changePasswordData(String email, String resetkey, String newpassword) {
+        JSONObject object = new JSONObject();
+
+        try {
+            object.put("email", email);
+            object.put("reset_key", resetkey);
+            object.put("new_password", newpassword);
+        } catch (JSONException var8) {
+            var8.printStackTrace();
+        }
+
+        return object.toString();
     }
 
     public static String getLoginData(String email, String password) {
@@ -101,8 +147,6 @@ public class WebServiceHelper {
             response.append(line);
             response.append('\r');
         }
-
-        Log.i("TG", response.toString());
         return new JSONObject(response.toString());
     }
 
