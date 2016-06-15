@@ -1,11 +1,24 @@
 package com.byteshaft.contactsharing;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.byteshaft.contactsharing.utils.AppGlobals;
+import com.byteshaft.contactsharing.utils.Helpers;
+import com.byteshaft.contactsharing.utils.WebServiceHelper;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,12 +49,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.login:
                 // TODO: 09/06/2016
-                validateEditText();
-                System.out.println("one");
+                System.out.println("login");
+                System.out.println(validateEditText());
+                if (!validateEditText()) {
+                    Toast.makeText(getApplicationContext(), "invalid credentials",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    new LoginTask().execute();
+                }
                 break;
             case R.id.signup_text:
                 // TODO: 09/06/2016
                 System.out.println("sign up");
+                startActivity(new Intent(AppGlobals.getContext(), RegisterActivity.class));
                 break;
         }
     }
@@ -66,5 +86,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mEmailAddress.setError(null);
         }
         return valid;
+    }
+
+    class LoginTask extends AsyncTask<String, String, String> {
+
+        private boolean noInternet = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            WebServiceHelper.showProgressDialog(LoginActivity.this, "LoggingIn");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String data = null;
+            if (WebServiceHelper.isNetworkAvailable() && WebServiceHelper.isInternetWorking()) {
+                try {
+                    data = WebServiceHelper.userLogin(mEmail, mPasswordEntry);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                noInternet = true;
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            WebServiceHelper.dismissProgressDialog();
+            if (noInternet) {
+                Helpers.alertDialog(LoginActivity.this, "Connection error",
+                        "Check your internet connection");
+            } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                Helpers.saveDataToSharedPreferences(AppGlobals.KEY_USER_TOKEN, response);
+                Log.i("Token", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            } else {
+                Toast.makeText(AppGlobals.getContext(), "Login Failed! Invalid Email or Password",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

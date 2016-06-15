@@ -6,9 +6,13 @@ import android.graphics.Typeface;
 
 public class AppGlobals extends Application {
 
-    public static final String BASE_URL = "";
-    public static final String LOGIN_URL = "";
-    public static final String REGISTER_URL = "";
+    //register
+
+    public static final String KEY_FULLNAME = "full_name";
+    public static final String KEY_EMAIL = "email";
+
+    //login
+    public static final String KEY_USER_TOKEN = "token";
 
     private static Context sContext;
     public static Typeface typeface;
@@ -24,9 +28,12 @@ public class AppGlobals extends Application {
     public static final String NUMBER = "number";
     public static final String EMAIL = "email";
     public static final String ORG = "org";
+    public static final String IMG_URI = "img_uri";
+    public static final String IS_IMAGE =  "is_image";
     public static final String DATA_TO_BE_SENT = "data_to_be_sent";
     // -->
     public static final String CURRENT_COLOR = "current_color";
+    public static int responseCode = 0;
 
     @Override
     public void onCreate() {
@@ -38,5 +45,13 @@ public class AppGlobals extends Application {
 
     public static Context getContext() {
         return sContext;
+    }
+
+    public static void setResponseCode(int code) {
+        responseCode = code;
+    }
+
+    public static int getResponseCode() {
+        return responseCode;
     }
 }

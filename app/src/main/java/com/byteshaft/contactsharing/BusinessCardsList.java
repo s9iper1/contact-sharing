@@ -67,15 +67,24 @@ public class BusinessCardsList extends Fragment {
                 alertDialog.show();
         }
         nameData = cardsDatabase.getNamesOfSavedCards();
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         return mBaseView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRecyclerView.setAdapter(null);
+        idsList = new ArrayList<>();
+        nameData = new ArrayList<>();
+        idsList = cardsDatabase.getIdOfSavedCards();
+        nameData = cardsDatabase.getNamesOfSavedCards();
+        mCardsAdapter = new CardsAdapter(idsList, nameData);
+        mRecyclerView.setAdapter(mCardsAdapter);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mCardsAdapter = new CardsAdapter(idsList, nameData);
-        mRecyclerView.setAdapter(mCardsAdapter);
         mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, nameData,
                 getActivity()
                 .getApplicationContext(), new OnItemClickListener() {
@@ -88,6 +97,41 @@ public class BusinessCardsList extends Fragment {
                 intent.putExtra(AppGlobals.CURRENT_COLOR, color);
                 startActivity(intent);
             }
+
+            @Override
+            public void onItemLongClick(final Integer position) {
+                System.out.println("2nd Long click ");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setMessage("Do you want to delete this card?");
+                alertDialogBuilder.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                cardsDatabase.deleteEntry(position);
+                                mRecyclerView.setAdapter(null);
+                                idsList = new ArrayList<>();
+                                nameData = new ArrayList<>();
+                                idsList = cardsDatabase.getIdOfSavedCards();
+                                nameData = cardsDatabase.getNamesOfSavedCards();
+                                mCardsAdapter = new CardsAdapter(idsList, nameData);
+                                mRecyclerView.setAdapter(mCardsAdapter);
+
+                            }
+                        });
+
+                alertDialogBuilder.setNegativeButton("cancel",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
         }));
     }
 
@@ -99,9 +143,9 @@ public class BusinessCardsList extends Fragment {
         private GestureDetector mGestureDetector;
         private ArrayList<HashMap<Integer, String>> nameData;
 
-        public CardsAdapter(ArrayList<Integer> cardList, ArrayList<HashMap<Integer, String>> nameData,
+        public CardsAdapter(final ArrayList<Integer> cardList, ArrayList<HashMap<Integer, String>> nameData,
                             Context context,
-                             OnItemClickListener listener) {
+                            final OnItemClickListener listener) {
             mListener = listener;
             this.cardList = cardList;
             this.nameData = nameData;
@@ -110,6 +154,16 @@ public class BusinessCardsList extends Fragment {
                         @Override
                         public boolean onSingleTapUp(MotionEvent e) {
                             return true;
+                        }
+
+                        @Override
+                        public void onLongPress(MotionEvent e) {
+                            super.onLongPress(e);
+                            System.out.println("Long press detected");
+                            View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+                            if (childView != null && mListener != null) {
+                                mListener.onItemLongClick(cardList.get(mRecyclerView.getChildPosition(childView)));
+                            }
                         }
                     });
         }
@@ -191,5 +245,6 @@ public class BusinessCardsList extends Fragment {
 
     public interface OnItemClickListener {
         void onItem(Integer item, String color);
+        void onItemLongClick(Integer position);
     }
 }

@@ -2,7 +2,10 @@ package com.byteshaft.contactsharing;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -41,22 +44,13 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     private ImageButton shareButton;
     private RelativeLayout mainLayout;
     private String color;
+    private Uri imgUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_business_card);
-        cardsDatabase = new CardsDatabase(getApplicationContext());
-        mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
-        cardId = getIntent().getIntExtra(AppGlobals.CARD_ID, 0);
-        color = getIntent().getStringExtra(AppGlobals.CURRENT_COLOR);
-        if (cardId == 0) {
-            finish();
-        } else {
-            Log.i("TAG", "" +cardsDatabase.getSingleBusinessCard(cardId));
-            carddata = cardsDatabase.getSingleBusinessCard(cardId);
-        }
-        mainLayout.setBackgroundColor(Color.parseColor(color));
+
         personName = (TextView) findViewById(R.id.tv_name);
         jobTitle = (TextView) findViewById(R.id.job_title);
         phoneNumber = (TextView) findViewById(R.id.phone_number);
@@ -67,26 +61,65 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         frameLayout = (FrameLayout) findViewById(R.id.buttons);
         editButton = (ImageButton) findViewById(R.id.edit_button);
         shareButton = (ImageButton) findViewById(R.id.share_button);
-        cardImage = (ImageView) findViewById(R.id.card_image);
+        cardImage = (ImageView) findViewById(R.id.card_img_view);
+        mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 
         editButton.setOnClickListener(this);
         shareButton.setOnClickListener(this);
+        cardsDatabase = new CardsDatabase(getApplicationContext());
 
-        personName.setText(carddata.get(AppGlobals.NAME));
-        jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
-        phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
-        emailAddress.setText(carddata.get(AppGlobals.EMAIL));
-        address.setText(carddata.get(AppGlobals.ADDRESS));
-        organization.setText(carddata.get(AppGlobals.ORG));
-        jobzyId.setText(carddata.get(AppGlobals.JOBZY_ID));
+        cardId = getIntent().getIntExtra(AppGlobals.CARD_ID, 0);
+        color = getIntent().getStringExtra(AppGlobals.CURRENT_COLOR);
+        mainLayout.setBackgroundColor(Color.parseColor(color));
 
-        address.setTypeface(AppGlobals.regularTypeface);
-        personName.setTypeface(AppGlobals.regularTypeface);
-        jobTitle.setTypeface(AppGlobals.regularTypeface);
-        phoneNumber.setTypeface(AppGlobals.regularTypeface);
-        emailAddress.setTypeface(AppGlobals.regularTypeface);
-        organization.setTypeface(AppGlobals.regularTypeface);
-        jobzyId.setTypeface(AppGlobals.regularTypeface);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (cardId == 0) {
+            finish();
+        } else {
+            Log.i("TAG", "" +cardsDatabase.getSingleBusinessCard(cardId));
+            carddata = cardsDatabase.getSingleBusinessCard(cardId);
+        }
+        if (carddata.get(AppGlobals.IS_IMAGE).equals("0")) {
+            personName.setText(carddata.get(AppGlobals.NAME));
+            jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
+            phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
+            emailAddress.setText(carddata.get(AppGlobals.EMAIL));
+            address.setText(carddata.get(AppGlobals.ADDRESS));
+            organization.setText(carddata.get(AppGlobals.ORG));
+            jobzyId.setText(carddata.get(AppGlobals.JOBZY_ID));
+
+            address.setTypeface(AppGlobals.regularTypeface);
+            personName.setTypeface(AppGlobals.regularTypeface);
+            jobTitle.setTypeface(AppGlobals.regularTypeface);
+            phoneNumber.setTypeface(AppGlobals.regularTypeface);
+            emailAddress.setTypeface(AppGlobals.regularTypeface);
+            organization.setTypeface(AppGlobals.regularTypeface);
+            jobzyId.setTypeface(AppGlobals.regularTypeface);
+
+        } else if (carddata.get(AppGlobals.IS_IMAGE).equals("1")) {
+            mainLayout.setBackgroundColor(Color.TRANSPARENT);
+            editButton.setVisibility(View.GONE);
+            personName.setVisibility(View.GONE);
+            jobTitle.setVisibility(View.GONE);
+            phoneNumber.setVisibility(View.GONE);
+            emailAddress.setVisibility(View.GONE);
+            address.setVisibility(View.GONE);
+            organization.setVisibility(View.GONE);
+            jobzyId.setVisibility(View.GONE);
+            cardImage.setVisibility(View.VISIBLE);
+            imgUri = Uri.parse(carddata.get(AppGlobals.IMG_URI));
+            Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
+            int height = 1024;
+            int width = 640;
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
+            cardImage.setImageBitmap(scaled);
+//            cardImage.setImageURI(imgUri);
+        }
     }
 
     @Override
@@ -113,7 +146,10 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.edit_button:
-
+                Intent editIntent = new Intent(CardDetailsActivity.this, BusinessForm.class);
+                editIntent.putExtra("id", cardId);
+                System.out.println(cardId);
+                startActivity(editIntent);
                 break;
             case R.id.share_button:
                 JSONObject jsonObject = new JSONObject();
