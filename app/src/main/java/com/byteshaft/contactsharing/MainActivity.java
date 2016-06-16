@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+
 import com.byteshaft.contactsharing.utils.BitmapWithCharacter;
 import com.byteshaft.contactsharing.utils.Helpers;
 import com.github.siyamed.shapeimageview.CircularImageView;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity
             loadFragment(new CreateBusinessCard());
 
         } else if (id == R.id.nav_logout) {
+            startActivity(new Intent(getApplicationContext(), LogoutActivity.class));
 
         } else if (id == R.id.nav_bluetooth) {
             startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));

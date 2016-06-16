@@ -61,50 +61,50 @@ public class WebServiceHelper {
         return object.toString();
     }
 
-    public static Integer businessCardData(String token,
-                                       String address,
-                                       String contactNumber,
-                                       String email,
-                                       String image,
-                                       String jobTitle,
-                                       String name,
-                                       String organization) throws IOException, JSONException {
-        String data = getBusinessCardData(token, address, contactNumber, email,
-                image, jobTitle, name, organization);
-        System.out.println(data);
-        String url = "http://128.199.195.245:8000/api/create";
-        HttpURLConnection connection = openConnectionForUrl(url, "POST");
-        sendRequestData(connection, data);
-        AppGlobals.setResponseCode(connection.getResponseCode());
-        System.out.println(connection.getResponseCode());
-        return connection.getResponseCode();
-    }
-
-    public static String getBusinessCardData(String token,
-                                             String address,
-                                             String contactNumber,
-                                             String email,
-                                             String image,
-                                             String jobTitle,
-                                             String name,
-                                             String organization) {
-        JSONObject object = new JSONObject();
-
-        try {
-            object.put("token", token);
-            object.put("address", address);
-            object.put("contact_number", contactNumber);
-            object.put("email", email);
-            object.put("image", image);
-            object.put("job_title", jobTitle);
-            object.put("name", name);
-            object.put("organization", organization);
-        } catch (JSONException var8) {
-            var8.printStackTrace();
-        }
-
-        return object.toString();
-    }
+//    public static Integer businessCardData(String token,
+//                                       String address,
+//                                       String contactNumber,
+//                                       String email,
+//                                       String image,
+//                                       String jobTitle,
+//                                       String name,
+//                                       String organization) throws IOException, JSONException {
+//        String data = getBusinessCardData(token, address, contactNumber, email,
+//                image, jobTitle, name, organization);
+//        System.out.println(data);
+//        String url = "http://128.199.195.245:8000/api/create";
+//        HttpURLConnection connection = openConnectionForUrl(url, "POST");
+//        sendRequestData(connection, data);
+//        AppGlobals.setResponseCode(connection.getResponseCode());
+//        System.out.println(connection.getResponseCode());
+//        return connection.getResponseCode();
+//    }
+//
+//    public static String getBusinessCardData(String token,
+//                                             String address,
+//                                             String contactNumber,
+//                                             String email,
+//                                             String image,
+//                                             String jobTitle,
+//                                             String name,
+//                                             String organization) {
+//        JSONObject object = new JSONObject();
+//
+//        try {
+//            object.put("token", token);
+//            object.put("address", address);
+//            object.put("contact_number", contactNumber);
+//            object.put("email", email);
+//            object.put("image", image);
+//            object.put("job_title", jobTitle);
+//            object.put("name", name);
+//            object.put("organization", organization);
+//        } catch (JSONException var8) {
+//            var8.printStackTrace();
+//        }
+//
+//        return object.toString();
+//    }
 
     public static String userLogin(String email, String password) throws IOException, JSONException {
         String data = getLoginData(email, password);

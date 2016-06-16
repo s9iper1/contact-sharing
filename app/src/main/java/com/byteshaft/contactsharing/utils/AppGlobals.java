@@ -37,6 +37,9 @@ public class AppGlobals extends Application {
     public static final String CURRENT_COLOR = "current_color";
     public static int responseCode = 0;
 
+    public static int userExistResponse;
+    public static int postResponse;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -55,5 +58,23 @@ public class AppGlobals extends Application {
 
     public static int getResponseCode() {
         return responseCode;
+    }
+
+    // Globally set the value for userExistResponse it takes integer value as parameter
+    public static void setUserExistResponse(int value) {
+        userExistResponse = value;
+    }
+
+    // Get the value of UserExist where needed it returns integer value
+    public static int getUserExistResponse() {
+        return userExistResponse;
+    }
+
+    public static void setPostResponse(int value) {
+        postResponse = value;
+    }
+
+    public static int getPostResponse() {
+        return postResponse;
     }
 }

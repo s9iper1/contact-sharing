@@ -138,4 +138,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Helpers.isUserLoggedIn()) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Helpers.isUserLoggedIn()) {
+            finish();
+        }
+    }
 }
