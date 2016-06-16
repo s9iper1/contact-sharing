@@ -12,14 +12,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
-import com.byteshaft.contactsharing.utils.Helpers;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static MainActivity sInstance;
+
+    private ImageView navImageView;
+    private TextView navUserName;
+    private TextView navEmail;
 
 
     public static MainActivity getInstance() {
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         sInstance = this;
         loadFragment(new BusinessCardsList());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -43,6 +49,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navEmail = (TextView) findViewById(R.id.nav_email);
+        navUserName = (TextView) findViewById(R.id.nav_username);
+        navImageView = (ImageView) findViewById(R.id.nav_image);
     }
 
     @Override
