@@ -1,6 +1,7 @@
 package com.byteshaft.contactsharing;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,17 +13,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+
+import com.byteshaft.contactsharing.utils.BitmapWithCharacter;
 import com.byteshaft.contactsharing.utils.Helpers;
+import com.github.siyamed.shapeimageview.CircularImageView;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static MainActivity sInstance;
-
-
+    private View navHeader;
+    private TextView navUserName;
+    CircularImageView circularImageView;
+    private TextView navEmail;
     public static MainActivity getInstance() {
         return sInstance;
     }
@@ -44,6 +54,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navHeader = navigationView.getHeaderView(0);
     }
 
     @Override
@@ -53,6 +64,44 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        navUserName = (TextView) navHeader.findViewById(R.id.nav_username);
+        circularImageView = (CircularImageView) navHeader.findViewById(R.id.nav_image);
+        navEmail = (TextView) navHeader.findViewById(R.id.nav_email);
+
+        if (!Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME).equals("")) {
+            if (navUserName != null) {
+                navUserName.setText(Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME));
+            }
+        } else {
+            navUserName.setText("Username");
+        }
+        if (!Helpers.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL).equals("")) {
+            if (navEmail != null) {
+                navEmail.setText(Helpers.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+            }
+        } else {
+            navEmail.setText("email@domain.com");
+        }
+
+        if (!Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME).equals("")) {
+            if (navUserName != null) {
+                String letter = Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME);
+                System.out.println(letter.charAt(0));
+                int[] array = getResources().getIntArray(R.array.letter_tile_colors);
+                final BitmapWithCharacter tileProvider = new BitmapWithCharacter();
+                final Bitmap letterTile = tileProvider.getLetterTile(Helpers.
+                        getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME),
+                        Integer.parseInt(String.valueOf(array[new Random().nextInt(array.length)])), 100, 100);
+                circularImageView.setImageBitmap(letterTile);
+            }
         }
     }
 

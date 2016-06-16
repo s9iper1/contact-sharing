@@ -118,7 +118,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         input.requestFocus();
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        input.setHint("type here ");
+        input.setHint("Type here ");
         alertDialog.setView(input);
 
         // Setting Positive "Yes" Button
@@ -128,11 +128,18 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
 
                     }
                 });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
 
         final AlertDialog dialog = alertDialog.create();
-        dialog.setCancelable(false);
         dialog.show();
         // Showing Alert Message
+        dialog.setCancelable(false);
         dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +153,13 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                     dialog.dismiss();
 
                 }
+            }
+        });
+
+        dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
     }

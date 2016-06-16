@@ -30,7 +30,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
 
     private int cardId;
     private CardsDatabase cardsDatabase;
-    private HashMap<String, String> carddata;
+    private HashMap<String, String> cardData;
     private TextView personName;
     private TextView jobTitle;
     private TextView phoneNumber;
@@ -61,7 +61,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         frameLayout = (FrameLayout) findViewById(R.id.buttons);
         editButton = (ImageButton) findViewById(R.id.edit_button);
         shareButton = (ImageButton) findViewById(R.id.share_button);
-        cardImage = (ImageView) findViewById(R.id.card_img_view);
+        cardImage = (ImageView) findViewById(R.id.card_image);
         mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 
         editButton.setOnClickListener(this);
@@ -71,7 +71,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
         cardId = getIntent().getIntExtra(AppGlobals.CARD_ID, 0);
         color = getIntent().getStringExtra(AppGlobals.CURRENT_COLOR);
         mainLayout.setBackgroundColor(Color.parseColor(color));
-
+        cardImage.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
     @Override
@@ -82,16 +82,16 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
             finish();
         } else {
             Log.i("TAG", "" +cardsDatabase.getSingleBusinessCard(cardId));
-            carddata = cardsDatabase.getSingleBusinessCard(cardId);
+            cardData = cardsDatabase.getSingleBusinessCard(cardId);
         }
-        if (carddata.get(AppGlobals.IS_IMAGE).equals("0")) {
-            personName.setText(carddata.get(AppGlobals.NAME));
-            jobTitle.setText(carddata.get(AppGlobals.JOB_TITLE));
-            phoneNumber.setText(carddata.get(AppGlobals.NUMBER));
-            emailAddress.setText(carddata.get(AppGlobals.EMAIL));
-            address.setText(carddata.get(AppGlobals.ADDRESS));
-            organization.setText(carddata.get(AppGlobals.ORG));
-            jobzyId.setText(carddata.get(AppGlobals.JOBZY_ID));
+        if (cardData.get(AppGlobals.IS_IMAGE).equals("0")) {
+            personName.setText(cardData.get(AppGlobals.NAME));
+            jobTitle.setText(cardData.get(AppGlobals.JOB_TITLE));
+            phoneNumber.setText(cardData.get(AppGlobals.NUMBER));
+            emailAddress.setText(cardData.get(AppGlobals.EMAIL));
+            address.setText(cardData.get(AppGlobals.ADDRESS));
+            organization.setText(cardData.get(AppGlobals.ORG));
+            jobzyId.setText(cardData.get(AppGlobals.JOBZY_ID));
 
             address.setTypeface(AppGlobals.regularTypeface);
             personName.setTypeface(AppGlobals.regularTypeface);
@@ -101,7 +101,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
             organization.setTypeface(AppGlobals.regularTypeface);
             jobzyId.setTypeface(AppGlobals.regularTypeface);
 
-        } else if (carddata.get(AppGlobals.IS_IMAGE).equals("1")) {
+        } else if (cardData.get(AppGlobals.IS_IMAGE).equals("1")) {
             mainLayout.setBackgroundColor(Color.TRANSPARENT);
             editButton.setVisibility(View.GONE);
             personName.setVisibility(View.GONE);
@@ -112,10 +112,10 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
             organization.setVisibility(View.GONE);
             jobzyId.setVisibility(View.GONE);
             cardImage.setVisibility(View.VISIBLE);
-            imgUri = Uri.parse(carddata.get(AppGlobals.IMG_URI));
+            imgUri = Uri.parse(cardData.get(AppGlobals.IMG_URI));
             Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
-            int height = 1024;
-            int width = 640;
+            int height = 1920;
+            int width = 1080;
             Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
             cardImage.setImageBitmap(scaled);
 //            cardImage.setImageURI(imgUri);
