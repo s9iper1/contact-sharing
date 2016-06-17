@@ -1,6 +1,9 @@
 package com.byteshaft.contactsharing;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.utils.AppGlobals;
@@ -142,7 +146,11 @@ public class MainActivity extends AppCompatActivity
             loadFragment(new CreateBusinessCard());
 
         } else if (id == R.id.nav_logout) {
-            startActivity(new Intent(getApplicationContext(), LogoutActivity.class));
+            if (Helpers.isUserLoggedIn()) {
+                showLogoutDialog();
+            } else {
+                Toast.makeText(getApplicationContext(), "You are not loggedIn", Toast.LENGTH_SHORT).show();
+            }
 
         } else if (id == R.id.nav_bluetooth) {
             startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
@@ -160,5 +168,43 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.commit();
+    }
+
+    public void showLogoutDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                MainActivity.this);
+        alertDialogBuilder.setTitle("Logout");
+        alertDialogBuilder
+                .setMessage("Are you sure?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        SharedPreferences sharedpreferences = Helpers.getPreferenceManager();
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.clear();
+                        editor.commit();
+                        closeApplication();
+                        if (!Helpers.isUserLoggedIn()) {
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            Helpers.saveUserLogin(false);
+                        }
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public void closeApplication() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        startActivity(startMain);
+        finish();
     }
 }
