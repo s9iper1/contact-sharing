@@ -3,7 +3,9 @@
     <color name="colorPrimary">#03A9F4</color>
     <color name="colorPrimaryDark">#0288D1</color>
     <color name="colorAccent">#03A9F4</color>
-    <color name="tale_light">#B2DFDB</color>
+
+    <color name="button_pressed">#0288D1</color>
+    <color name="button_normal">#03A9F4</color>
 
     <!--//color for business card Text View-->
     <color name="lightColor">#ffffff</color>
