@@ -12,7 +12,7 @@ import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
 
 public class BusinessForm extends AppCompatActivity {
-    
+
     private EditText mName;
     private EditText mJobTitle;
     private EditText mContactNumber;
@@ -52,7 +52,7 @@ public class BusinessForm extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-               String token = Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN);
+                String token = Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN);
                 System.out.println(token);
                 if (id == defaultValue) {
                     if (validateEditTexts()) {
@@ -62,8 +62,8 @@ public class BusinessForm extends AppCompatActivity {
                         String address = mAddress.getText().toString();
                         String jobzyId = mJobzyId.getText().toString();
                         contactNumber = mContactNumber.getText().toString();
-                        cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-                                organization, jobzyId, "", 0);
+//                        cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
+//                                organization, jobzyId, "", 0);
 //                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
 //                                BusinessForm.this,
 //                                token,
@@ -87,7 +87,7 @@ public class BusinessForm extends AppCompatActivity {
                     String address = mAddress.getText().toString();
                     String jobzyId = mJobzyId.getText().toString();
                     cardsDatabase.updateEntries(id, name, address, jobTitle,
-                            contactNumber, emailAddress, organization, jobzyId );
+                            contactNumber, emailAddress, organization, jobzyId);
                     finish();
                 }
             }
