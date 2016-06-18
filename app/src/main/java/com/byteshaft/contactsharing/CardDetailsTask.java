@@ -22,7 +22,7 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
         private String mAddress;
         private String mContactNumber;
         private String mEmail;
-        private Integer mImage;
+        private String mImage;
         private String mJobTitle;
         private String mName;
         private String mOrganization;
@@ -30,7 +30,7 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
         private Activity activity;
 
         public CardDetailsTask(Activity activity, String token, String address, String contactNumber, String email,
-                               Integer hasimage, String jobTitle, String name, String organization,
+                               String hasimage, String jobTitle, String name, String organization,
                                String filepath) {
 
             mToken = token;
@@ -61,14 +61,13 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
                 try {
                     multiPartUtility = new MultiPartUtility(mToken, mAddress, mContactNumber, mEmail,
                             mImage, mJobTitle, mName, mOrganization);
-                    multiPartUtility.addFormField("token", params[0]);
                     multiPartUtility.addFormField("address", params[1]);
                     multiPartUtility.addFormField("contact_number", params[2]);
                     multiPartUtility.addFormField("email", params[3]);
                     multiPartUtility.addFormField("job_title", params[5]);
                     multiPartUtility.addFormField("name", params[6]);
                     multiPartUtility.addFormField("organization", params[7]);
-                    multiPartUtility.addFilePart("image", new File(mFilepath));
+                    multiPartUtility.addFilePart("is_image", new File(mFilepath));
 
                     final byte[] bytes = multiPartUtility.finishFilesUpload();
                     try {

@@ -61,7 +61,7 @@ public class MultiPartUtility {
                                        String address,
                                        String contactNumber,
                                        String email,
-                                       Integer image,
+                                       String image,
                                        String jobTitle,
                                        String name,
                                        String organization)

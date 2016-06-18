@@ -62,15 +62,15 @@ public class BusinessForm extends AppCompatActivity {
                         String address = mAddress.getText().toString();
                         String jobzyId = mJobzyId.getText().toString();
                         contactNumber = mContactNumber.getText().toString();
-//                        cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-//                                organization, jobzyId, "", 0);
+                        cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
+                                organization, jobzyId, "", 0);
 //                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
 //                                BusinessForm.this,
 //                                token,
 //                                address,
 //                                contactNumber,
 //                                emailAddress,
-//                                0,
+//                                "0",
 //                                jobTitle,
 //                                name,
 //                                organization,
