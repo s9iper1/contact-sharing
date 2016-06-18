@@ -29,4 +29,8 @@
     <string name="secure_connect">Connect a device - Secure</string>
     <string name="insecure_connect">Connect a device - Insecure</string>
     <string name="discoverable">Make discoverable</string>
+
+
+    <string name="sign_up_text"><u>Sign Up</u></string>
+    <string name="forgot_password"><u>Forgot Password?</u> </string>
 </resources>

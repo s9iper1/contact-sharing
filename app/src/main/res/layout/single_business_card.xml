@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Job Title"
-            android:textColor="@color/lightColor"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="25sp"
             android:layout_below="@+id/tv_name"
@@ -63,7 +63,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="+923006860746"
                 android:textSize="20sp"
-                android:textColor="@color/lightColor" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/email_address"
@@ -72,7 +72,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="shahidghafoor@gmail.com"
                 android:textSize="20sp"
-                android:textColor="@color/lightColor"/>
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/location"
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:text="Khan center, Abdali Road, Multan"
                 android:textSize="20sp"
-                android:textColor="@color/lightColor"/>
+                android:textColor="@color/white"/>
         </LinearLayout>
 
         <TextView
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:text="Organization"
             android:textSize="25sp"
-            android:textColor="@color/lightColor"
+            android:textColor="@color/white"
             android:layout_alignTop="@+id/linearLayout"
             android:layout_alignRight="@+id/tv_name"
             android:layout_alignEnd="@+id/tv_name"
@@ -104,7 +104,7 @@
             android:textStyle="italic"
             android:text="Jobzy ID"
             android:textSize="15sp"
-            android:textColor="@color/lightColor"
+            android:textColor="@color/white"
             android:layout_below="@+id/tv_organization"
             android:layout_alignRight="@+id/tv_organization"
             android:layout_alignEnd="@+id/tv_organization" />
