@@ -8,7 +8,9 @@
 
     <solid android:color="@color/button_pressed"/>
 
-    <padding android:top="1dp"
+    <padding
+        android:bottom="1dp"
+        android:top="1dp"
         android:right="1dp"
         android:left="1dp"/>
     <corners
