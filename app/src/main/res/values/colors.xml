@@ -8,5 +8,5 @@
     <color name="button_normal">#03A9F4</color>
 
     <!--//color for business card Text View-->
-    <color name="lightColor">#ffffff</color>
+    <color name="white">#ffffff</color>
 </resources>
