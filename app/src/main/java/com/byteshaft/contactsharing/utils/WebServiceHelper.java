@@ -176,6 +176,18 @@ public class WebServiceHelper {
         return object.toString();
     }
 
+    public static JSONObject userData() throws IOException, JSONException {
+        String urlMe = "http://128.199.195.245:8000/api/me";
+        URL url = new URL(urlMe);
+        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("charset", "utf-8");
+        connection.setRequestProperty("Authorization", "Token " + Helpers.getStringFromSharedPreferences("token"));
+        AppGlobals.setResponseCode(connection.getResponseCode());
+        return readResponse(connection);
+    }
+
     private static void sendRequestData(HttpURLConnection connection, String body) throws IOException {
         byte[] outputInBytes = body.getBytes("UTF-8");
         OutputStream os = connection.getOutputStream();
