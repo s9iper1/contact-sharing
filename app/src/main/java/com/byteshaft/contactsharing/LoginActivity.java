@@ -133,6 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Helpers.saveDataToSharedPreferences(AppGlobals.KEY_USER_TOKEN, response);
                 Log.i("Token", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
                 Helpers.saveUserLogin(true);
+                finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } else {
                 Toast.makeText(AppGlobals.getContext(), "Login Failed! Invalid Email or Password",
@@ -177,21 +178,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (Helpers.isUserLoggedIn()) {
-            finish();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (Helpers.isUserLoggedIn()) {
-            finish();
-        }
     }
 }
