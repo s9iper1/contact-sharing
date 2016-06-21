@@ -23,7 +23,7 @@
             android:layout_height="wrap_content" />
         <TextView
             android:gravity="end"
-            android:text="Test"
+            android:text="Not Connected"
             android:textSize="18sp"
             android:textStyle="italic"
             android:id="@+id/current_state"

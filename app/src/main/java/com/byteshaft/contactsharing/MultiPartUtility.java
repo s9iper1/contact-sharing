@@ -1,7 +1,5 @@
 package com.byteshaft.contactsharing;
 
-import android.util.Base64;
-
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
 

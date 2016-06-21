@@ -136,28 +136,52 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.nav_cards:
+                loadFragment(new BusinessCardsList());
+                break;
+            case R.id.nav_create_card:
+                loadFragment(new CreateBusinessCard());
+                break;
+            case R.id.nav_logout:
+                if (Helpers.isUserLoggedIn()) {
+                    showLogoutDialog();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You are not loggedIn", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.nav_bluetooth:
+                startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+                break;
+            case R.id.nav_login:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
+            default:
+                loadFragment(new CreateBusinessCard());
+                break;
 
-        if (id == R.id.nav_cards) {
-            // Handle the camera action
-            loadFragment(new BusinessCardsList());
-        } else if (id == R.id.nav_create_card) {
-
-            loadFragment(new CreateBusinessCard());
-
-        } else if (id == R.id.nav_logout) {
-            if (Helpers.isUserLoggedIn()) {
-                showLogoutDialog();
-            } else {
-                Toast.makeText(getApplicationContext(), "You are not loggedIn", Toast.LENGTH_SHORT).show();
-            }
-
-        } else if (id == R.id.nav_bluetooth) {
-            startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
-        } else if (id == R.id.nav_login) {
-            System.out.println("working");
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+
+//        if (id == R.id.nav_cards) {
+//            // Handle the camera action
+//            loadFragment(new BusinessCardsList());
+//        } else if (id == R.id.nav_create_card) {
+//
+//            loadFragment(new CreateBusinessCard());
+//
+//        } else if (id == R.id.nav_logout) {
+//            if (Helpers.isUserLoggedIn()) {
+//                showLogoutDialog();
+//            } else {
+//                Toast.makeText(getApplicationContext(), "You are not loggedIn", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        } else if (id == R.id.nav_bluetooth) {
+//            startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+//        } else if (id == R.id.nav_login) {
+//            System.out.println("working");
+//            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -15,6 +15,7 @@ public class DatabaseConstants {
     public static final String ID_COLUMN = "ID";
     public static final String IMG_COLUMN = "image_column";
     public static final String IS_IMAGE_CARD_COLUMN = "is_img_card";
+    public static final String SELECTED_CARD_DESIGN = "selected_card_design";
 
     private static final String OPENING_BRACE = "(";
     private static final String CLOSING_BRACE = ")";
@@ -31,6 +32,7 @@ public class DatabaseConstants {
             + EMAIL_ADDRESS_COLUMN + " TEXT,"
             + ORGANIZATION_COLUMN + " TEXT,"
             + IMG_COLUMN + " TEXT,"
-            + IS_IMAGE_CARD_COLUMN + " INTEGER"
+            + IS_IMAGE_CARD_COLUMN + " INTEGER,"
+            + SELECTED_CARD_DESIGN + " INTEGER"
             + CLOSING_BRACE;
 }

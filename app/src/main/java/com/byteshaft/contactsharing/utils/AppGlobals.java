@@ -36,6 +36,8 @@ public class AppGlobals extends Application {
     // -->
     public static final String CURRENT_COLOR = "current_color";
     public static int responseCode = 0;
+    public static final String IS_IMAGE_SHARE = "is_image_share";
+    public static final String IMAGE = "image";
 
     public static int userExistResponse;
     public static int postResponse;
