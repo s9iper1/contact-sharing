@@ -50,7 +50,7 @@ public class CardDetailsActivity extends Activity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.single_business_card);
+        setContentView(R.layout.card_one);
         personName = (TextView) findViewById(R.id.tv_name);
         jobTitle = (TextView) findViewById(R.id.job_title);
         phoneNumber = (TextView) findViewById(R.id.phone_number);
