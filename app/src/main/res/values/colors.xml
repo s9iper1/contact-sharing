@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#009688</color>
-    <color name="tale_light">#B2DFDB</color>
+    <color name="colorPrimary">#2C4477</color>
+    <color name="colorPrimaryDark">#23365f</color>
+    <color name="colorAccent">#808ead</color>
+
+    <color name="button_pressed">#0288D1</color>
+    <color name="button_normal">#03A9F4</color>
 
     <!--//color for business card Text View-->
-    <color name="lightColor">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="header_color">#566992</color>
 </resources>

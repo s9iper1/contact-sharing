@@ -9,9 +9,10 @@ import android.widget.EditText;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+import com.byteshaft.contactsharing.utils.Helpers;
 
-public class BusinessForm extends AppCompatActivity {
-    
+public class BusinessForm extends AppCompatActivity implements View.OnClickListener {
+
     private EditText mName;
     private EditText mJobTitle;
     private EditText mContactNumber;
@@ -21,12 +22,12 @@ public class BusinessForm extends AppCompatActivity {
     private EditText mJobzyId;
     private Button mSaveButton;
     private CardsDatabase cardsDatabase;
-
     private String name;
     private String contactNumber;
-
     private int id;
     private int defaultValue = 0;
+    private Button selectImage;
+    private int REQUEST_CODE_FOR_DESIGN_ACTIVITY = 1;
 
 
     @Override
@@ -42,6 +43,8 @@ public class BusinessForm extends AppCompatActivity {
         mAddress = (EditText) findViewById(R.id.et_address);
         mJobzyId = (EditText) findViewById(R.id.jobzi_id);
         mSaveButton = (Button) findViewById(R.id.save_button);
+        selectImage = (Button) findViewById(R.id.select_design);
+        selectImage.setOnClickListener(this);
         Intent idIntent = getIntent();
         id = idIntent.getIntExtra("id", defaultValue);
         if (id != defaultValue) {
@@ -51,6 +54,8 @@ public class BusinessForm extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                String token = Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN);
+                System.out.println(token);
                 if (id == defaultValue) {
                     if (validateEditTexts()) {
                         String jobTitle = mJobTitle.getText().toString();
@@ -61,6 +66,18 @@ public class BusinessForm extends AppCompatActivity {
                         contactNumber = mContactNumber.getText().toString();
                         cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
                                 organization, jobzyId, "", 0);
+//                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
+//                                BusinessForm.this,
+//                                token,
+//                                address,
+//                                contactNumber,
+//                                emailAddress,
+//                                "0",
+//                                jobTitle,
+//                                name,
+//                                organization,
+//                                "");
+//                        cardDetailsTask.execute();
                         AppGlobals.sNewEntryCreated = true;
                         finish();
                     }
@@ -72,7 +89,7 @@ public class BusinessForm extends AppCompatActivity {
                     String address = mAddress.getText().toString();
                     String jobzyId = mJobzyId.getText().toString();
                     cardsDatabase.updateEntries(id, name, address, jobTitle,
-                            contactNumber, emailAddress, organization, jobzyId );
+                            contactNumber, emailAddress, organization, jobzyId);
                     finish();
                 }
             }
@@ -90,5 +107,15 @@ public class BusinessForm extends AppCompatActivity {
             mName.setError(null);
         }
         return valid;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.select_design:
+                startActivityForResult(new Intent(getApplicationContext(),
+                        SelectDesignActivity.class), REQUEST_CODE_FOR_DESIGN_ACTIVITY);
+                break;
+        }
     }
 }

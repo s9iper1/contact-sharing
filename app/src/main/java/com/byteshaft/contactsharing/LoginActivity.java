@@ -16,6 +16,7 @@ import com.byteshaft.contactsharing.utils.Helpers;
 import com.byteshaft.contactsharing.utils.WebServiceHelper;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -128,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Helpers.alertDialog(LoginActivity.this, "Connection error",
                         "Check your internet connection");
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                new GetUserDataTask().execute();
                 Helpers.saveDataToSharedPreferences(AppGlobals.KEY_USER_TOKEN, response);
                 Log.i("Token", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
                 Helpers.saveUserLogin(true);
@@ -136,6 +138,60 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(AppGlobals.getContext(), "Login Failed! Invalid Email or Password",
                         Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    class GetUserDataTask extends AsyncTask<Void, String, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            JSONObject jsonObject;
+
+            try {
+                jsonObject = WebServiceHelper.userData();
+                if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    System.out.println(jsonObject + "userData");
+                    String full_name = jsonObject.getString(AppGlobals.KEY_FULLNAME);
+                    String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
+
+                    //saving values
+                    Helpers.saveDataToSharedPreferences(AppGlobals.KEY_FULLNAME, full_name);
+                    Log.i("First name", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME));
+                    Helpers.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
+                }
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Helpers.isUserLoggedIn()) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Helpers.isUserLoggedIn()) {
+            finish();
         }
     }
 }

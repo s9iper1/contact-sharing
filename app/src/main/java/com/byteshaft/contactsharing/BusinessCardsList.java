@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +40,8 @@ public class BusinessCardsList extends Fragment {
     private CustomView mViewHolder;
     private CardsDatabase cardsDatabase;
     private HashMap<Integer, String> colorHashMap;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private boolean gridView = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,9 +50,11 @@ public class BusinessCardsList extends Fragment {
         cardsDatabase = new CardsDatabase(getActivity().getApplicationContext());
         colorHashMap = new HashMap<>();
         mBaseView.setTag("RecyclerViewFragment");
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setSpanCount(2);
+        gridView = true;
         mRecyclerView = (RecyclerView) mBaseView.findViewById(R.id.card_list);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
@@ -83,8 +90,32 @@ public class BusinessCardsList extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.grid_normal_view, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_change_view:
+                if (gridView) {
+                    item.setIcon(getResources().getDrawable(R.drawable.grid));
+                    staggeredGridLayoutManager.setSpanCount(1);
+                    gridView = false;
+                } else {
+                    item.setIcon(getResources().getDrawable(R.drawable.normal));
+                    staggeredGridLayoutManager.setSpanCount(2);
+                    gridView = true;
+                }
+                return true;
+        }
+        return false;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, nameData,
                 getActivity()
                 .getApplicationContext(), new OnItemClickListener() {

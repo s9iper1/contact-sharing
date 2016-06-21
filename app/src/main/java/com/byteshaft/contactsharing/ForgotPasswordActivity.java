@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,9 +19,6 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-/**
- * Created by husnain on 6/14/16.
- */
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout mNewPasswordLayout;
@@ -43,7 +39,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.delegate_forgot_password);
+        setContentView(R.layout.forgot_password);
         mNewPasswordLayout = (LinearLayout) findViewById(R.id.new_password_layout);
         mRecoverButton = (Button) findViewById(R.id.recover);
         mSubmitButton = (Button) findViewById(R.id.btn_submit);

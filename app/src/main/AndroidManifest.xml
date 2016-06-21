@@ -42,6 +42,7 @@
             android:name=".CardDetailsActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+        <activity android:name=".SelectDesignActivity"/>
     </application>
 
 </manifest>

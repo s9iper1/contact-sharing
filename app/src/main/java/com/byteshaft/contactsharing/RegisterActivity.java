@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
 import com.byteshaft.contactsharing.utils.WebServiceHelper;
+import com.github.siyamed.shapeimageview.CircularImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String mFullNameString;
     private String mEmail;
     private String mPasswordEntry;
+    private CircularImageView circularImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +106,12 @@ public class RegisterActivity extends AppCompatActivity {
                     jsonObject = WebServiceHelper.registerUser(mFullNameString, mEmail,mPasswordEntry);
                     if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
                         System.out.println(jsonObject + "working");
-                        String first_name = jsonObject.getString(AppGlobals.KEY_FULLNAME);
+                        String fullName = jsonObject.getString(AppGlobals.KEY_FULLNAME);
                         String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
 
 
                         //saving values
-                        Helpers.saveDataToSharedPreferences(AppGlobals.KEY_FULLNAME, first_name);
+                        Helpers.saveDataToSharedPreferences(AppGlobals.KEY_FULLNAME, fullName);
                         Log.i("Full name", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_FULLNAME));
                         Helpers.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
                         Helpers.saveUserLogin(true);
@@ -139,6 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
                 Toast.makeText(AppGlobals.getContext(), "Registration failed. Email already in use",
                         Toast.LENGTH_SHORT).show();

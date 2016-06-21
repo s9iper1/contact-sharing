@@ -20,6 +20,7 @@ public class AppGlobals extends Application {
     public static Typeface regularTypeface;
     public static boolean sNewEntryCreated = false;
     public static String CARD_ID = "card_id";
+
     // bluetooth
     public static final String NAME = "name";
     public static final String ID = "id";
@@ -37,6 +38,9 @@ public class AppGlobals extends Application {
     public static int responseCode = 0;
     public static final String IS_IMAGE_SHARE = "is_image_share";
     public static final String IMAGE = "image";
+
+    public static int userExistResponse;
+    public static int postResponse;
 
     @Override
     public void onCreate() {
@@ -56,5 +60,23 @@ public class AppGlobals extends Application {
 
     public static int getResponseCode() {
         return responseCode;
+    }
+
+    // Globally set the value for userExistResponse it takes integer value as parameter
+    public static void setUserExistResponse(int value) {
+        userExistResponse = value;
+    }
+
+    // Get the value of UserExist where needed it returns integer value
+    public static int getUserExistResponse() {
+        return userExistResponse;
+    }
+
+    public static void setPostResponse(int value) {
+        postResponse = value;
+    }
+
+    public static int getPostResponse() {
+        return postResponse;
     }
 }
