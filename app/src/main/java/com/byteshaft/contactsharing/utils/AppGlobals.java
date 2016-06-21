@@ -42,6 +42,8 @@ public class AppGlobals extends Application {
     public static int userExistResponse;
     public static int postResponse;
 
+    public static boolean isFirstTime = false;
+
     @Override
     public void onCreate() {
         super.onCreate();

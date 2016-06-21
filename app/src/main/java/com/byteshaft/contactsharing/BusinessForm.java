@@ -54,8 +54,6 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onClick(View view) {
-                String token = Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN);
-                System.out.println(token);
                 if (id == defaultValue) {
                     if (validateEditTexts()) {
                         String jobTitle = mJobTitle.getText().toString();
@@ -66,18 +64,17 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
                         contactNumber = mContactNumber.getText().toString();
                         cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
                                 organization, jobzyId, "", 0);
-//                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
-//                                BusinessForm.this,
-//                                token,
-//                                address,
-//                                contactNumber,
-//                                emailAddress,
-//                                "0",
-//                                jobTitle,
-//                                name,
-//                                organization,
-//                                "");
-//                        cardDetailsTask.execute();
+                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
+                                BusinessForm.this,
+                                address,
+                                contactNumber,
+                                emailAddress,
+                                "0",
+                                jobTitle,
+                                name,
+                                organization,
+                                "");
+                        cardDetailsTask.execute();
                         AppGlobals.sNewEntryCreated = true;
                         finish();
                     }

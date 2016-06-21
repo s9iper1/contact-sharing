@@ -17,8 +17,6 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
 
 
         private boolean noInternet = false;
-
-        private String mToken;
         private String mAddress;
         private String mContactNumber;
         private String mEmail;
@@ -29,11 +27,10 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
         private String mFilepath;
         private Activity activity;
 
-        public CardDetailsTask(Activity activity, String token, String address, String contactNumber, String email,
+        public CardDetailsTask(Activity activity, String address, String contactNumber, String email,
                                String hasimage, String jobTitle, String name, String organization,
                                String filepath) {
 
-            mToken = token;
             mAddress = address;
             mContactNumber = contactNumber;
             mEmail = email;
@@ -49,7 +46,7 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            WebServiceHelper.showProgressDialog(activity, "Creating Card");
+//            WebServiceHelper.showProgressDialog(activity, "Creating Card");
         }
 
         @Override
@@ -59,14 +56,15 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
 
                 MultiPartUtility multiPartUtility;
                 try {
-                    multiPartUtility = new MultiPartUtility(mToken, mAddress, mContactNumber, mEmail,
+                    multiPartUtility = new MultiPartUtility(mAddress, mContactNumber, mEmail,
                             mImage, mJobTitle, mName, mOrganization);
-                    multiPartUtility.addFormField("address", params[1]);
-                    multiPartUtility.addFormField("contact_number", params[2]);
-                    multiPartUtility.addFormField("email", params[3]);
-                    multiPartUtility.addFormField("job_title", params[5]);
-                    multiPartUtility.addFormField("name", params[6]);
-                    multiPartUtility.addFormField("organization", params[7]);
+                    System.out.println(multiPartUtility + "working");
+                    multiPartUtility.addFormField("address", params[0]);
+                    multiPartUtility.addFormField("contact_number", params[1]);
+                    multiPartUtility.addFormField("email", params[2]);
+                    multiPartUtility.addFormField("job_title", params[3]);
+                    multiPartUtility.addFormField("name", params[4]);
+                    multiPartUtility.addFormField("organization", params[5]);
                     multiPartUtility.addFilePart("is_image", new File(mFilepath));
 
                     final byte[] bytes = multiPartUtility.finishFilesUpload();
