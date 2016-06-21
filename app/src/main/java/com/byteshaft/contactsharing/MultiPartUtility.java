@@ -3,6 +3,7 @@ package com.byteshaft.contactsharing;
 import android.util.Base64;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
+import com.byteshaft.contactsharing.utils.Helpers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -57,8 +58,7 @@ public class MultiPartUtility {
 
 
     // constructor used to PUT data on server it can be an ad or user data
-    public MultiPartUtility( String token,
-                                       String address,
+    public MultiPartUtility(String address,
                                        String contactNumber,
                                        String email,
                                        String image,
@@ -77,7 +77,7 @@ public class MultiPartUtility {
         connection.setUseCaches(false);
         connection.setDoInput(true);
         connection.setDoOutput(true);
-        connection.setRequestProperty("Authorization", "Token " + AppGlobals.KEY_USER_TOKEN);
+        connection.setRequestProperty("Authorization", "Token " + Helpers.getStringFromSharedPreferences("token"));
         outputStream = connection.getOutputStream();
         writer = new PrintWriter(new OutputStreamWriter(outputStream, CHARSET),
                 true);

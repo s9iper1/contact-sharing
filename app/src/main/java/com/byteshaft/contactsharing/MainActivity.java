@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!Helpers.isUserLoggedIn()) {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
         sInstance = this;
         loadFragment(new BusinessCardsList());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,8 +77,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-
         navUserName = (TextView) navHeader.findViewById(R.id.nav_username);
         circularImageView = (CircularImageView) navHeader.findViewById(R.id.nav_image);
         navEmail = (TextView) navHeader.findViewById(R.id.nav_email);
