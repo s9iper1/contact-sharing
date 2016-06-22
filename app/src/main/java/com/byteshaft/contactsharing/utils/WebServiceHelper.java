@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ public class WebServiceHelper {
         HttpURLConnection connection = openConnectionForUrl(url, "POST");
         sendRequestData(connection, data);
         AppGlobals.setResponseCode(connection.getResponseCode());
-        System.out.println(connection.getResponseCode());
         return readResponse(connection);
     }
 

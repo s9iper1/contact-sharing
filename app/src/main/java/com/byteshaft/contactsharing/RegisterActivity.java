@@ -57,6 +57,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private boolean validateEditText() {
 
         boolean valid = true;
@@ -105,10 +111,8 @@ public class RegisterActivity extends AppCompatActivity {
                 try {
                     jsonObject = WebServiceHelper.registerUser(mFullNameString, mEmail,mPasswordEntry);
                     if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
-                        System.out.println(jsonObject + "working");
                         String fullName = jsonObject.getString(AppGlobals.KEY_FULLNAME);
                         String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
-
 
                         //saving values
                         Helpers.saveDataToSharedPreferences(AppGlobals.KEY_FULLNAME, fullName);
@@ -143,8 +147,9 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
-                Toast.makeText(AppGlobals.getContext(), "Registration failed. Email already in use",
-                        Toast.LENGTH_SHORT).show();
+                Helpers.alertDialog(RegisterActivity.this, "Email already in use",
+                        "Registration failed. Email already in use");
+                mEmailAddress.setText("");
             }
         }
     }

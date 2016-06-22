@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         if (!Helpers.isUserLoggedIn()) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+        setContentView(R.layout.activity_main);
         sInstance = this;
         loadFragment(new BusinessCardsList());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.clear();
                         editor.commit();
-                        closeApplication();
+                        finish();
                         if (!Helpers.isUserLoggedIn()) {
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             Helpers.saveUserLogin(false);

@@ -38,6 +38,7 @@ public class AppGlobals extends Application {
     public static int responseCode = 0;
     public static final String IS_IMAGE_SHARE = "is_image_share";
     public static final String IMAGE = "image";
+    public static final String CARD_DESIGN = "card_design";
 
     public static int userExistResponse;
     public static int postResponse;

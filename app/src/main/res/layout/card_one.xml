@@ -2,7 +2,20 @@
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    cardBackgroundColor="@android:color/transparent"
+    cardElevation="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/id"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -106,8 +119,8 @@
             android:textSize="18sp"
             android:textColor="@color/card_one_text_color"
             android:layout_alignTop="@+id/linearLayout"
-            android:layout_alignRight="@+id/image_view"
-            android:layout_alignEnd="@+id/image_view" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:id="@+id/tv_jobzy_id"
@@ -120,6 +133,7 @@
             android:layout_alignRight="@+id/tv_organization"
             android:layout_alignEnd="@+id/tv_organization" />
 
+    </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

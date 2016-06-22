@@ -2,7 +2,13 @@
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="2dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/id"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,7 +17,7 @@
         android:id="@+id/main_layout" >
 
         <ImageView
-            android:id="@+id/third_card_image"
+            android:id="@+id/card_image"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:scaleType="fitCenter"
@@ -22,13 +28,13 @@
 
         <com.github.siyamed.shapeimageview.CircularImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/third_image_view"
+            android:id="@+id/image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:siBorderWidth="1dp"
             android:src="@mipmap/ic_launcher"
             app:siBorderColor="@color/colorAccent"
-            android:layout_below="@+id/third_card_image"
+            android:layout_below="@+id/card_image"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
@@ -36,26 +42,26 @@
             android:layout_marginEnd="25dp" />
 
         <TextView
-            android:id="@+id/third_tv_name"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/card_three_text_color"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="Shahid Ghafoor"
-            android:layout_alignTop="@+id/third_image_view"
+            android:layout_alignTop="@+id/image_view"
             android:layout_centerHorizontal="true" />
 
         <TextView
-            android:id="@+id/third_job_title"
+            android:id="@+id/job_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Job Title"
             android:textColor="@color/card_three_text_color"
             android:textStyle="bold"
-            android:layout_below="@+id/third_tv_name"
-            android:layout_alignLeft="@+id/third_tv_name"
-            android:layout_alignStart="@+id/third_tv_name" />
+            android:layout_below="@+id/tv_name"
+            android:layout_alignLeft="@+id/tv_name"
+            android:layout_alignStart="@+id/tv_name" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -70,7 +76,7 @@
 
 
             <TextView
-                android:id="@+id/third_phone_number"
+                android:id="@+id/phone_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -79,7 +85,7 @@
                 android:textColor="@color/card_three_text_color" />
 
             <TextView
-                android:id="@+id/third_email_address"
+                android:id="@+id/email_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -88,7 +94,7 @@
                 android:textColor="@color/card_three_text_color"/>
 
             <TextView
-                android:id="@+id/third_location"
+                android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -98,7 +104,7 @@
 
 
         <TextView
-            android:id="@+id/third_tv_organization"
+            android:id="@+id/tv_organization"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Organization"
@@ -107,19 +113,19 @@
             android:textStyle="bold"
             android:textColor="@color/card_three_text_color"
             android:layout_alignTop="@+id/linearLayout"
-            android:layout_toRightOf="@+id/third_card_image"
-            android:layout_toEndOf="@+id/third_card_image" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/third_tv_jobzy_id"
+            android:id="@+id/tv_jobzy_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Jobzy ID"
             android:textStyle="bold"
             android:textColor="@color/card_three_text_color"
-            android:layout_below="@+id/third_tv_organization"
-            android:layout_alignLeft="@+id/third_tv_organization"
-            android:layout_alignStart="@+id/third_tv_organization" />
+            android:layout_below="@+id/tv_organization"
+            android:layout_alignLeft="@+id/tv_organization"
+            android:layout_alignStart="@+id/tv_organization" />
         
     </RelativeLayout>
 </android.support.v7.widget.CardView>
