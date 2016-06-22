@@ -12,39 +12,39 @@
 
         <com.github.siyamed.shapeimageview.CircularImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/image_view"
+            android:id="@+id/sec_image_view"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:siBorderWidth="1dp"
             android:src="@mipmap/ic_launcher"
-            android:layout_alignTop="@+id/tv_name"
+            android:layout_alignTop="@+id/sec_tv_name"
             android:layout_alignLeft="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/sec_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/card_two_text_color"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
-            android:layout_toRightOf="@+id/image_view"
-            android:layout_toEndOf="@+id/image_view"
+            android:layout_toRightOf="@+id/sec_image_view"
+            android:layout_toEndOf="@+id/sec_image_view"
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="Shahid Ghafoor" />
 
         <TextView
-            android:id="@+id/job_title"
+            android:id="@+id/sec_job_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Job Title"
             android:textColor="@color/card_two_text_color"
-            android:textSize="20sp"
-            android:layout_below="@+id/tv_name"
-            android:layout_alignLeft="@+id/tv_name"
-            android:layout_alignStart="@+id/tv_name" />
+            android:textSize="18sp"
+            android:layout_below="@+id/sec_tv_name"
+            android:layout_alignLeft="@+id/sec_tv_name"
+            android:layout_alignStart="@+id/sec_tv_name" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -54,35 +54,32 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="14dp"
             android:paddingBottom="4dp"
-            android:layout_below="@+id/image_view"
+            android:layout_below="@+id/sec_image_view"
             android:id="@+id/linearLayout">
 
 
             <TextView
-                android:id="@+id/phone_number"
+                android:id="@+id/sec_phone_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textStyle="bold"
                 android:text="+923006860746"
                 android:textSize="16sp"
                 android:textColor="@color/card_two_text_color" />
 
             <TextView
-                android:id="@+id/email_address"
+                android:id="@+id/sec_email_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textStyle="bold"
                 android:text="shahidghafoor@gmail.com"
                 android:textSize="16sp"
                 android:textColor="@color/card_two_text_color"/>
 
             <TextView
-                android:id="@+id/location"
+                android:id="@+id/sec_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
                 android:text="Khan center, Abdali Road, Multan"
                 android:textSize="16sp"
                 android:padding="2dp"
@@ -90,30 +87,28 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_organization"
+            android:id="@+id/sec_tv_organization"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Organization"
             android:textSize="18sp"
+            android:layout_marginRight="8dp"
             android:textStyle="bold"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
             android:textColor="@color/card_two_text_color"
             android:layout_alignTop="@+id/linearLayout"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:id="@+id/tv_jobzy_id"
+            android:id="@+id/sec_tv_jobzy_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Jobzy ID"
-            android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/card_two_text_color"
-            android:layout_below="@+id/tv_organization"
-            android:layout_alignRight="@+id/tv_organization"
-            android:layout_alignEnd="@+id/tv_organization" />
+            android:layout_below="@+id/sec_tv_organization"
+            android:layout_alignRight="@+id/sec_tv_organization"
+            android:layout_alignEnd="@+id/sec_tv_organization" />
 
     </RelativeLayout>
 
