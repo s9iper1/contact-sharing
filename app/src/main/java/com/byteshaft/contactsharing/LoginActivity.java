@@ -178,5 +178,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+        MainActivity.getInstance().closeApplication();
     }
 }

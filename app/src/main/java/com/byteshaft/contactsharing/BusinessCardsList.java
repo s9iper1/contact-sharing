@@ -3,13 +3,16 @@ package com.byteshaft.contactsharing;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,16 +21,16 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
-import com.byteshaft.contactsharing.utils.BitmapWithCharacter;
-import com.byteshaft.contactsharing.utils.SquareImageView;
+import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 
 public class BusinessCardsList extends Fragment {
@@ -42,6 +45,7 @@ public class BusinessCardsList extends Fragment {
     private HashMap<Integer, String> colorHashMap;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean gridView = false;
+    private HashMap<String , String[]> cardData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +77,8 @@ public class BusinessCardsList extends Fragment {
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
         }
-        nameData = cardsDatabase.getNamesOfSavedCards();
+        Log.i("TAG", "" +cardsDatabase.getBusinessCard());
+        cardData = cardsDatabase.getBusinessCard();
         return mBaseView;
     }
 
@@ -82,10 +87,8 @@ public class BusinessCardsList extends Fragment {
         super.onResume();
         mRecyclerView.setAdapter(null);
         idsList = new ArrayList<>();
-        nameData = new ArrayList<>();
         idsList = cardsDatabase.getIdOfSavedCards();
-        nameData = cardsDatabase.getNamesOfSavedCards();
-        mCardsAdapter = new CardsAdapter(idsList, nameData);
+        mCardsAdapter = new CardsAdapter(idsList, cardData);
         mRecyclerView.setAdapter(mCardsAdapter);
     }
 
@@ -101,10 +104,20 @@ public class BusinessCardsList extends Fragment {
                 if (gridView) {
                     item.setIcon(getResources().getDrawable(R.drawable.grid));
                     staggeredGridLayoutManager.setSpanCount(1);
+                    mRecyclerView.setAdapter(null);
+                    idsList = cardsDatabase.getIdOfSavedCards();
+                    nameData = cardsDatabase.getNamesOfSavedCards();
+                    mCardsAdapter = new CardsAdapter(idsList, cardData);
+                    mRecyclerView.setAdapter(mCardsAdapter);
                     gridView = false;
                 } else {
                     item.setIcon(getResources().getDrawable(R.drawable.normal));
                     staggeredGridLayoutManager.setSpanCount(2);
+                    mRecyclerView.setAdapter(null);
+                    idsList = cardsDatabase.getIdOfSavedCards();
+                    nameData = cardsDatabase.getNamesOfSavedCards();
+                    mCardsAdapter = new CardsAdapter(idsList, cardData);
+                    mRecyclerView.setAdapter(mCardsAdapter);
                     gridView = true;
                 }
                 return true;
@@ -116,17 +129,17 @@ public class BusinessCardsList extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, nameData,
+        mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, cardData,
                 getActivity()
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item, String color) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        CardDetailsActivity.class);
-                intent.putExtra(AppGlobals.CARD_ID, item);
-                Log.i("TAG", " "+ color);
-                intent.putExtra(AppGlobals.CURRENT_COLOR, color);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity().getApplicationContext(),
+//                        CardDetailsActivity.class);
+//                intent.putExtra(AppGlobals.CARD_ID, item);
+//                Log.i("TAG", " "+ color);
+//                intent.putExtra(AppGlobals.CURRENT_COLOR, color);
+//                startActivity(intent);
             }
 
             @Override
@@ -145,7 +158,9 @@ public class BusinessCardsList extends Fragment {
                                 nameData = new ArrayList<>();
                                 idsList = cardsDatabase.getIdOfSavedCards();
                                 nameData = cardsDatabase.getNamesOfSavedCards();
-                                mCardsAdapter = new CardsAdapter(idsList, nameData);
+                                cardData = new HashMap<>();
+                                cardData = cardsDatabase.getBusinessCard();
+                                mCardsAdapter = new CardsAdapter(idsList, cardData);
                                 mRecyclerView.setAdapter(mCardsAdapter);
 
                             }
@@ -172,14 +187,15 @@ public class BusinessCardsList extends Fragment {
         private ArrayList<Integer> cardList;
         private OnItemClickListener mListener;
         private GestureDetector mGestureDetector;
-        private ArrayList<HashMap<Integer, String>> nameData;
+        private HashMap<String, String[]> cardData;
+        private int pos = 0;
 
-        public CardsAdapter(final ArrayList<Integer> cardList, ArrayList<HashMap<Integer, String>> nameData,
+        public CardsAdapter(final ArrayList<Integer> cardList, HashMap<String, String[]> nameData,
                             Context context,
                             final OnItemClickListener listener) {
             mListener = listener;
             this.cardList = cardList;
-            this.nameData = nameData;
+            this.cardData = nameData;
             mGestureDetector = new GestureDetector(context,
                     new GestureDetector.SimpleOnGestureListener() {
                         @Override
@@ -199,15 +215,27 @@ public class BusinessCardsList extends Fragment {
                     });
         }
 
-        public CardsAdapter(ArrayList<Integer> cardList, ArrayList<HashMap<Integer, String>> nameData)   {
+        public CardsAdapter(ArrayList<Integer> cardList, HashMap<String, String[]> nameData)   {
             this.cardList = cardList;
-            this.nameData = nameData;
+            this.cardData = nameData;
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_delegate,
-                    parent, false);
+            View view;
+            if (Integer.valueOf(cardData.get(String.valueOf(cardList.get(pos)))[9]) == 0) {
+                Log.i("TAG", "loading one");
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one,
+                        parent, false);
+            } else if (Integer.valueOf(cardData.get(String.valueOf(cardList.get(pos)))[9]) == 1) {
+                Log.i("TAG", "loading two");
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_two,
+                        parent, false);
+            } else {
+                Log.i("TAG", "loading three");
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_three,
+                        parent, false);
+            }
             mViewHolder = new CustomView(view);
             return mViewHolder;
         }
@@ -217,19 +245,61 @@ public class BusinessCardsList extends Fragment {
             holder.setIsRecyclable(false);
             int currentIndex = cardList.get(position);
             mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
-            String itemFromArray = nameData.get(position).get(currentIndex);
-            String card =  itemFromArray.substring(0, 1).toUpperCase() + itemFromArray.substring(1);
-            mViewHolder.textView.setText(card);
-            mViewHolder.textView.setTypeface(AppGlobals.typeface);
-            int[] array = getResources().getIntArray(R.array.letter_tile_colors);
-            final BitmapWithCharacter tileProvider = new BitmapWithCharacter();
-            final String color = String.valueOf(array[new Random().nextInt(array.length)]);
-            int constantColor = tileProvider.pickColor(color);
-            String hexColor = "#" + Integer.toHexString(constantColor).substring(2);
-            colorHashMap.put(currentIndex, hexColor);
-            final Bitmap letterTile = tileProvider.getLetterTile(card,
-                    constantColor, 100, 100);
-            mViewHolder.squareImageView.setImageBitmap(letterTile);
+            if (cardData.get(String.valueOf(cardList.get(pos)))[6].equals("0")) {
+                mViewHolder.personName.setText(cardData.get(String.valueOf(cardList.get(pos)))[0]);
+                mViewHolder.address.setText(cardData.get(String.valueOf(cardList.get(pos)))[1]);
+                mViewHolder.jobTitle.setText(cardData.get(String.valueOf(cardList.get(pos)))[2]);
+                mViewHolder.phoneNumber.setText(cardData.get(String.valueOf(cardList.get(pos)))[3]);
+                mViewHolder.emailAddress.setText(cardData.get(String.valueOf(cardList.get(pos)))[4]);
+                mViewHolder.organization.setText(cardData.get(String.valueOf(cardList.get(pos)))[5]);
+                mViewHolder.jobzyId.setText(cardData.get(String.valueOf(cardList.get(pos)))[8]);
+
+                if (staggeredGridLayoutManager.getSpanCount() == 2) {
+                    mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                    mViewHolder.phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    mViewHolder.emailAddress.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    mViewHolder.organization.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    mViewHolder.jobzyId.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    mViewHolder.logo.setVisibility(View.GONE);
+                } else if (staggeredGridLayoutManager.getSpanCount() == 1){
+                    mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    mViewHolder.logo.setVisibility(View.VISIBLE);
+                    mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    mViewHolder.phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    mViewHolder.emailAddress.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    mViewHolder.organization.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                    mViewHolder.jobzyId.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                }
+
+                mViewHolder.address.setTypeface(AppGlobals.regularTypeface);
+                mViewHolder.personName.setTypeface(AppGlobals.regularTypeface);
+                mViewHolder.jobTitle.setTypeface(AppGlobals.regularTypeface);
+                mViewHolder.phoneNumber.setTypeface(AppGlobals.regularTypeface);
+                mViewHolder.emailAddress.setTypeface(AppGlobals.regularTypeface);
+                mViewHolder.organization.setTypeface(AppGlobals.regularTypeface);
+                mViewHolder.jobzyId.setTypeface(AppGlobals.regularTypeface);
+            } else if (cardData.get(String.valueOf(cardList.get(pos)))[6].equals("1")) {
+                mViewHolder.mainLayout.setBackgroundColor(Color.TRANSPARENT);
+                mViewHolder.personName.setVisibility(View.GONE);
+                mViewHolder.jobTitle.setVisibility(View.GONE);
+                mViewHolder.phoneNumber.setVisibility(View.GONE);
+                mViewHolder.emailAddress.setVisibility(View.GONE);
+                mViewHolder.address.setVisibility(View.GONE);
+                mViewHolder.organization.setVisibility(View.GONE);
+                mViewHolder.jobzyId.setVisibility(View.GONE);
+                mViewHolder.cardImage.setVisibility(View.VISIBLE);
+                Uri imgUri = Uri.parse(cardData.get(String.valueOf(cardList.get(pos)))[7]);
+                Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
+                int height = 1920;
+                int width = 1080;
+                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
+                mViewHolder.cardImage.setImageBitmap(scaled);
+            }
+            pos = pos+1;
         }
 
         @Override
@@ -262,15 +332,31 @@ public class BusinessCardsList extends Fragment {
     // custom class getting view cardList by giving view in constructor.
     public static class CustomView extends RecyclerView.ViewHolder {
 
-        public TextView hiddenId;
-        public TextView textView;
-        public SquareImageView squareImageView;
+        private TextView personName;
+        private TextView jobTitle;
+        private TextView phoneNumber;
+        private TextView emailAddress;
+        private TextView address;
+        private TextView organization;
+        private TextView jobzyId;
+        private ImageView cardImage;
+        private RelativeLayout mainLayout;
+        private TextView hiddenId;
+        private CircularImageView logo;
 
         public CustomView(View itemView) {
             super(itemView);
-            hiddenId = (TextView) itemView.findViewById(R.id.hidden_id);
-            textView = (TextView) itemView.findViewById(R.id.card_owner_name);
-            squareImageView = (SquareImageView) itemView.findViewById(R.id.square_image_view);
+            hiddenId = (TextView) itemView.findViewById(R.id.id);
+            personName = (TextView) itemView.findViewById(R.id.tv_name);
+            jobTitle = (TextView) itemView.findViewById(R.id.job_title);
+            phoneNumber = (TextView) itemView.findViewById(R.id.phone_number);
+            emailAddress = (TextView) itemView.findViewById(R.id.email_address);
+            address = (TextView) itemView.findViewById(R.id.location);
+            organization = (TextView) itemView.findViewById(R.id.tv_organization);
+            jobzyId = (TextView) itemView.findViewById(R.id.tv_jobzy_id);
+            cardImage = (ImageView) itemView.findViewById(R.id.card_image);
+            mainLayout = (RelativeLayout) itemView.findViewById(R.id.main_layout);
+            logo = (CircularImageView) itemView.findViewById(R.id.image_view);
         }
     }
 
