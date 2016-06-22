@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/background_three"
+        android:id="@+id/main_layout" >
+
+        <ImageView
+            android:id="@+id/third_card_image"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:background="@drawable/border_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.github.siyamed.shapeimageview.CircularImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/third_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:siBorderWidth="1dp"
+            android:src="@mipmap/ic_launcher"
+            app:siBorderColor="@color/colorAccent"
+            android:layout_below="@+id/third_card_image"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp" />
+
+        <TextView
+            android:id="@+id/third_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/card_three_text_color"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Shahid Ghafoor"
+            android:layout_alignTop="@+id/third_image_view"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/third_job_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Title"
+            android:textColor="@color/card_three_text_color"
+            android:textStyle="bold"
+            android:layout_below="@+id/third_tv_name"
+            android:layout_alignLeft="@+id/third_tv_name"
+            android:layout_alignStart="@+id/third_tv_name" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp">
+
+
+            <TextView
+                android:id="@+id/third_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:text="+923006860746"
+                android:textColor="@color/card_three_text_color" />
+
+            <TextView
+                android:id="@+id/third_email_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:text="shahidghafoor@gmail.com"
+                android:textColor="@color/card_three_text_color"/>
+
+            <TextView
+                android:id="@+id/third_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Khan center, Abdali Road, Multan"
+                android:textColor="@color/card_three_text_color"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/third_tv_organization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Organization"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/card_three_text_color"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_toRightOf="@+id/third_card_image"
+            android:layout_toEndOf="@+id/third_card_image" />
+
+        <TextView
+            android:id="@+id/third_tv_jobzy_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jobzy ID"
+            android:textStyle="bold"
+            android:textColor="@color/card_three_text_color"
+            android:layout_below="@+id/third_tv_organization"
+            android:layout_alignLeft="@+id/third_tv_organization"
+            android:layout_alignStart="@+id/third_tv_organization" />
+        
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
