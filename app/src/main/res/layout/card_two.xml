@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg"
+        android:layout_height="200dp"
+        android:background="@drawable/background_one"
         android:id="@+id/main_layout" >
 
         <com.github.siyamed.shapeimageview.CircularImageView
@@ -85,6 +85,7 @@
                 android:textStyle="bold"
                 android:text="Khan center, Abdali Road, Multan"
                 android:textSize="16sp"
+                android:padding="2dp"
                 android:textColor="@color/card_one_text_color"/>
         </LinearLayout>
 
