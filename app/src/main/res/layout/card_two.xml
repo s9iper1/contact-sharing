@@ -25,7 +25,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/card_one_text_color"
+            android:textColor="@color/card_two_text_color"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Job Title"
-            android:textColor="@color/card_one_text_color"
+            android:textColor="@color/card_two_text_color"
             android:textSize="20sp"
             android:layout_below="@+id/tv_name"
             android:layout_alignLeft="@+id/tv_name"
@@ -66,7 +66,7 @@
                 android:textStyle="bold"
                 android:text="+923006860746"
                 android:textSize="16sp"
-                android:textColor="@color/card_one_text_color" />
+                android:textColor="@color/card_two_text_color" />
 
             <TextView
                 android:id="@+id/email_address"
@@ -76,7 +76,7 @@
                 android:textStyle="bold"
                 android:text="shahidghafoor@gmail.com"
                 android:textSize="16sp"
-                android:textColor="@color/card_one_text_color"/>
+                android:textColor="@color/card_two_text_color"/>
 
             <TextView
                 android:id="@+id/location"
@@ -86,7 +86,7 @@
                 android:text="Khan center, Abdali Road, Multan"
                 android:textSize="16sp"
                 android:padding="2dp"
-                android:textColor="@color/card_one_text_color"/>
+                android:textColor="@color/card_two_text_color"/>
         </LinearLayout>
 
         <TextView
@@ -98,7 +98,7 @@
             android:textStyle="bold"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:textColor="@color/card_one_text_color"
+            android:textColor="@color/card_two_text_color"
             android:layout_alignTop="@+id/linearLayout"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -110,7 +110,7 @@
             android:text="Jobzy ID"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:textColor="@color/card_one_text_color"
+            android:textColor="@color/card_two_text_color"
             android:layout_below="@+id/tv_organization"
             android:layout_alignRight="@+id/tv_organization"
             android:layout_alignEnd="@+id/tv_organization" />
