@@ -3,6 +3,7 @@ package com.byteshaft.contactsharing;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -25,9 +26,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.github.siyamed.shapeimageview.CircularImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,17 +84,12 @@ public class BusinessCardsList extends Fragment {
         }
         Log.i("TAG", "" +cardsDatabase.getBusinessCard());
         cardData = cardsDatabase.getBusinessCard();
-        return mBaseView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         mRecyclerView.setAdapter(null);
         idsList = new ArrayList<>();
         idsList = cardsDatabase.getIdOfSavedCards();
         mCardsAdapter = new CardsAdapter(idsList, cardData);
         mRecyclerView.setAdapter(mCardsAdapter);
+        return mBaseView;
     }
 
     @Override
@@ -134,12 +134,33 @@ public class BusinessCardsList extends Fragment {
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item, String color) {
-//                Intent intent = new Intent(getActivity().getApplicationContext(),
-//                        CardDetailsActivity.class);
-//                intent.putExtra(AppGlobals.CARD_ID, item);
-//                Log.i("TAG", " "+ color);
-//                intent.putExtra(AppGlobals.CURRENT_COLOR, color);
-//                startActivity(intent);
+                JSONObject jsonObject = new JSONObject();
+                if (Integer.valueOf(cardData.get(item)[6]) == 1) {
+                    try {
+                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
+                        jsonObject.put(AppGlobals.NAME, cardData.get(item)[0]);
+                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(item)[7]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
+                        jsonObject.put(AppGlobals.NAME, cardData.get(item)[0]);
+                        jsonObject.put(AppGlobals.ADDRESS, cardData.get(item)[1]);
+                        jsonObject.put(AppGlobals.EMAIL, cardData.get(item)[4]);
+                        jsonObject.put(AppGlobals.JOB_TITLE, cardData.get(item)[2]);
+                        jsonObject.put(AppGlobals.ORG, cardData.get(item)[5]);
+                        jsonObject.put(AppGlobals.JOBZY_ID, cardData.get(item)[8]);
+                        jsonObject.put(AppGlobals.NUMBER, cardData.get(item)[3]);
+                        jsonObject.put(AppGlobals.CARD_DESIGN, cardData.get(item)[9]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothActivity.class);
+                intent.putExtra(AppGlobals.DATA_TO_BE_SENT, jsonObject.toString());
+                startActivity(intent);
             }
 
             @Override

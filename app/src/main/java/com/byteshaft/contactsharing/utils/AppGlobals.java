@@ -44,6 +44,8 @@ public class AppGlobals extends Application {
     public static int postResponse;
 
     public static boolean isFirstTime = false;
+    private static final String LOGTAG = "LOGTAG";
+    public static int sSelectedDesign = 0;
 
     @Override
     public void onCreate() {
@@ -82,4 +84,9 @@ public class AppGlobals extends Application {
     public static int getPostResponse() {
         return postResponse;
     }
+
+    public static String getLogTag(Class aClass) {
+        return LOGTAG + aClass.getSimpleName();
+    }
+
 }

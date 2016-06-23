@@ -266,15 +266,16 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,
                                     decodedString.length);
 
-                            cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
-                                   "","", "", "", "", "", saveImage(decodedByte, jsonCard.getString
-                                            (AppGlobals.NAME)), 1);
+//                            cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
+//                                   "","", "", "", "", "", saveImage(decodedByte, jsonCard.getString
+//                                            (AppGlobals.NAME)), 1);
                         } else if (isImageShare == 0) {
                             cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
                                     jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
                                             AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
                                     jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
-                                    jsonCard.getString(AppGlobals.JOBZY_ID), "", 0);
+                                    jsonCard.getString(AppGlobals.JOBZY_ID), "", 0,
+                                    jsonCard.getInt(AppGlobals.CARD_DESIGN));
                         }
 
                         showNotification();

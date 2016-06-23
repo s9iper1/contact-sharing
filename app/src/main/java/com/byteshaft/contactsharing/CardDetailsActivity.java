@@ -104,45 +104,45 @@ public class CardDetailsActivity extends Activity {
 //        finish();
 //    }
 //
-////    @Override
-////    public void onClick(View view) {
-////        switch (view.getId()) {
-////            case R.id.edit_button:
-////                Intent editIntent = new Intent(CardDetailsActivity.this, BusinessForm.class);
-////                editIntent.putExtra("id", cardId);
-////                System.out.println(cardId);
-////                startActivity(editIntent);
-////                break;
-////            case R.id.share_button:
-////                JSONObject jsonObject = new JSONObject();
-////                if (isImage) {
-////                    try {
-////                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
-////                        jsonObject.put(AppGlobals.NAME, personName.getText().toString());
-////                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(AppGlobals.IMG_URI));
-////                    } catch (JSONException e) {
-////                        e.printStackTrace();
-////                    }
-////                } else {
-////                    try {
-////                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
-////                        jsonObject.put(AppGlobals.NAME, personName.getText().toString());
-////                        jsonObject.put(AppGlobals.ADDRESS, address.getText().toString());
-////                        jsonObject.put(AppGlobals.EMAIL, emailAddress.getText().toString());
-////                        jsonObject.put(AppGlobals.JOB_TITLE, jobTitle.getText().toString());
-////                        jsonObject.put(AppGlobals.ORG, organization.getText().toString());
-////                        jsonObject.put(AppGlobals.JOBZY_ID, jobzyId.getText().toString());
-////                        jsonObject.put(AppGlobals.NUMBER, phoneNumber.getText().toString());
-////                    } catch (JSONException e) {
-////                        e.printStackTrace();
-////                    }
-////                }
-////                finish();
-////                Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
-////                intent.putExtra(AppGlobals.DATA_TO_BE_SENT, jsonObject.toString());
-////                startActivity(intent);
-////                break;
-////        }
-////
-////    }
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.edit_button:
+//                Intent editIntent = new Intent(CardDetailsActivity.this, BusinessForm.class);
+//                editIntent.putExtra("id", cardId);
+//                System.out.println(cardId);
+//                startActivity(editIntent);
+//                break;
+//            case R.id.share_button:
+//                JSONObject jsonObject = new JSONObject();
+//                if (isImage) {
+//                    try {
+//                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
+//                        jsonObject.put(AppGlobals.NAME, personName.getText().toString());
+//                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(AppGlobals.IMG_URI));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    try {
+//                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
+//                        jsonObject.put(AppGlobals.NAME, personName.getText().toString());
+//                        jsonObject.put(AppGlobals.ADDRESS, address.getText().toString());
+//                        jsonObject.put(AppGlobals.EMAIL, emailAddress.getText().toString());
+//                        jsonObject.put(AppGlobals.JOB_TITLE, jobTitle.getText().toString());
+//                        jsonObject.put(AppGlobals.ORG, organization.getText().toString());
+//                        jsonObject.put(AppGlobals.JOBZY_ID, jobzyId.getText().toString());
+//                        jsonObject.put(AppGlobals.NUMBER, phoneNumber.getText().toString());
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                finish();
+//                Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
+//                intent.putExtra(AppGlobals.DATA_TO_BE_SENT, jsonObject.toString());
+//                startActivity(intent);
+//                break;
+//        }
+//
+//    }
 }
