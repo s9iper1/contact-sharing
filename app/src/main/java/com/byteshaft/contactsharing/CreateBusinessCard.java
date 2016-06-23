@@ -119,9 +119,8 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-//            cardsDatabase.imageEntry(fileName, uriSavedImage.toString());
             cardsDatabase.createNewEntry(fileName, "", "", "", "", "", "",
-                    filePath, 1);
+                    filePath, 1, 4);
             MainActivity.getInstance().loadFragment(new BusinessCardsList());
         }
     }

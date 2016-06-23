@@ -30,7 +30,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 
     public void createNewEntry(String name, String address, String jobTitle, String contactNumber,
                                String emailAddress, String organization, String jobzyId,
-                               String imgUri, Integer isImagCard) {
+                               String imgUri, Integer isImagCard, int designInt) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseConstants.NAME_COLUMN, name);
@@ -42,6 +42,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
         values.put(DatabaseConstants.JOBZI_ID, jobzyId);
         values.put(DatabaseConstants.IMG_COLUMN, imgUri);
         values.put(DatabaseConstants.IS_IMAGE_CARD_COLUMN, isImagCard);
+        values.put(DatabaseConstants.SELECTED_CARD_DESIGN, designInt);
         db.insert(DatabaseConstants.TABLE_NAME, null, values);
         db.close();
     }

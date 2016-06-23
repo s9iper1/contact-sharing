@@ -32,7 +32,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:siBorderWidth="1dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_logo_place_holder"
             app:siBorderColor="@color/colorAccent"
             android:layout_below="@+id/card_image"
             android:layout_alignParentRight="true"
@@ -113,8 +113,8 @@
             android:textStyle="bold"
             android:textColor="@color/card_three_text_color"
             android:layout_alignTop="@+id/linearLayout"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/tv_jobzy_id"
