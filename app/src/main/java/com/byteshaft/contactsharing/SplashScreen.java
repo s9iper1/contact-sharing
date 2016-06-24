@@ -7,11 +7,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
-import com.byteshaft.contactsharing.utils.Helpers;
 
-/**
- * Created by husnain on 6/21/16.
- */
 public class SplashScreen extends Activity {
 
     @Override
