@@ -8,9 +8,6 @@ import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 
-/**
- * Created by husnain on 6/14/16.
- */
 public class Helpers  {
 
     public Helpers() {

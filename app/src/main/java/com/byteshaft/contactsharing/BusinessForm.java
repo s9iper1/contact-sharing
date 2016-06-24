@@ -101,10 +101,9 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
                                 jobTitle,
                                 name,
                                 organization,
-                                "");
-//                        cardDetailsTask.execute();
+                                "", AppGlobals.sSelectedDesign, imageUrl);
+                        cardDetailsTask.execute();
                         AppGlobals.sNewEntryCreated = true;
-                        finish();
                     }
                 } else {
                     validateEditTexts();
