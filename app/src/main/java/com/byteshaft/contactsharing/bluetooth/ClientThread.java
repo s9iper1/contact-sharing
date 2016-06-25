@@ -113,6 +113,11 @@ public class ClientThread extends Thread {
                     socket.close();
 
             } catch (Exception e) {
+                if (BluetoothActivity.getInstance().progressDialog != null &&
+                        BluetoothActivity.getInstance().progressDialog.isShowing()) {
+                    BluetoothActivity.getInstance().progressDialog.dismiss();
+                    BluetoothActivity.getInstance().progressDialog = null;
+                }
                 Log.e(TAG, e.toString());
             }
         }

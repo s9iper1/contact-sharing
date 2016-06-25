@@ -1,15 +1,18 @@
 package com.byteshaft.contactsharing;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.database.CardsDatabase;
@@ -51,6 +55,7 @@ public class BusinessCardsList extends Fragment {
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean gridView = false;
     private HashMap<String , String[]> cardData;
+    public static final int MY_PERMISSIONS_REQUEST_STORAGE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,13 +88,44 @@ public class BusinessCardsList extends Fragment {
                 alertDialog.show();
         }
         Log.i("TAG", "" +cardsDatabase.getBusinessCard());
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_STORAGE);
+        } else {
+            loadData();
+        }
+        return mBaseView;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("TAG", "Permission granted");
+                    loadData();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Permission denied!"
+                            , Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    private void loadData() {
         cardData = cardsDatabase.getBusinessCard();
         mRecyclerView.setAdapter(null);
         idsList = new ArrayList<>();
         idsList = cardsDatabase.getIdOfSavedCards();
         mCardsAdapter = new CardsAdapter(idsList, cardData);
         mRecyclerView.setAdapter(mCardsAdapter);
-        return mBaseView;
     }
 
     @Override
@@ -133,32 +169,34 @@ public class BusinessCardsList extends Fragment {
                 getActivity()
                 .getApplicationContext(), new OnItemClickListener() {
             @Override
-            public void onItem(Integer item, String color) {
+            public void onItem(Integer item) {
                 JSONObject jsonObject = new JSONObject();
-                if (Integer.valueOf(cardData.get(item)[6]) == 1) {
+                if (Integer.valueOf(cardData.get(String.valueOf(item))[6]) == 1) {
                     try {
                         jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
-                        jsonObject.put(AppGlobals.NAME, cardData.get(item)[0]);
-                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(item)[7]);
+                        jsonObject.put(AppGlobals.NAME, cardData.get(String.valueOf(item))[0]);
+                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(String.valueOf(item))[7]
+                                .replaceAll("/", "_"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
                         jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
-                        jsonObject.put(AppGlobals.NAME, cardData.get(item)[0]);
-                        jsonObject.put(AppGlobals.ADDRESS, cardData.get(item)[1]);
-                        jsonObject.put(AppGlobals.EMAIL, cardData.get(item)[4]);
-                        jsonObject.put(AppGlobals.JOB_TITLE, cardData.get(item)[2]);
-                        jsonObject.put(AppGlobals.ORG, cardData.get(item)[5]);
-                        jsonObject.put(AppGlobals.JOBZY_ID, cardData.get(item)[8]);
-                        jsonObject.put(AppGlobals.NUMBER, cardData.get(item)[3]);
-                        jsonObject.put(AppGlobals.CARD_DESIGN, cardData.get(item)[9]);
+                        jsonObject.put(AppGlobals.NAME, cardData.get(String.valueOf(item))[0]);
+                        jsonObject.put(AppGlobals.ADDRESS, cardData.get(String.valueOf(item))[1]);
+                        jsonObject.put(AppGlobals.EMAIL, cardData.get(String.valueOf(item))[4]);
+                        jsonObject.put(AppGlobals.JOB_TITLE, cardData.get(String.valueOf(item))[2]);
+                        jsonObject.put(AppGlobals.ORG, cardData.get(String.valueOf(item))[5]);
+                        jsonObject.put(AppGlobals.JOBZY_ID, cardData.get(String.valueOf(item))[8]);
+                        jsonObject.put(AppGlobals.NUMBER, cardData.get(String.valueOf(item))[3]);
+                        jsonObject.put(AppGlobals.CARD_DESIGN, cardData.get(String.valueOf(item))[9]);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Intent intent = new Intent(getActivity().getApplicationContext(), BluetoothActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(),
+                        BluetoothActivity.class);
                 intent.putExtra(AppGlobals.DATA_TO_BE_SENT, jsonObject.toString());
                 startActivity(intent);
             }
@@ -347,8 +385,7 @@ public class BusinessCardsList extends Fragment {
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
             View childView = rv.findChildViewUnder(e.getX(), e.getY());
             if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-                mListener.onItem(cardList.get(rv.getChildPosition(childView)),
-                        String.valueOf(colorHashMap.get(cardList.get(rv.getChildPosition(childView)))));
+                mListener.onItem(cardList.get(rv.getChildPosition(childView)));
                 return true;
             }
             return false;
@@ -397,7 +434,7 @@ public class BusinessCardsList extends Fragment {
     }
 
     public interface OnItemClickListener {
-        void onItem(Integer item, String color);
+        void onItem(Integer item);
         void onItemLongClick(Integer position);
     }
 }

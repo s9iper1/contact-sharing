@@ -69,6 +69,10 @@ public class AppGlobals extends Application {
     public static final int IMAGE_QUALITY = 100;
     public static final int NO_DESIGN = 4;
     public static boolean sIncomingImage = false;
+    public static BluetoothDevice sBluetoothDevice;
+    public static String imageOwner = "";
+    public static int isImageState;
+
 
 
     @Override

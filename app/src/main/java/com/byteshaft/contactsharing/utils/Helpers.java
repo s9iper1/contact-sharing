@@ -5,8 +5,12 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class Helpers  {
 
@@ -63,5 +67,38 @@ public class Helpers  {
         options.inJustDecodeBounds = false;
         bm = BitmapFactory.decodeFile(selectedImagePath, options);
         return bm;
+    }
+
+    public static String createDirectoryAndSaveFile(String fileName) {
+        String internalFolder = Environment.getExternalStorageDirectory() +
+                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
+        File file = new File(internalFolder);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        internalFolder = internalFolder + File.separator + fileName + ".jpg";
+        return new File(internalFolder).getAbsolutePath();
+    }
+
+    public static String saveImage(Bitmap finalBitmap, String fileName) {
+        String internalFolder = Environment.getExternalStorageDirectory() +
+                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
+        File outerFolder = new File(internalFolder);
+        if (!outerFolder.exists()) {
+            outerFolder.mkdirs();
+        }
+        String personName = fileName + ".jpg";
+        File file = new File (internalFolder, personName);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return internalFolder + File.separator + personName;
     }
 }

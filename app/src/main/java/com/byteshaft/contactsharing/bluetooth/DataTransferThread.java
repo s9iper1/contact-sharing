@@ -1,11 +1,15 @@
 package com.byteshaft.contactsharing.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+import com.byteshaft.contactsharing.utils.Helpers;
 
 import org.json.JSONObject;
 
@@ -82,18 +86,85 @@ class DataTransferThread extends Thread {
 
             if (Utils.digestMatch(data, digest)) {
                 Log.v(TAG, "Digest matches OK.");
-                Message message = new Message();
-                message.obj = data;
-                message.what = MessageType.DATA_RECEIVED;
-                String str = new String(((byte[]) message.obj), "UTF-8");
-                Log.d("Just received", str);
-                receivedData = new JSONObject(str);
-                if (receivedData.getBoolean("image")) {
-                    Log.e("TAG", "received");
-                    AppGlobals.sIncomingImage = true;
+                if (!AppGlobals.sIncomingImage) {
+                    Message message = new Message();
+                    message.obj = data;
+                    message.what = MessageType.DATA_RECEIVED;
+                    String str = new String(((byte[]) message.obj), "UTF-8");
+                    Log.d("Just received", str);
+                    receivedData = new JSONObject(str);
+                    if (receivedData.getInt(AppGlobals.IS_IMAGE_SHARE) == 1) {
+                        Log.e("TAG", "received");
+                        AppGlobals.sIncomingImage = true;
+                        AppGlobals.imageOwner = receivedData.getString("name");
+                        AppGlobals.isImageState = receivedData.getInt(AppGlobals.IS_IMAGE_SHARE);
+                    } else {
+                        if (receivedData.getInt(AppGlobals.IS_IMAGE_SHARE) == 0) {
+                            String name = "";
+                            String address = "";
+                            String jobTitle = "";
+                            String jobzyId = "";
+                            String contectNumber = "";
+                            String email = "" ;
+                            String org = "";
+                            int design = 4;
+                            if (receivedData.has(AppGlobals.NAME)) {
+                                name = receivedData.getString(AppGlobals.NAME);
+                            }
+                            if (receivedData.has(AppGlobals.ADDRESS)) {
+                                address = receivedData.getString(AppGlobals.ADDRESS);
+                            }
+                            if (receivedData.has(AppGlobals.JOB_TITLE)) {
+                                jobTitle = receivedData.getString(AppGlobals.JOB_TITLE);
+                            }
+                            if (receivedData.has(AppGlobals.JOBZY_ID)) {
+                                jobzyId = receivedData.getString(AppGlobals.JOBZY_ID);
+                            }
+                            if (receivedData.has(AppGlobals.NUMBER)) {
+                                contectNumber = receivedData.getString(AppGlobals.NUMBER);
+                            }
+                            if (receivedData.has(AppGlobals.EMAIL)) {
+                                email = receivedData.getString(AppGlobals.EMAIL);
+                            }
+                            if (receivedData.has(AppGlobals.ORG)) {
+                                org = receivedData.getString(AppGlobals.ORG);
+                            }
+                            if (receivedData.has(AppGlobals.CARD_DESIGN)) {
+                                design = receivedData.getInt(AppGlobals.CARD_DESIGN);
+                            }
+                            CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
+                            cardsDatabase.createNewEntry(name, address, jobTitle, contectNumber, email
+                            , org, jobzyId, "", 0, design);
+                        }
+                    }
+
+                    Log.d("Data", str);
+                    handler.sendMessage(message);
+                } else {
+                    Log.v(TAG, "Digest matches OK.");
+                    Message message = new Message();
+                    message.obj = data;
+                    message.what = MessageType.DATA_RECEIVED;
+                    handler.sendMessage(message);
+                    Log.i("TAG", "Received image");
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 2;
+                    Bitmap image = BitmapFactory.decodeByteArray(((byte[]) message.obj), 0,
+                            ((byte[]) message.obj).length, options);
+                    if (!AppGlobals.imageOwner.trim().isEmpty()) {
+                        String path = Helpers.saveImage(image, AppGlobals.imageOwner);
+                        CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
+                        cardsDatabase.createNewEntry(AppGlobals.imageOwner, "", "", "", "", "", "",
+                                path, 1, 4);
+                    }
+
+                    // Send the digest back to the client as a confirmation
+                    Log.v(TAG, "Sending back digest for confirmation");
+                    OutputStream outputStream = socket.getOutputStream();
+                    outputStream.write(digest);
+                    AppGlobals.sIncomingImage = false;
                 }
-                Log.d("Data", str);
-                handler.sendMessage(message);
 
                 // Send the digest back to the client as a confirmation
                 Log.v(TAG, "Sending back digest for confirmation");
@@ -108,6 +179,11 @@ class DataTransferThread extends Thread {
                 socket.close();
 
         } catch (Exception ex) {
+            if (BluetoothActivity.getInstance().progressDialog != null &&
+                    BluetoothActivity.getInstance().progressDialog.isShowing()) {
+                BluetoothActivity.getInstance().progressDialog.dismiss();
+                BluetoothActivity.getInstance().progressDialog = null;
+            }
             Log.d(TAG, ex.toString());
             ex.printStackTrace();
         }

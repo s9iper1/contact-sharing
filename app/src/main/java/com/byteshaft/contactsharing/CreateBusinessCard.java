@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+import com.byteshaft.contactsharing.utils.Helpers;
 
 import java.io.File;
 
@@ -62,7 +62,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         if (AppGlobals.sNewEntryCreated) {
-            MainActivity.getInstance().loadFragment(new BusinessCardsList());
+            MainActivity.getInstance().loadFragment(new CreateBusinessCard());
         }
     }
 
@@ -107,8 +107,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            Log.i("TAG", createDirectoryAndSaveFile());
-            filePath = createDirectoryAndSaveFile();
+            filePath = Helpers.createDirectoryAndSaveFile(fileName);
             uriSavedImage = Uri.fromFile(new File(filePath));
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
             System.out.println(uriSavedImage);
@@ -123,17 +122,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                     filePath, 1, AppGlobals.NO_DESIGN);
             MainActivity.getInstance().loadFragment(new BusinessCardsList());
         }
-    }
-
-    private String createDirectoryAndSaveFile() {
-        String internalFolder = Environment.getExternalStorageDirectory() +
-                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
-        File file = new File(internalFolder);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        internalFolder = internalFolder + File.separator + fileName + ".jpg";
-        return new File(internalFolder).getAbsolutePath();
     }
 
     private void enterNameDialog() {

@@ -53,7 +53,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -64,7 +63,6 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private ArrayList<DeviceData> bluetoothDeviceArrayList;
     private HashMap<String, String> bluetoothMacAddress;
-    private String mConnectedDeviceName = null;
     public ViewHolder holder;
     public ListView listView;
     private MenuItem refreshItem;
@@ -76,12 +74,18 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     private String filePath = "";
     private String jsonPictureData = "";
     private final String TAG = BluetoothActivity.this.getClass().getSimpleName();
-    private ProgressDialog progressDialog;
+    public ProgressDialog progressDialog;
+    private static BluetoothActivity sInstance;
+
+    public static BluetoothActivity getInstance() {
+        return sInstance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bluetooth_activity);
+        sInstance = this;
         dataToBeSent = getIntent().getStringExtra(AppGlobals.DATA_TO_BE_SENT);
         Log.i("TAG", "" + dataToBeSent);
         if (dataToBeSent != null) {
@@ -111,24 +115,9 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                         if (AppGlobals.clientThread != null) {
                             AppGlobals.clientThread.cancel();
                         }
+                        AppGlobals.sBluetoothDevice = device;
                         AppGlobals.clientThread = new ClientThread(device, AppGlobals.clientHandler);
                         AppGlobals.clientThread.start();
-                    }
-                }
-
-                if (isImageShare == 1) {
-//                    connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
-                    new BitmapCreationTask().execute();
-                } else if (isImageShare == 0) {
-                    if (dataToBeSent != null) {
-                        if (!dataToBeSent.trim().isEmpty()) {
-//                            if (mService.getState() != BluetoothService.STATE_CONNECTED) {
-//                                connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
-//                            } else {
-//                                byte[] message = dataToBeSent.getBytes();
-//                                mService.write(message);
-//                            }
-                        }
                     }
                 }
             }
@@ -144,28 +133,43 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             public void handleMessage(Message message) {
                 switch (message.what) {
                     case MessageType.READY_FOR_DATA: {
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("image", true);
-                            jsonObject.put("isImage", "isImage");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Message msg = new Message();
-                        String data = jsonObject.toString();
-                        msg.obj = data.getBytes();
-                        try {
-                            if (jsonObject.getBoolean("image")) {
-                                AppGlobals.sIncomingImage = true;
+                        if (!AppGlobals.sIncomingImage) {
+                            Message msg = new Message();
+                            String data = jsonObject.toString();
+                            msg.obj = data.getBytes();
+                            try {
+                                if (jsonObject.getInt("is_image_share") == 1) {
+                                    AppGlobals.sIncomingImage = true;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            AppGlobals.clientThread.incomingHandler.sendMessage(msg);
+                        } else {
+                            File file = new File(filePath.replaceAll("_", "/"));
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inSampleSize = 2;
+                            Bitmap image = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+                            ByteArrayOutputStream compressedImageStream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, AppGlobals.IMAGE_QUALITY, compressedImageStream);
+                            byte[] compressedImage = compressedImageStream.toByteArray();
+                            Log.v(TAG, "Compressed image size: " + compressedImage.length);
+
+                            // Invoke client thread to send
+                            Message imageCard = new Message();
+                            imageCard.obj = compressedImage;
+                            AppGlobals.clientThread.incomingHandler.sendMessage(imageCard);
+                            AppGlobals.sIncomingImage = false;
                         }
-                        AppGlobals.clientThread.incomingHandler.sendMessage(msg);
                         break;
                     }
 
                     case MessageType.COULD_NOT_CONNECT: {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
                         Toast.makeText(BluetoothActivity.this, "Could not connect to the paired device", Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -183,17 +187,17 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                             progressDialog.dismiss();
                             progressDialog = null;
                         }
-                        Toast.makeText(BluetoothActivity.this, "Photo was sent successfully", Toast.LENGTH_SHORT).show();
-//                        if (AppGlobals.sIncomingImage) {
-//                            Message msg = new Message();
-//                            msg.obj = getJsonObjectString("image", true).getBytes();
-//                            AppGlobals.clientThread.incomingHandler.sendMessage(msg);
-//                        }
+//                        Toast.makeText(BluetoothActivity.this, "Business card was sent successfully", Toast.LENGTH_SHORT).show();
+                        if (AppGlobals.sIncomingImage) {
+                            AppGlobals.clientThread = new ClientThread(AppGlobals.sBluetoothDevice,
+                                    AppGlobals.clientHandler);
+                            AppGlobals.clientThread.start();
+                        }
                         break;
                     }
 
                     case MessageType.DIGEST_DID_NOT_MATCH: {
-                        Toast.makeText(BluetoothActivity.this, "Photo was sent, but didn't go through correctly", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BluetoothActivity.this, "Business card was sent, but didn't go through correctly", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -209,26 +213,16 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                             progressDialog.dismiss();
                             progressDialog = null;
                         }
-                        try {
-                            String str = new String(((byte[]) message.obj), "UTF-8");
-                            if (str.contains("isImage")) {
-                                Log.i("TAG", str);
-                            } else {
-                                BitmapFactory.Options options = new BitmapFactory.Options();
-                                options.inSampleSize = 2;
-                                Bitmap image = BitmapFactory.decodeByteArray(((byte[]) message.obj), 0, ((byte[]) message.obj).length, options);
-                                // process the bitmap
-                                Log.i("Image", "image");
-                            }
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
+                        if (AppGlobals.sIncomingImage) {
+                            showNotification();
                         }
-
                         break;
                     }
 
                     case MessageType.DIGEST_DID_NOT_MATCH: {
-                        Toast.makeText(BluetoothActivity.this, "Photo was received, but didn't come through correctly", Toast.LENGTH_SHORT).show();
+                        if (!AppGlobals.sIncomingImage) {
+                            Toast.makeText(BluetoothActivity.this, "Business card was received, but didn't come through correctly", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     }
 
@@ -238,7 +232,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                         double pctRemaining = 100 - (((double) AppGlobals.progressData.remainingSize / AppGlobals.progressData.totalSize) * 100);
                         if (progressDialog == null) {
                             progressDialog = new ProgressDialog(BluetoothActivity.this);
-                            progressDialog.setMessage("Receiving photo...");
+                            progressDialog.setMessage("Receiving Business card...");
                             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                             progressDialog.setProgress(0);
                             progressDialog.setMax(100);
@@ -249,7 +243,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                     }
 
                     case MessageType.INVALID_HEADER: {
-                        Toast.makeText(BluetoothActivity.this, "Photo was sent, but the header was formatted incorrectly", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BluetoothActivity.this, "Business card was sent, but the header was formatted incorrectly", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }
@@ -258,7 +252,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
 
         if (AppGlobals.pairedDevices != null) {
             if (AppGlobals.serverThread == null) {
-                Log.v(TAG, "Starting server thread.  Able to accept photos.");
+                Log.v(TAG, "Starting server thread.  Able to accept Business cards.");
                 AppGlobals.serverThread = new ServerThread(AppGlobals.adapter, AppGlobals.serverHandler);
                 AppGlobals.serverThread.start();
             }
@@ -349,14 +343,6 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         }
     }
 
-    private String getJsonObjectString(String image, boolean isImage) {
-
-        return String.format(
-                "{\"image\": %s, \"isImage\": %s}",
-                image, isImage
-        );
-    }
-
     public void completeRefresh() {
         if (refreshItem.getActionView() != null) {
             refreshItem.getActionView().clearAnimation();
@@ -394,7 +380,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         return file.getAbsolutePath();
     }
 
-    private void showNotification() {
+    public void showNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_cards)
@@ -617,7 +603,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         @Override
         protected String doInBackground(String... strings) {
             Log.i("TAG", filePath);
-            Bitmap icon = BitmapFactory.decodeFile(filePath);
+            Bitmap icon = BitmapFactory.decodeFile(filePath.replaceAll("_", "/"));
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             icon.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
             byte[] image = bytes.toByteArray();
