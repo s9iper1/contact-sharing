@@ -19,7 +19,7 @@
 
         <RelativeLayout
             android:layout_width="200dp"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:background="@drawable/bg_fem"
             android:id="@+id/main_layout">
 
@@ -67,17 +67,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Developer"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/card_one_text_color"
                 android:textSize="12sp"
-                android:layout_below="@+id/tv_name"
-                android:layout_alignRight="@+id/tv_name"
-                android:layout_alignEnd="@+id/tv_name" />
+                android:layout_above="@+id/tv_jobzy_id"
+                android:layout_toRightOf="@+id/card_image"
+                android:layout_toEndOf="@+id/card_image" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/linearLayout"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:paddingBottom="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
@@ -88,7 +92,6 @@
                     android:id="@+id/phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:textStyle="bold"
                     android:text="+923006860746"
                     android:textSize="10sp"
@@ -98,7 +101,6 @@
                     android:id="@+id/email_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:textStyle="bold"
                     android:textSize="10sp"
                     android:text="shahidghafoor@gmail.com"
@@ -123,8 +125,10 @@
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:paddingRight="4dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp"
                 android:textColor="@android:color/black"
-                android:layout_below="@+id/job_title"
+                android:layout_below="@+id/tv_name"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
