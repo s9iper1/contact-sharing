@@ -246,16 +246,31 @@ public class BusinessCardsList extends Fragment {
             View view;
             if (Integer.valueOf(cardData.get(String.valueOf(cardList.get(pos)))[9]) == 0) {
                 Log.i("TAG", "loading one");
+                if (staggeredGridLayoutManager.getSpanCount() == 1) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one,
                         parent, false);
+                } else {
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one_small,
+                            parent, false);
+                }
             } else if (Integer.valueOf(cardData.get(String.valueOf(cardList.get(pos)))[9]) == 1) {
                 Log.i("TAG", "loading two");
+                if (staggeredGridLayoutManager.getSpanCount() == 1) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_two,
                         parent, false);
+                } else {
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_two_small,
+                            parent, false);
+                }
             } else {
                 Log.i("TAG", "loading three");
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_three,
-                        parent, false);
+                if (staggeredGridLayoutManager.getSpanCount() == 1) {
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_three,
+                            parent, false);
+                } else {
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_three_small,
+                            parent, false);
+                }
             }
             mViewHolder = new CustomView(view);
             return mViewHolder;
