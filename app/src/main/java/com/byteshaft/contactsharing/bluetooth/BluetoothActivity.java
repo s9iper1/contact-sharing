@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -44,7 +45,6 @@ import android.widget.Toast;
 
 import com.byteshaft.contactsharing.MainActivity;
 import com.byteshaft.contactsharing.R;
-import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
 import org.json.JSONException;
@@ -58,14 +58,11 @@ import java.util.HashMap;
 
 public class BluetoothActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-    public static final String TAG = BluetoothActivity.class.getSimpleName();
     public static final int REQUEST_ENABLE_BT = 1;
     private BluetoothAdapter mBluetoothAdapter;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
-    private ArrayList<String> bluetoothDeviceArrayList;
+    private ArrayList<DeviceData> bluetoothDeviceArrayList;
     private HashMap<String, String> bluetoothMacAddress;
-    private BluetoothService mService = null;
-    private String mConnectedDeviceName = null;
     public ViewHolder holder;
     public ListView listView;
     private MenuItem refreshItem;
@@ -76,11 +73,19 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     private int isImageShare = 0;
     private String filePath = "";
     private String jsonPictureData = "";
+    private final String TAG = BluetoothActivity.this.getClass().getSimpleName();
+    public ProgressDialog progressDialog;
+    private static BluetoothActivity sInstance;
+
+    public static BluetoothActivity getInstance() {
+        return sInstance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bluetooth_activity);
+        sInstance = this;
         dataToBeSent = getIntent().getStringExtra(AppGlobals.DATA_TO_BE_SENT);
         Log.i("TAG", "" + dataToBeSent);
         if (dataToBeSent != null) {
@@ -100,23 +105,19 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         discoverSwitch.setOnCheckedChangeListener(this);
         bluetoothDeviceArrayList = new ArrayList<>();
         bluetoothMacAddress = new HashMap<>();
-        mService = new BluetoothService(mHandler);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (isImageShare == 1) {
-                    connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
-                    new BitmapCreationTask().execute();
-                } else if (isImageShare == 0) {
-                    if (dataToBeSent != null) {
-                        if (!dataToBeSent.trim().isEmpty()) {
-                            if (mService.getState() != BluetoothService.STATE_CONNECTED) {
-                                connectDevice(bluetoothMacAddress.get(bluetoothDeviceArrayList.get(i)), true);
-                            } else {
-                                byte[] message = dataToBeSent.getBytes();
-                                mService.write(message);
-                            }
+                DeviceData deviceData = bluetoothDeviceArrayList.get(i);
+                for (BluetoothDevice device : AppGlobals.adapter.getBondedDevices()) {
+                    if (device.getAddress().contains(deviceData.getValue())) {
+                        Log.v(TAG, "Starting client thread");
+                        if (AppGlobals.clientThread != null) {
+                            AppGlobals.clientThread.cancel();
                         }
+                        AppGlobals.sBluetoothDevice = device;
+                        AppGlobals.clientThread = new ClientThread(device, AppGlobals.clientHandler);
+                        AppGlobals.clientThread.start();
                     }
                 }
             }
@@ -125,6 +126,154 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             discoverSwitch.setChecked(true);
         } else {
             discoverSwitch.setChecked(false);
+        }
+
+        AppGlobals.clientHandler = new Handler() {
+            @Override
+            public void handleMessage(Message message) {
+                switch (message.what) {
+                    case MessageType.READY_FOR_DATA: {
+                        if (!AppGlobals.sIncomingImage) {
+                            Message msg = new Message();
+                            String data = jsonObject.toString();
+                            msg.obj = data.getBytes();
+                            try {
+                                if (jsonObject.getInt("is_image_share") == 1) {
+                                    AppGlobals.sIncomingImage = true;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            AppGlobals.clientThread.incomingHandler.sendMessage(msg);
+                        } else {
+                            File file = new File(filePath.replaceAll("_", "/"));
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inSampleSize = 2;
+                            Bitmap image = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+                            ByteArrayOutputStream compressedImageStream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, AppGlobals.IMAGE_QUALITY, compressedImageStream);
+                            byte[] compressedImage = compressedImageStream.toByteArray();
+                            Log.v(TAG, "Compressed image size: " + compressedImage.length);
+
+                            // Invoke client thread to send
+                            Message imageCard = new Message();
+                            imageCard.obj = compressedImage;
+                            AppGlobals.clientThread.incomingHandler.sendMessage(imageCard);
+                            AppGlobals.sIncomingImage = false;
+                        }
+                        break;
+                    }
+
+                    case MessageType.COULD_NOT_CONNECT: {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
+                        Toast.makeText(BluetoothActivity.this, "Could not connect to the paired device", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    case MessageType.SENDING_DATA: {
+                        progressDialog = new ProgressDialog(BluetoothActivity.this);
+                        progressDialog.setMessage("Sending ...");
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.show();
+                        break;
+                    }
+
+                    case MessageType.DATA_SENT_OK: {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
+//                        Toast.makeText(BluetoothActivity.this, "Business card was sent successfully", Toast.LENGTH_SHORT).show();
+                        if (AppGlobals.sIncomingImage) {
+                            AppGlobals.clientThread = new ClientThread(AppGlobals.sBluetoothDevice,
+                                    AppGlobals.clientHandler);
+                            AppGlobals.clientThread.start();
+                        }
+                        break;
+                    }
+
+                    case MessageType.DIGEST_DID_NOT_MATCH: {
+                        Toast.makeText(BluetoothActivity.this, "Business card was sent, but didn't go through correctly", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        };
+
+        AppGlobals.serverHandler = new Handler() {
+            @Override
+            public void handleMessage(Message message) {
+                switch (message.what) {
+                    case MessageType.DATA_RECEIVED: {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
+                        if (AppGlobals.sIncomingImage) {
+                            showNotification();
+                        }
+                        break;
+                    }
+
+                    case MessageType.DIGEST_DID_NOT_MATCH: {
+                        if (!AppGlobals.sIncomingImage) {
+                            Toast.makeText(BluetoothActivity.this, "Business card was received, but didn't come through correctly", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    }
+
+                    case MessageType.DATA_PROGRESS_UPDATE: {
+                        // some kind of update
+                        AppGlobals.progressData = (ProgressData) message.obj;
+                        double pctRemaining = 100 - (((double) AppGlobals.progressData.remainingSize / AppGlobals.progressData.totalSize) * 100);
+                        if (progressDialog == null) {
+                            progressDialog = new ProgressDialog(BluetoothActivity.this);
+                            progressDialog.setMessage("Receiving Business card...");
+                            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                            progressDialog.setProgress(0);
+                            progressDialog.setMax(100);
+                            progressDialog.show();
+                        }
+                        progressDialog.setProgress((int) Math.floor(pctRemaining));
+                        break;
+                    }
+
+                    case MessageType.INVALID_HEADER: {
+                        Toast.makeText(BluetoothActivity.this, "Business card was sent, but the header was formatted incorrectly", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        };
+
+        if (AppGlobals.pairedDevices != null) {
+            if (AppGlobals.serverThread == null) {
+                Log.v(TAG, "Starting server thread.  Able to accept Business cards.");
+                AppGlobals.serverThread = new ServerThread(AppGlobals.adapter, AppGlobals.serverHandler);
+                AppGlobals.serverThread.start();
+            }
+        }
+
+        if (AppGlobals.pairedDevices != null) {
+            ArrayList<DeviceData> deviceDataList = new ArrayList<DeviceData>();
+            for (BluetoothDevice device : AppGlobals.pairedDevices) {
+                deviceDataList.add(new DeviceData(device.getName(), device.getAddress()));
+            }
+        } else {
+            Toast.makeText(this, "Bluetooth is not enabled or supported on this device", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 
@@ -212,96 +361,6 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         }
     }
 
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothService.STATE_CONNECTED:
-//                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-//                            currentState.setText(getString(R.string.title_connected_to, mConnectedDeviceName));
-                            if (dataToBeSent != null) {
-                                if (isImageShare == 0) {
-                                    byte[] message = dataToBeSent.getBytes();
-                                    mService.write(message);
-                                } else if (isImageShare == 1) {
-                                    byte[] image = jsonPictureData.getBytes();
-                                    mService.write(image);
-                                }
-                            }
-                            break;
-                        case BluetoothService.STATE_CONNECTING:
-//                            setStatus(R.string.title_connecting);
-                            currentState.setText(getString(R.string.title_connecting));
-                            break;
-                        case BluetoothService.STATE_LISTEN:
-                        case BluetoothService.STATE_NONE:
-//                            setStatus(R.string.title_not_connected);
-                            currentState.setText(getString(R.string.title_not_connected));
-                            break;
-                    }
-                    break;
-                case Constants.MESSAGE_WRITE:
-                    currentState.setText(getString(R.string.writing_data));
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    Log.i("WRITE", writeMessage);
-                    mService.stop();
-                    break;
-                case Constants.MESSAGE_READ:
-                    currentState.setText(getString(R.string.reading_data));
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    Log.i("READ", readMessage);
-                    try {
-                        JSONObject jsonCard = new JSONObject(readMessage);
-                        CardsDatabase cardsData = new CardsDatabase(getApplicationContext());
-                        int isImageShare = jsonCard.getInt(AppGlobals.IS_IMAGE_SHARE);
-                        if (isImageShare == 1) {
-                            String image = (String) jsonCard.get(AppGlobals.IMAGE);
-                            byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,
-                                    decodedString.length);
-
-//                            cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
-//                                   "","", "", "", "", "", saveImage(decodedByte, jsonCard.getString
-//                                            (AppGlobals.NAME)), 1);
-                        } else if (isImageShare == 0) {
-                            cardsData.createNewEntry(jsonCard.getString(AppGlobals.NAME),
-                                    jsonCard.getString(AppGlobals.ADDRESS), jsonCard.getString(
-                                            AppGlobals.JOB_TITLE), jsonCard.getString(AppGlobals.NUMBER),
-                                    jsonCard.getString(AppGlobals.EMAIL), jsonCard.getString(AppGlobals.ORG),
-                                    jsonCard.getString(AppGlobals.JOBZY_ID), "", 0,
-                                    jsonCard.getInt(AppGlobals.CARD_DESIGN));
-                        }
-
-                        showNotification();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    mService.stop();
-                    break;
-                case Constants.MESSAGE_DEVICE_NAME:
-                    // save the connected device's name
-                    mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
-                    if (this != null) {
-                        Toast.makeText(BluetoothActivity.this, "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case Constants.MESSAGE_TOAST:
-                    if (this != null) {
-                        Toast.makeText(BluetoothActivity.this, msg.getData().getString(Constants.TOAST),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-            }
-        }
-    };
-
     private String saveImage(Bitmap finalBitmap, String name) {
 
         String internalFolder = Environment.getExternalStorageDirectory() +
@@ -321,7 +380,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         return file.getAbsolutePath();
     }
 
-    private void showNotification() {
+    public void showNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_cards)
@@ -413,14 +472,10 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            if (mService.getState() == BluetoothService.STATE_NONE) {
-                // Start the Bluetooth chat services
-                mService.start();
 
             }
             discoverDevices();
         }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -464,7 +519,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                 // Add the name and address to an array adapter to show in a ListView
                 if (!mBluetoothAdapter.getAddress().equals(device.getAddress())) {
                     if (!bluetoothDeviceArrayList.contains(device.getName()) && device.getName() != null) {
-                        bluetoothDeviceArrayList.add(device.getName());
+                        bluetoothDeviceArrayList.add(new DeviceData(device.getName(), device.getAddress()));
                         bluetoothMacAddress.put(device.getName(), device.getAddress());
                         Log.i(TAG, device.getName() + "\n" + device.getAddress());
                     }
@@ -504,15 +559,15 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(macAddress);
         // Attempt to connect to the device
         mBluetoothAdapter.cancelDiscovery();
-        mService.connect(device, secure);
+//        mService.connect(device, secure);
     }
 
     class Adapter extends ArrayAdapter<String> {
 
-        private ArrayList<String> list;
+        private ArrayList<DeviceData> list;
         private Context mContext;
 
-        public Adapter(Context context, int resource, ArrayList<String> list) {
+        public Adapter(Context context, int resource, ArrayList<DeviceData> list) {
             super(context, resource);
             this.list = list;
             mContext = context;
@@ -529,7 +584,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.bluetoothName.setText(list.get(position));
+            holder.bluetoothName.setText(list.get(position).toString());
             return convertView;
         }
 
@@ -548,7 +603,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
         @Override
         protected String doInBackground(String... strings) {
             Log.i("TAG", filePath);
-            Bitmap icon = BitmapFactory.decodeFile(filePath);
+            Bitmap icon = BitmapFactory.decodeFile(filePath.replaceAll("_", "/"));
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             icon.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
             byte[] image = bytes.toByteArray();
@@ -567,6 +622,24 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
             jsonPictureData = toBeSentJson.toString();
             return null;
         }
+    }
+
+    class DeviceData {
+        public DeviceData(String spinnerText, String value) {
+            this.spinnerText = spinnerText;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String toString() {
+            return spinnerText;
+        }
+
+        String spinnerText;
+        String value;
     }
 
 }

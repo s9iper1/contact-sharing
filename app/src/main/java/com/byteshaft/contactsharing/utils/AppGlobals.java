@@ -1,13 +1,22 @@
 package com.byteshaft.contactsharing.utils;
 
 import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.util.Log;
+
+import com.byteshaft.contactsharing.bluetooth.ClientThread;
+import com.byteshaft.contactsharing.bluetooth.ProgressData;
+import com.byteshaft.contactsharing.bluetooth.ServerThread;
+
+import java.util.Set;
 
 public class AppGlobals extends Application {
 
     //register
-
     public static final String KEY_FULLNAME = "full_name";
     public static final String KEY_EMAIL = "email";
 
@@ -47,9 +56,38 @@ public class AppGlobals extends Application {
     private static final String LOGTAG = "LOGTAG";
     public static int sSelectedDesign = 0;
 
+    // bluetooth connection and handling part private static String TAG = "AppGlobals";
+    public static BluetoothAdapter adapter;
+    public static Set<BluetoothDevice> pairedDevices;
+    public static Handler clientHandler;
+    public static Handler serverHandler;
+    public static ClientThread clientThread;
+    public static ServerThread serverThread;
+    public static ProgressData progressData = new ProgressData();
+
+    public static final int PICTURE_RESULT_CODE = 1234;
+    public static final int IMAGE_QUALITY = 100;
+    public static final int NO_DESIGN = 4;
+    public static boolean sIncomingImage = false;
+    public static BluetoothDevice sBluetoothDevice;
+    public static String imageOwner = "";
+    public static int isImageState;
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+        adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null) {
+            if (adapter.isEnabled()) {
+                pairedDevices = adapter.getBondedDevices();
+            } else {
+                Log.e(getLogTag(getClass()), "Bluetooth is not enabled");
+            }
+        } else {
+            Log.e(getLogTag(getClass()), "Bluetooth is not supported on this device");
+        }
         sContext = getApplicationContext();
         typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/fonts.ttf");
         regularTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"fonts/regular.ttf");

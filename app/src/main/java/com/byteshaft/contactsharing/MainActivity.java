@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (!Helpers.isUserLoggedIn()) {
-//            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//        }
         setContentView(R.layout.activity_main);
         sInstance = this;
         loadFragment(new BusinessCardsList());
