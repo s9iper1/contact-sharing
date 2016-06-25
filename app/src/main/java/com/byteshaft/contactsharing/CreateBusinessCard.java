@@ -120,7 +120,7 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             cardsDatabase.createNewEntry(fileName, "", "", "", "", "", "",
-                    filePath, 1, 4);
+                    filePath, 1, AppGlobals.NO_DESIGN);
             MainActivity.getInstance().loadFragment(new BusinessCardsList());
         }
     }
