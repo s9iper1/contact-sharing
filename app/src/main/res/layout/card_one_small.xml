@@ -51,29 +51,25 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/card_one_text_color"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="10dp"
                 android:textSize="14sp"
-                android:gravity="center"
+                android:gravity="left"
                 android:textStyle="bold"
                 android:text="Shahid Ghafoor" />
 
             <TextView
                 android:id="@+id/job_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Developer"
+                android:gravity="left"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:textColor="@color/card_one_text_color"
                 android:textSize="12sp"
-                android:layout_above="@+id/tv_jobzy_id"
-                android:layout_toRightOf="@+id/card_image"
-                android:layout_toEndOf="@+id/card_image" />
+                android:layout_below="@+id/tv_name"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -90,7 +86,7 @@
 
                 <TextView
                     android:id="@+id/phone_number"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:text="+923006860746"
@@ -99,7 +95,7 @@
 
                 <TextView
                     android:id="@+id/email_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="10sp"
@@ -108,7 +104,7 @@
 
                 <TextView
                     android:id="@+id/location"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
 
@@ -119,30 +115,27 @@
 
             <TextView
                 android:id="@+id/tv_organization"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Byteshaft"
                 android:textStyle="bold"
                 android:textSize="12sp"
-                android:paddingRight="4dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginEnd="2dp"
+                android:gravity="right"
                 android:textColor="@android:color/black"
-                android:layout_below="@+id/tv_name"
+                android:layout_below="@+id/job_title"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
             <TextView
                 android:id="@+id/tv_jobzy_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Jobzy ID"
                 android:textSize="10sp"
-                android:paddingRight="4dp"
-                android:textColor="@android:color/black"
+                android:gravity="right"
                 android:layout_below="@+id/tv_organization"
-                android:layout_alignRight="@+id/tv_organization"
-                android:layout_alignEnd="@+id/tv_organization" />
+                android:paddingRight="4dp"
+                android:textColor="@android:color/black" />
         </RelativeLayout>
     </RelativeLayout>
 
