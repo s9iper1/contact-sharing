@@ -111,7 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
               if (WebServiceHelper.isNetworkAvailable() && WebServiceHelper.isInternetWorking()) {
                 try {
                     data = WebServiceHelper.userLogin(mEmail, mPasswordEntry);
-                    System.out.println(data + "working");
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -129,9 +128,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Helpers.alertDialog(LoginActivity.this, "Connection error",
                         "Check your internet connection");
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                new GetUserDataTask().execute();
                 Helpers.saveDataToSharedPreferences(AppGlobals.KEY_USER_TOKEN, response);
                 Log.i("Token", " " + Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
+                new GetUserDataTask().execute();
                 Helpers.saveUserLogin(true);
                 finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
