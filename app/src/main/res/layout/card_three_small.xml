@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/card_two_text_color"
                 android:layout_marginLeft="4dp"
@@ -51,7 +51,7 @@
 
             <TextView
                 android:id="@+id/job_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Job Title"
                 android:textColor="@color/card_two_text_color"
@@ -73,7 +73,7 @@
 
                 <TextView
                     android:id="@+id/phone_number"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:text="+923006860746"
@@ -82,7 +82,7 @@
 
                 <TextView
                     android:id="@+id/email_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:text="shahidghafoor@gmail.com"
@@ -91,7 +91,7 @@
 
                 <TextView
                     android:id="@+id/location"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Khan center, Abdali Road, Multan"
                     android:textSize="10sp"
@@ -101,22 +101,26 @@
 
             <TextView
                 android:id="@+id/tv_organization"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Organization"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                android:gravity="right"
+                android:layout_marginRight="4dp"
                 android:textColor="@color/card_two_text_color"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/tv_name"
-                android:layout_toEndOf="@+id/tv_name" />
+                android:layout_below="@+id/job_title"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:id="@+id/tv_jobzy_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Jobzy ID"
                 android:textSize="10sp"
+                android:gravity="right"
+                android:padding="1dp"
                 android:textColor="@color/card_two_text_color"
                 android:layout_below="@+id/tv_organization"
                 android:layout_alignRight="@+id/tv_organization"
