@@ -30,7 +30,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 
     public void createNewEntry(String name, String address, String jobTitle, String contactNumber,
                                String emailAddress, String organization, String jobzyId,
-                               String imgUri, Integer isImagCard, int designInt) {
+                               String imgUri, Integer isImagCard, int designInt, String logoImagepath) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseConstants.NAME_COLUMN, name);
@@ -43,6 +43,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
         values.put(DatabaseConstants.IMG_COLUMN, imgUri);
         values.put(DatabaseConstants.IS_IMAGE_CARD_COLUMN, isImagCard);
         values.put(DatabaseConstants.SELECTED_CARD_DESIGN, designInt);
+        values.put(DatabaseConstants.LOGO_IMAGE, logoImagepath);
         db.insert(DatabaseConstants.TABLE_NAME, null, values);
         db.close();
     }
@@ -145,11 +146,15 @@ public class CardsDatabase extends SQLiteOpenHelper {
             int isImage = cursor.getInt(
                     cursor.getColumnIndex(DatabaseConstants.IS_IMAGE_CARD_COLUMN));
 
+            String logoPath = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.LOGO_IMAGE));
+
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
             int cardDesign = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.SELECTED_CARD_DESIGN));
             String[] data = new String[] {name, address, jobTitle, contactNumber, emailAddress,
-                    organization, String.valueOf(isImage), imageUri, jobzyId,  String.valueOf(cardDesign)};
+                    organization, String.valueOf(isImage), imageUri, jobzyId,
+                    String.valueOf(cardDesign), logoPath};
             hashMap.put(String.valueOf(unique_id), data);
         }
         db.close();

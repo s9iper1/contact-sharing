@@ -72,6 +72,17 @@ public class AppGlobals extends Application {
     public static BluetoothDevice sBluetoothDevice;
     public static String imageOwner = "";
     public static int isImageState;
+    public static boolean sInComingLogo = false;
+    public static String KEY_LOGO = "key_logo";
+    public static String logoPath = "";
+    public static String name = "";
+    public static String address = "";
+    public static String jobTitle = "";
+    public static String jobzyId = "";
+    public static String contectNumber = "";
+    public static String email = "" ;
+    public static String org = "";
+    public static int design = 4;
 
 
 

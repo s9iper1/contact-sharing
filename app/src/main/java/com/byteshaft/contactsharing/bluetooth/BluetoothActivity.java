@@ -141,11 +141,33 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                                 if (jsonObject.getInt("is_image_share") == 1) {
                                     AppGlobals.sIncomingImage = true;
                                 }
+                                if (!jsonObject.getString(AppGlobals.KEY_LOGO).trim().isEmpty()) {
+                                    AppGlobals.logoPath = jsonObject.getString(AppGlobals.KEY_LOGO);
+                                    AppGlobals.sInComingLogo = true;
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             AppGlobals.clientThread.incomingHandler.sendMessage(msg);
-                        } else {
+                        } else if (AppGlobals.sInComingLogo) {
+                            File file = new File(AppGlobals.logoPath);
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inSampleSize = 2;
+                            Bitmap image = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+                            ByteArrayOutputStream compressedImageStream = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, AppGlobals.IMAGE_QUALITY, compressedImageStream);
+                            byte[] compressedImage = compressedImageStream.toByteArray();
+                            Log.v(TAG, "Compressed image size: " + compressedImage.length);
+
+                            // Invoke client thread to send
+                            Message imageCard = new Message();
+                            imageCard.obj = compressedImage;
+                            AppGlobals.clientThread.incomingHandler.sendMessage(imageCard);
+                            AppGlobals.sInComingLogo = false;
+                        }
+
+                        else {
                             File file = new File(filePath.replaceAll("_", "/"));
                             BitmapFactory.Options options = new BitmapFactory.Options();
                             options.inSampleSize = 2;
@@ -188,7 +210,7 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
                             progressDialog = null;
                         }
 //                        Toast.makeText(BluetoothActivity.this, "Business card was sent successfully", Toast.LENGTH_SHORT).show();
-                        if (AppGlobals.sIncomingImage) {
+                        if (AppGlobals.sIncomingImage || AppGlobals.sInComingLogo) {
                             AppGlobals.clientThread = new ClientThread(AppGlobals.sBluetoothDevice,
                                     AppGlobals.clientHandler);
                             AppGlobals.clientThread.start();
@@ -301,6 +323,9 @@ public class BluetoothActivity extends AppCompatActivity implements CompoundButt
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        AppGlobals.sIncomingImage = false;
+        AppGlobals.sInComingLogo = false;
+        AppGlobals.logoPath = "";
         if (mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.disable();
         }
