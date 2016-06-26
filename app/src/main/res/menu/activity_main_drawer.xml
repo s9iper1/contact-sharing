@@ -3,13 +3,14 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_cards"
-            android:icon="@drawable/ic_cards"
-            android:title="Business Cards" />
-        <item
             android:id="@+id/nav_create_card"
             android:icon="@drawable/ic_card"
             android:title="Create Card" />
+
+        <item
+            android:id="@+id/nav_cards"
+            android:icon="@drawable/ic_cards"
+            android:title="Business Cards" />
 
         <item
             android:id="@+id/nav_bluetooth"
@@ -20,11 +21,6 @@
 
     <item android:title="Communicate">
         <menu>
-
-            <item
-                android:id="@+id/nav_login"
-                android:icon="@drawable/ic_login"
-                android:title="Login" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"

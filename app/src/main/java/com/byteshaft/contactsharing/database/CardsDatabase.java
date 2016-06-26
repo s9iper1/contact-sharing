@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.byteshaft.contactsharing.utils.AppGlobals;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,7 +30,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 
     public void createNewEntry(String name, String address, String jobTitle, String contactNumber,
                                String emailAddress, String organization, String jobzyId,
-                               String imgUri, Integer isImagCard) {
+                               String imgUri, Integer isImagCard, int designInt) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseConstants.NAME_COLUMN, name);
@@ -44,6 +42,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
         values.put(DatabaseConstants.JOBZI_ID, jobzyId);
         values.put(DatabaseConstants.IMG_COLUMN, imgUri);
         values.put(DatabaseConstants.IS_IMAGE_CARD_COLUMN, isImagCard);
+        values.put(DatabaseConstants.SELECTED_CARD_DESIGN, designInt);
         db.insert(DatabaseConstants.TABLE_NAME, null, values);
         db.close();
     }
@@ -115,11 +114,12 @@ public class CardsDatabase extends SQLiteOpenHelper {
         return list;
     }
 
-    public HashMap<String, String> getSingleBusinessCard(int id) {
+    public HashMap<String, String[]> getBusinessCard() {
         SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME + " WHERE ID =" +id + " LIMIT 1";
+        String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
-        HashMap<String, String> hashMap = new HashMap<>();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        HashMap<String, String[]> hashMap = new HashMap<>();
         while (cursor.moveToNext()) {
             int unique_id = cursor.getInt(
                     cursor.getColumnIndex(DatabaseConstants.ID_COLUMN));
@@ -147,17 +147,10 @@ public class CardsDatabase extends SQLiteOpenHelper {
 
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
-
-            hashMap.put(AppGlobals.ID, String.valueOf(unique_id));
-            hashMap.put(AppGlobals.NAME, name);
-            hashMap.put(AppGlobals.ADDRESS, address);
-            hashMap.put(AppGlobals.JOB_TITLE, jobTitle);
-            hashMap.put(AppGlobals.JOBZY_ID, jobzyId);
-            hashMap.put(AppGlobals.NUMBER, contactNumber);
-            hashMap.put(AppGlobals.EMAIL, emailAddress);
-            hashMap.put(AppGlobals.ORG, organization);
-            hashMap.put(AppGlobals.IS_IMAGE, String.valueOf(isImage));
-            hashMap.put(AppGlobals.IMG_URI, imageUri);
+            int cardDesign = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.SELECTED_CARD_DESIGN));
+            String[] data = new String[] {name, address, jobTitle, contactNumber, emailAddress,
+                    organization, String.valueOf(isImage), imageUri, jobzyId,  String.valueOf(cardDesign)};
+            hashMap.put(String.valueOf(unique_id), data);
         }
         db.close();
         cursor.close();

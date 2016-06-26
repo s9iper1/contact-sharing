@@ -3,12 +3,15 @@ package com.byteshaft.contactsharing.utils;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 
-/**
- * Created by husnain on 6/14/16.
- */
+import java.io.File;
+import java.io.FileOutputStream;
+
 public class Helpers  {
 
     public Helpers() {
@@ -48,5 +51,54 @@ public class Helpers  {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public static Bitmap getBitMapOfProfilePic(String selectedImagePath) {
+        Bitmap bm;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(selectedImagePath, options);
+        final int REQUIRED_SIZE = 200;
+        int scale = 1;
+        while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+            scale *= 2;
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+        return bm;
+    }
+
+    public static String createDirectoryAndSaveFile(String fileName) {
+        String internalFolder = Environment.getExternalStorageDirectory() +
+                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
+        File file = new File(internalFolder);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        internalFolder = internalFolder + File.separator + fileName + ".jpg";
+        return new File(internalFolder).getAbsolutePath();
+    }
+
+    public static String saveImage(Bitmap finalBitmap, String fileName) {
+        String internalFolder = Environment.getExternalStorageDirectory() +
+                File.separator + "Android/data" + File.separator + AppGlobals.getContext().getPackageName();
+        File outerFolder = new File(internalFolder);
+        if (!outerFolder.exists()) {
+            outerFolder.mkdirs();
+        }
+        String personName = fileName + ".jpg";
+        File file = new File (internalFolder, personName);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return internalFolder + File.separator + personName;
     }
 }

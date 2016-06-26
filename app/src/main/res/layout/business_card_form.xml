@@ -22,9 +22,9 @@
                 android:layout_gravity="end"
                 android:layout_margin="2dp"
                 android:padding="5dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@android:drawable/ic_menu_camera"
                 app:siBorderColor="@color/white"
-                app:siBorderWidth="4dp" />
+                app:siBorderWidth="1dp" />
 
             <EditText
                 android:id="@+id/et_name"

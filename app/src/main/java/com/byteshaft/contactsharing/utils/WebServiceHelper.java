@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ public class WebServiceHelper {
         HttpURLConnection connection = openConnectionForUrl(url, "POST");
         sendRequestData(connection, data);
         AppGlobals.setResponseCode(connection.getResponseCode());
-        System.out.println(connection.getResponseCode());
         return readResponse(connection);
     }
 
@@ -154,7 +152,7 @@ public class WebServiceHelper {
 
         try {
             object.put("email", email);
-            object.put("reset_key", resetkey);
+            object.put("password_reset_key", resetkey);
             object.put("new_password", newpassword);
         } catch (JSONException var8) {
             var8.printStackTrace();
@@ -167,7 +165,7 @@ public class WebServiceHelper {
         JSONObject object = new JSONObject();
 
         try {
-            object.put("username", email);
+            object.put("email", email);
             object.put("password", password);
         } catch (JSONException var4) {
             var4.printStackTrace();

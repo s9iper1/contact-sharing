@@ -8,9 +8,6 @@ import android.view.WindowManager;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
-/**
- * Created by husnain on 6/21/16.
- */
 public class SplashScreen extends Activity {
 
     @Override

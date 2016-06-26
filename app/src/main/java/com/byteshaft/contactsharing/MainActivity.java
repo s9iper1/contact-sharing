@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (!Helpers.isUserLoggedIn()) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         sInstance = this;
         loadFragment(new BusinessCardsList());
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -153,35 +154,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_bluetooth:
                 startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
                 break;
-            case R.id.nav_login:
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                break;
             default:
                 loadFragment(new CreateBusinessCard());
                 break;
 
         }
-
-//        if (id == R.id.nav_cards) {
-//            // Handle the camera action
-//            loadFragment(new BusinessCardsList());
-//        } else if (id == R.id.nav_create_card) {
-//
-//            loadFragment(new CreateBusinessCard());
-//
-//        } else if (id == R.id.nav_logout) {
-//            if (Helpers.isUserLoggedIn()) {
-//                showLogoutDialog();
-//            } else {
-//                Toast.makeText(getApplicationContext(), "You are not loggedIn", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        } else if (id == R.id.nav_bluetooth) {
-//            startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
-//        } else if (id == R.id.nav_login) {
-//            System.out.println("working");
-//            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -207,7 +184,7 @@ public class MainActivity extends AppCompatActivity
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.clear();
                         editor.commit();
-                        closeApplication();
+                        finish();
                         if (!Helpers.isUserLoggedIn()) {
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             Helpers.saveUserLogin(false);
