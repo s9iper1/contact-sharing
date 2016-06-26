@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Helpers.saveUserLogin(true);
                 finish();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            } else {
+            }else {
                 Toast.makeText(AppGlobals.getContext(), "Login Failed! Invalid Email or Password",
                         Toast.LENGTH_SHORT).show();
             }

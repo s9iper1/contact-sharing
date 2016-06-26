@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
-import com.byteshaft.contactsharing.utils.Helpers;
 
 /**
  * Created by husnain on 6/21/16.
@@ -29,6 +28,7 @@ public class SplashScreen extends Activity {
                     finish();
                 }
             }, 3000);
+
             AppGlobals.isFirstTime = true;
         } else {
 
@@ -36,7 +36,6 @@ public class SplashScreen extends Activity {
             startMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(startMainActivity);
             finish();
-
         }
     }
 }
