@@ -29,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPassword;
 
     private String mFullNameString;
-    private String mEmail;
+    public static String mEmail;
     private String mPasswordEntry;
     private CircularImageView circularImageView;
 
@@ -143,8 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(AppGlobals.getContext(),
                         "Account Created Successfully",
                         Toast.LENGTH_LONG).show();
-                finish();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), CodeConfirmationActivity.class));
                 finish();
             } else if (AppGlobals.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
                 Helpers.alertDialog(RegisterActivity.this, "Email already in use",
