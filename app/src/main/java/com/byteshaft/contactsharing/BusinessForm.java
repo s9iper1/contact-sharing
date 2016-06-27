@@ -91,7 +91,7 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
                         String jobzyId = mJobzyId.getText().toString();
                         contactNumber = mContactNumber.getText().toString();
                         cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-                                organization, jobzyId, "", 0, AppGlobals.sSelectedDesign);
+                                organization, jobzyId, "", 0, AppGlobals.sSelectedDesign, imageUrl);
                         CardDetailsTask cardDetailsTask = new CardDetailsTask(
                                 BusinessForm.this,
                                 address,
