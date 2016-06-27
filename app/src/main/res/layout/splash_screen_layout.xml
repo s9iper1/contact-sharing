@@ -5,12 +5,13 @@
     android:background="@drawable/splash_background">
 
     <ImageView
+        android:id="@+id/logo_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_jobzy"
+        android:layout_marginTop="100dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp" />
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -20,6 +21,7 @@
         android:weightSum="1">
 
         <Button
+            android:id="@+id/button_login"
             style="@style/AppTheme.Button"
             android:text="Login"
             android:layout_weight="0.5"
@@ -28,6 +30,7 @@
 
 
         <Button
+            android:id="@+id/button_share"
             android:text="Share"
             android:layout_weight="0.5"
             android:layout_width="0dp"
