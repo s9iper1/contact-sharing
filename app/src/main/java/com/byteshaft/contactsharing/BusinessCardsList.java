@@ -51,7 +51,6 @@ public class BusinessCardsList extends Fragment {
     private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
     private CardsDatabase cardsDatabase;
-    private HashMap<Integer, String> colorHashMap;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean gridView = false;
     private HashMap<String , String[]> cardData;
@@ -62,7 +61,6 @@ public class BusinessCardsList extends Fragment {
                              Bundle savedInstanceState) {
         mBaseView = inflater.inflate(R.layout.business_card_list, container, false);
         cardsDatabase = new CardsDatabase(getActivity().getApplicationContext());
-        colorHashMap = new HashMap<>();
         mBaseView.setTag("RecyclerViewFragment");
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setSpanCount(2);
@@ -120,6 +118,7 @@ public class BusinessCardsList extends Fragment {
     }
 
     private void loadData() {
+        cardData = new HashMap<>();
         cardData = cardsDatabase.getBusinessCard();
         mRecyclerView.setAdapter(null);
         idsList = new ArrayList<>();
@@ -140,11 +139,7 @@ public class BusinessCardsList extends Fragment {
                 if (gridView) {
                     item.setIcon(getResources().getDrawable(R.drawable.grid));
                     staggeredGridLayoutManager.setSpanCount(1);
-                    mRecyclerView.setAdapter(null);
-                    idsList = cardsDatabase.getIdOfSavedCards();
-                    nameData = cardsDatabase.getNamesOfSavedCards();
-                    mCardsAdapter = new CardsAdapter(idsList, cardData);
-                    mRecyclerView.setAdapter(mCardsAdapter);
+                    loadData();
                     gridView = false;
                 } else {
                     item.setIcon(getResources().getDrawable(R.drawable.normal));
@@ -204,38 +199,6 @@ public class BusinessCardsList extends Fragment {
             @Override
             public void onItemLongClick(final Integer position) {
                 System.out.println("2nd Long click ");
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setMessage("Do you want to delete this card?");
-                alertDialogBuilder.setPositiveButton("Ok",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                cardsDatabase.deleteEntry(position);
-                                mRecyclerView.setAdapter(null);
-                                idsList = new ArrayList<>();
-                                nameData = new ArrayList<>();
-                                idsList = cardsDatabase.getIdOfSavedCards();
-                                nameData = cardsDatabase.getNamesOfSavedCards();
-                                cardData = new HashMap<>();
-                                cardData = cardsDatabase.getBusinessCard();
-                                mCardsAdapter = new CardsAdapter(idsList, cardData);
-                                mRecyclerView.setAdapter(mCardsAdapter);
-
-                            }
-                        });
-
-                alertDialogBuilder.setNegativeButton("cancel",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-
-                            }
-                        });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
             }
         }));
     }
@@ -247,15 +210,14 @@ public class BusinessCardsList extends Fragment {
         private OnItemClickListener mListener;
         private GestureDetector mGestureDetector;
         private HashMap<String, String[]> cardData;
-        private int pos = 0;
 
         public CardsAdapter(final ArrayList<Integer> cardList, HashMap<String, String[]> nameData,
                             Context context,
                             final OnItemClickListener listener) {
-            mListener = listener;
+            this.mListener = listener;
             this.cardList = cardList;
             this.cardData = nameData;
-            mGestureDetector = new GestureDetector(context,
+            this.mGestureDetector = new GestureDetector(context,
                     new GestureDetector.SimpleOnGestureListener() {
                         @Override
                         public boolean onSingleTapUp(MotionEvent e) {
@@ -266,10 +228,35 @@ public class BusinessCardsList extends Fragment {
                         public void onLongPress(MotionEvent e) {
                             super.onLongPress(e);
                             System.out.println("Long press detected");
-                            View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+                            final View childView = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
                             if (childView != null && mListener != null) {
                                 mListener.onItemLongClick(cardList.get(mRecyclerView.getChildPosition(childView)));
                             }
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                            alertDialogBuilder.setMessage("Do you want to delete this card?");
+                            alertDialogBuilder.setPositiveButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                            cardsDatabase.deleteEntry(cardList.get(mRecyclerView.getChildPosition(childView)));
+                                            cardList.remove(cardList.get(mRecyclerView.getChildPosition(childView)));
+                                            notifyDataSetChanged();
+                                        }
+                                    });
+
+                            alertDialogBuilder.setNegativeButton("cancel",
+                                    new DialogInterface.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
                         }
                     });
         }
@@ -280,9 +267,23 @@ public class BusinessCardsList extends Fragment {
         }
 
         @Override
+        public int getItemViewType(int position) {
+            switch (Integer.valueOf(cardData.get(String.valueOf(cardList.get(position)))[9])) {
+                case 0:
+                    return 0;
+                case 1:
+                    return 1;
+                case 3:
+                    return 3;
+                default: return 3;
+
+            }
+        }
+
+        @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
-            if (Integer.valueOf(cardData.get(String.valueOf(cardList.get(pos)))[9]) == 0) {
+            if (viewType == 0) {
                 Log.i("TAG", "loading one");
                 if (staggeredGridLayoutManager.getSpanCount() == 1) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one,
@@ -291,7 +292,7 @@ public class BusinessCardsList extends Fragment {
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one_small,
                             parent, false);
                 }
-            } else if (Integer.valueOf(cardData.get(String.valueOf(cardList.get(pos)))[9]) == 1) {
+            } else if (viewType == 1) {
                 Log.i("TAG", "loading two");
                 if (staggeredGridLayoutManager.getSpanCount() == 1) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_two,
@@ -315,9 +316,9 @@ public class BusinessCardsList extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int pos) {
             holder.setIsRecyclable(false);
-            int currentIndex = cardList.get(position);
+            int currentIndex = cardList.get(pos);
             mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
             if (cardData.get(String.valueOf(cardList.get(pos)))[6].equals("0")) {
                 mViewHolder.personName.setText(cardData.get(String.valueOf(cardList.get(pos)))[0]);
@@ -373,7 +374,6 @@ public class BusinessCardsList extends Fragment {
                 Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
                 mViewHolder.cardImage.setImageBitmap(scaled);
             }
-            pos = pos+1;
         }
 
         @Override

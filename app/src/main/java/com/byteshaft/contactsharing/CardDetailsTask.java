@@ -2,6 +2,7 @@ package com.byteshaft.contactsharing;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
@@ -12,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class CardDetailsTask extends AsyncTask<String, String, Integer> {
@@ -21,7 +23,7 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
     private String mAddress;
     private String mContactNumber;
     private String mEmail;
-    private String mHasImage;
+    private int mHasImage;
     private String mJobTitle;
     private String mName;
     private String mOrganization;
@@ -33,7 +35,7 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
 
 
     public CardDetailsTask(Activity activity, String address, String contactNumber, String email,
-                           String hasImage, String jobTitle, String name, String organization,
+                           int hasImage, String jobTitle, String name, String organization,
                            String filepath, int designInt, String logoPath) {
 
         mAddress = address;
@@ -61,19 +63,17 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
     protected Integer doInBackground(String... params) {
 
         if (WebServiceHelper.isNetworkAvailable() && WebServiceHelper.isInternetWorking()) {
-
+            Log.i("TAG", Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
             MultiPartUtility multiPartUtility;
             try {
-                multiPartUtility = new MultiPartUtility(mAddress, mContactNumber, mEmail,
-                        mHasImage, mJobTitle, mName, mOrganization);
-                System.out.println(multiPartUtility + "working");
+                multiPartUtility = new MultiPartUtility(new URL("http://128.199.195.245:8000/api/create"));
                 multiPartUtility.addFormField("address", mAddress);
                 multiPartUtility.addFormField("contact_number", mContactNumber);
                 multiPartUtility.addFormField("email", mEmail);
                 multiPartUtility.addFormField("job_title", mJobTitle);
                 multiPartUtility.addFormField("name", mName);
                 multiPartUtility.addFormField("organization", mOrganization);
-                multiPartUtility.addFormField("is_image", mHasImage);
+                multiPartUtility.addFormField("is_image", String.valueOf(mHasImage));
                 if (!logoPath.trim().isEmpty()) {
                     multiPartUtility.addFilePart("logo", new File(logoPath));
                     uploadingUris.add(logoPath);
@@ -109,8 +109,10 @@ public class CardDetailsTask extends AsyncTask<String, String, Integer> {
         super.onPostExecute(integer);
         WebServiceHelper.dismissProgressDialog();
         if (integer == HttpURLConnection.HTTP_CREATED) {
+            System.out.println("working");
             activity.finish();
         }
+
         if (noInternet) {
             Helpers.alertDialog(activity, "Connection error",
                     "Check your internet connection");

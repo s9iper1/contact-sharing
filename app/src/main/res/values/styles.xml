@@ -21,6 +21,12 @@
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">@android:color/white</item>
+
+    </style>
+
+    <style name="shareButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#03A9F4</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 
