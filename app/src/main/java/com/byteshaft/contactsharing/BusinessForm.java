@@ -90,23 +90,28 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
                         String address = mAddress.getText().toString();
                         String jobzyId = mJobzyId.getText().toString();
                         contactNumber = mContactNumber.getText().toString();
+                        Log.i("First Log", "splash_background one");
                         cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
                                 organization, jobzyId, "", 0, AppGlobals.sSelectedDesign);
-                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
-                                BusinessForm.this,
-                                address,
-                                contactNumber,
-                                emailAddress,
-                                "0",
-                                jobTitle,
-                                name,
-                                organization,
-                                "", AppGlobals.sSelectedDesign, imageUrl);
-                        cardDetailsTask.execute();
-                        AppGlobals.sNewEntryCreated = true;
+                        Log.i("Second Log", "splash_background 2");
+//                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
+//                                BusinessForm.this,
+//                                address,
+//                                contactNumber,
+//                                emailAddress,
+//                                0,
+//                                jobTitle,
+//                                name,
+//                                organization,
+//                                "", AppGlobals.sSelectedDesign, imageUrl);
+//                        cardDetailsTask.execute();
+                        Log.i("Third", "splash_background 3");
+//                        AppGlobals.sNewEntryCreated = true;
                     }
                 } else {
                     validateEditTexts();
+                    Log.i("Second Log", "splash_background else part");
+
                     String jobTitle = mJobTitle.getText().toString();
                     String emailAddress = mEmailAddress.getText().toString();
                     String organization = mOrganization.getText().toString();
@@ -114,8 +119,9 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
                     String jobzyId = mJobzyId.getText().toString();
                     cardsDatabase.updateEntries(id, name, address, jobTitle,
                             contactNumber, emailAddress, organization, jobzyId);
-                    finish();
                 }
+
+                finish();
             }
         });
     }

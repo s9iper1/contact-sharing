@@ -22,6 +22,16 @@
             android:background="@drawable/background_three"
             android:id="@+id/main_layout" >
 
+            <ImageView
+                android:id="@+id/card_image"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:background="@drawable/border_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"

@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
         sInstance = this;
-        loadFragment(new BusinessCardsList());
+        loadFragment(new CreateBusinessCard());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
