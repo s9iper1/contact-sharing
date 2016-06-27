@@ -56,6 +56,9 @@ public class AppGlobals extends Application {
     private static final String LOGTAG = "LOGTAG";
     public static int sSelectedDesign = 0;
 
+    public static final String USER_ACTIVE = "user_active";
+    public static final String REGISTRATION_DONE = "registration_done";
+
     // bluetooth connection and handling part private static String TAG = "AppGlobals";
     public static BluetoothAdapter adapter;
     public static Set<BluetoothDevice> pairedDevices;
