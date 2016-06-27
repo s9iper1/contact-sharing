@@ -1,5 +1,7 @@
 package com.byteshaft.contactsharing;
 
+import android.util.Log;
+
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
 
@@ -43,6 +45,8 @@ public class MultiPartUtility {
         connection.setConnectTimeout(CONNECT_TIMEOUT);
         connection.setReadTimeout(READ_TIMEOUT);
         connection.setRequestMethod("POST");
+        connection.setRequestProperty("Authorization", "Token " +
+                Helpers.getStringFromSharedPreferences(AppGlobals.KEY_USER_TOKEN));
         connection.setRequestProperty("Accept-Charset", CHARSET);
         connection.setRequestProperty("Content-Type",
                 "multipart/form-data; boundary=" + boundary);
@@ -55,31 +59,31 @@ public class MultiPartUtility {
     }
 
 
-    // constructor used to PUT data on server it can be an ad or user data
-    public MultiPartUtility(String address,
-                                       String contactNumber,
-                                       String email,
-                                       String image,
-                                       String jobTitle,
-                                       String name,
-                                       String organization)
-            throws IOException {
-        postProductProcess = true;
-        start  = System.currentTimeMillis() % 1000;
-        url = new URL("http://128.199.195.245:8000/api/create");
-        boundary = "---------------------------" + System.currentTimeMillis() % 1000;
-        connection = (HttpURLConnection) url.openConnection();
-        connection.setConnectTimeout(CONNECT_TIMEOUT);
-        connection.setReadTimeout(READ_TIMEOUT);
-        connection.setRequestProperty("Content-Type", " multipart/form-data; boundary=" + boundary);
-        connection.setUseCaches(false);
-        connection.setDoInput(true);
-        connection.setDoOutput(true);
-        connection.setRequestProperty("Authorization", "Token " + Helpers.getStringFromSharedPreferences("token"));
-        outputStream = connection.getOutputStream();
-        writer = new PrintWriter(new OutputStreamWriter(outputStream, CHARSET),
-                true);
-    }
+//    // constructor used to PUT data on server
+//    public MultiPartUtility(String address,
+//                                       String contactNumber,
+//                                       String email,
+//                                       int image,
+//                                       String jobTitle,
+//                                       String name,
+//                                       String organization)
+//            throws IOException {
+//        postProductProcess = true;
+//        start  = System.currentTimeMillis() % 1000;
+//        url = new URL("http://128.199.195.245:8000/api/create");
+//        boundary = "---------------------------" + System.currentTimeMillis() % 1000;
+//        connection = (HttpURLConnection) url.openConnection();
+//        connection.setConnectTimeout(CONNECT_TIMEOUT);
+//        connection.setReadTimeout(READ_TIMEOUT);
+//        connection.setRequestProperty("Content-Type", " multipart/form-data; boundary=" + boundary);
+//        connection.setUseCaches(false);
+//        connection.setDoInput(true);
+//        connection.setDoOutput(true);
+//        connection.setRequestProperty("Authorization", "Token " + Helpers.getStringFromSharedPreferences("token"));
+//        outputStream = connection.getOutputStream();
+//        writer = new PrintWriter(new OutputStreamWriter(outputStream, CHARSET),
+//                true);
+//    }
 
     //Method to add form field to printWriter
     public void addFormField(final String name, final String value) {
@@ -124,6 +128,7 @@ public class MultiPartUtility {
                 .append(CRLF);
         writer.close();
         final int status = connection.getResponseCode();
+        Log.e("TAG", "" + status);
         if (status == 201) {
             AppGlobals.setResponseCode(status);
         }

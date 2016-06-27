@@ -53,9 +53,9 @@
         <Button
             android:id="@+id/login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/btn_bg"
+            android:theme="@style/shareButton"
             android:text="Login"
             android:textColor="@android:color/white"
             android:padding="15dp"

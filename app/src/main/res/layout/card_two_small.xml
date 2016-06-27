@@ -21,6 +21,16 @@
             android:background="@drawable/background_one"
             android:id="@+id/main_layout" >
 
+            <ImageView
+                android:id="@+id/card_image"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:background="@drawable/border_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
@@ -100,22 +110,24 @@
 
             <TextView
                 android:id="@+id/tv_organization"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Organization"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                android:gravity="right"
                 android:textColor="@color/card_two_text_color"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/tv_name"
-                android:layout_toEndOf="@+id/tv_name" />
+                android:layout_below="@+id/job_title"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:id="@+id/tv_jobzy_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Jobzy ID"
                 android:textSize="10sp"
+                android:gravity="right"
                 android:textColor="@color/card_two_text_color"
                 android:layout_below="@+id/tv_organization"
                 android:layout_alignRight="@+id/tv_organization"

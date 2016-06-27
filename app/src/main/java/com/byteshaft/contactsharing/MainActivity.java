@@ -45,8 +45,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!Helpers.isUserLoggedIn()) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
         sInstance = this;
-        loadFragment(new BusinessCardsList());
+        loadFragment(new CreateBusinessCard());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
