@@ -30,7 +30,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
 
     public void createNewEntry(String name, String address, String jobTitle, String contactNumber,
                                String emailAddress, String organization, String jobzyId,
-                               String imgUri, Integer isImagCard, int designInt) {
+                               String imgUri, Integer isImagCard, int designInt, String logoImagepath) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DatabaseConstants.NAME_COLUMN, name);
@@ -43,6 +43,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
         values.put(DatabaseConstants.IMG_COLUMN, imgUri);
         values.put(DatabaseConstants.IS_IMAGE_CARD_COLUMN, isImagCard);
         values.put(DatabaseConstants.SELECTED_CARD_DESIGN, designInt);
+        values.put(DatabaseConstants.LOGO_IMAGE, logoImagepath);
         db.insert(DatabaseConstants.TABLE_NAME, null, values);
         db.close();
     }
@@ -125,31 +126,34 @@ public class CardsDatabase extends SQLiteOpenHelper {
                     cursor.getColumnIndex(DatabaseConstants.ID_COLUMN));
             String name = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.NAME_COLUMN));
-            String address = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.ADDRESS_COLUMN));
-            String jobTitle = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COLUMN));
-
-            String jobzyId = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.JOBZI_ID));
-
-            String contactNumber = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COLUMN));
-
-            String emailAddress = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COLUMN));
-
-            String organization = cursor.getString(
-                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COLUMN));
-
+//            String address = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.ADDRESS_COLUMN));
+//            String jobTitle = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COLUMN));
+//
+//            String jobzyId = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.JOBZI_ID));
+//
+//            String contactNumber = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COLUMN));
+//
+//            String emailAddress = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COLUMN));
+//
+//            String organization = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COLUMN));
+//
             int isImage = cursor.getInt(
                     cursor.getColumnIndex(DatabaseConstants.IS_IMAGE_CARD_COLUMN));
+//
+//            String logoPath = cursor.getString(
+//                    cursor.getColumnIndex(DatabaseConstants.LOGO_IMAGE));
 
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
             int cardDesign = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.SELECTED_CARD_DESIGN));
-            String[] data = new String[] {name, address, jobTitle, contactNumber, emailAddress,
-                    organization, String.valueOf(isImage), imageUri, jobzyId,  String.valueOf(cardDesign)};
+            String[] data = new String[] {name, String.valueOf(cardDesign), imageUri,
+                    String.valueOf(isImage)};
             hashMap.put(String.valueOf(unique_id), data);
         }
         db.close();

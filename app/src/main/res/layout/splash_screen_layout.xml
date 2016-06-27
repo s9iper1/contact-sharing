@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_background">
 
     <ImageView
+        android:id="@+id/logo_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_jobzy"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/splash_screen_logo"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="20dp"/>
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/button_login"
+            style="@style/AppTheme.Button"
+            android:text="Login"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="70dp" />
+
+
+        <Button
+            android:id="@+id/button_share"
+            android:text="Share"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:theme="@style/shareButton"/>
+
+    </LinearLayout>
+>>>>>>> b7c7222578b6a179601fd9e2e568c3131515df57
 </RelativeLayout>
