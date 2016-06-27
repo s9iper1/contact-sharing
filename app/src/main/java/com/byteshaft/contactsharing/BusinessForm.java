@@ -92,8 +92,7 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
                         contactNumber = mContactNumber.getText().toString();
                         Log.i("First Log", "splash_background one");
                         cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-                                organization, jobzyId, "", 0, AppGlobals.sSelectedDesign);
-                        Log.i("Second Log", "splash_background 2");
+                                organization, jobzyId, "", 0, AppGlobals.sSelectedDesign, imageUrl);
 //                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
 //                                BusinessForm.this,
 //                                address,

@@ -19,9 +19,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +30,6 @@ import android.widget.Toast;
 import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
-import com.github.siyamed.shapeimageview.CircularImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +49,7 @@ public class BusinessCardsList extends Fragment {
     private CardsDatabase cardsDatabase;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean gridView = false;
-    private HashMap<String , String[]> cardData;
+    private HashMap<String, String[]> cardData;
     public static final int MY_PERMISSIONS_REQUEST_STORAGE = 0;
 
     @Override
@@ -63,7 +59,6 @@ public class BusinessCardsList extends Fragment {
         cardsDatabase = new CardsDatabase(getActivity().getApplicationContext());
         mBaseView.setTag("RecyclerViewFragment");
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        staggeredGridLayoutManager.setSpanCount(2);
         gridView = true;
         mRecyclerView = (RecyclerView) mBaseView.findViewById(R.id.card_list);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -71,21 +66,21 @@ public class BusinessCardsList extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
         if (idsList.size() == 0) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setTitle("Create Business card");
-                alertDialogBuilder
-                        .setMessage("Create your new Business card now")
-                        .setCancelable(false)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                MainActivity.getInstance().loadFragment(new CreateBusinessCard());
-                            }
-                        });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+            alertDialogBuilder.setTitle("Create Business card");
+            alertDialogBuilder
+                    .setMessage("Create your new Business card now")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            MainActivity.getInstance().loadFragment(new CreateBusinessCard());
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
-        Log.i("TAG", "" +cardsDatabase.getBusinessCard());
+        Log.i("TAG", "" + cardsDatabase.getBusinessCard());
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -127,34 +122,39 @@ public class BusinessCardsList extends Fragment {
         mRecyclerView.setAdapter(mCardsAdapter);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.grid_normal_view, menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_change_view:
-                if (gridView) {
-                    item.setIcon(getResources().getDrawable(R.drawable.grid));
-                    staggeredGridLayoutManager.setSpanCount(1);
-                    loadData();
-                    gridView = false;
-                } else {
-                    item.setIcon(getResources().getDrawable(R.drawable.normal));
-                    staggeredGridLayoutManager.setSpanCount(2);
-                    mRecyclerView.setAdapter(null);
-                    idsList = cardsDatabase.getIdOfSavedCards();
-                    nameData = cardsDatabase.getNamesOfSavedCards();
-                    mCardsAdapter = new CardsAdapter(idsList, cardData);
-                    mRecyclerView.setAdapter(mCardsAdapter);
-                    gridView = true;
-                }
-                return true;
-        }
-        return false;
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.grid_normal_view, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_change_view:
+//                if (gridView) {
+//                    item.setIcon(getResources().getDrawable(R.drawable.grid));
+//                    staggeredGridLayoutManager.setSpanCount(1);
+//                    mRecyclerView.setAdapter(null);
+//                    idsList = cardsDatabase.getIdOfSavedCards();
+//                    nameData = cardsDatabase.getNamesOfSavedCards();
+//                    mCardsAdapter = new CardsAdapter(idsList, cardData);
+//                    mRecyclerView.setAdapter(mCardsAdapter);
+//                    gridView = false;
+//                } else {
+//                    item.setIcon(getResources().getDrawable(R.drawable.normal));
+//                    staggeredGridLayoutManager.setSpanCount(2);
+//                    mRecyclerView.setAdapter(null);
+//                    idsList = cardsDatabase.getIdOfSavedCards();
+//                    nameData = cardsDatabase.getNamesOfSavedCards();
+//                    mCardsAdapter = new CardsAdapter(idsList, cardData);
+//                    mRecyclerView.setAdapter(mCardsAdapter);
+//                    gridView = true;
+//                }
+//                return true;
+//        }
+//        return false;
+//    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -162,7 +162,7 @@ public class BusinessCardsList extends Fragment {
         setHasOptionsMenu(true);
         mRecyclerView.addOnItemTouchListener(new CardsAdapter(idsList, cardData,
                 getActivity()
-                .getApplicationContext(), new OnItemClickListener() {
+                        .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
                 JSONObject jsonObject = new JSONObject();
@@ -261,7 +261,7 @@ public class BusinessCardsList extends Fragment {
                     });
         }
 
-        public CardsAdapter(ArrayList<Integer> cardList, HashMap<String, String[]> nameData)   {
+        public CardsAdapter(ArrayList<Integer> cardList, HashMap<String, String[]> nameData) {
             this.cardList = cardList;
             this.cardData = nameData;
         }
@@ -283,34 +283,9 @@ public class BusinessCardsList extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
-            if (viewType == 0) {
-                Log.i("TAG", "loading one");
-                if (staggeredGridLayoutManager.getSpanCount() == 1) {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one,
-                        parent, false);
-                } else {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one_small,
-                            parent, false);
-                }
-            } else if (viewType == 1) {
-                Log.i("TAG", "loading two");
-                if (staggeredGridLayoutManager.getSpanCount() == 1) {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_two,
-                        parent, false);
-                } else {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_two_small,
-                            parent, false);
-                }
-            } else {
-                Log.i("TAG", "loading three");
-                if (staggeredGridLayoutManager.getSpanCount() == 1) {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_three,
-                            parent, false);
-                } else {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_three_small,
-                            parent, false);
-                }
-            }
+            Log.i("TAG", "loading one");
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_one,
+                    parent, false);
             mViewHolder = new CustomView(view);
             return mViewHolder;
         }
@@ -320,52 +295,40 @@ public class BusinessCardsList extends Fragment {
             holder.setIsRecyclable(false);
             int currentIndex = cardList.get(pos);
             mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
-            if (cardData.get(String.valueOf(cardList.get(pos)))[6].equals("0")) {
+            if (cardData.get(String.valueOf(cardList.get(pos)))[3].equals("0")) {
                 mViewHolder.personName.setText(cardData.get(String.valueOf(cardList.get(pos)))[0]);
-                mViewHolder.address.setText(cardData.get(String.valueOf(cardList.get(pos)))[1]);
-                mViewHolder.jobTitle.setText(cardData.get(String.valueOf(cardList.get(pos)))[2]);
-                mViewHolder.phoneNumber.setText(cardData.get(String.valueOf(cardList.get(pos)))[3]);
-                mViewHolder.emailAddress.setText(cardData.get(String.valueOf(cardList.get(pos)))[4]);
-                mViewHolder.organization.setText(cardData.get(String.valueOf(cardList.get(pos)))[5]);
-                mViewHolder.jobzyId.setText(cardData.get(String.valueOf(cardList.get(pos)))[8]);
+//                mViewHolder.address.setText(cardData.get(String.valueOf(cardList.get(pos)))[1]);
+//                mViewHolder.jobTitle.setText(cardData.get(String.valueOf(cardList.get(pos)))[2]);
+//                mViewHolder.phoneNumber.setText(cardData.get(String.valueOf(cardList.get(pos)))[3]);
+//                mViewHolder.emailAddress.setText(cardData.get(String.valueOf(cardList.get(pos)))[4]);
+//                mViewHolder.organization.setText(cardData.get(String.valueOf(cardList.get(pos)))[5]);
+//                mViewHolder.jobzyId.setText(cardData.get(String.valueOf(cardList.get(pos)))[8]);
+                mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                mViewHolder.cardImage.setVisibility(View.VISIBLE);
+                mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+//                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//                    mViewHolder.phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//                    mViewHolder.emailAddress.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//                    mViewHolder.organization.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//                    mViewHolder.jobzyId.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
-                if (staggeredGridLayoutManager.getSpanCount() == 2) {
-                    mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                    mViewHolder.phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-                    mViewHolder.emailAddress.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-                    mViewHolder.organization.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-                    mViewHolder.jobzyId.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-                    mViewHolder.logo.setVisibility(View.GONE);
-                } else if (staggeredGridLayoutManager.getSpanCount() == 1){
-                    mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                    mViewHolder.logo.setVisibility(View.VISIBLE);
-                    mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    mViewHolder.phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    mViewHolder.emailAddress.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    mViewHolder.organization.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                    mViewHolder.jobzyId.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                }
-
-                mViewHolder.address.setTypeface(AppGlobals.regularTypeface);
+//                mViewHolder.address.setTypeface(AppGlobals.regularTypeface);
                 mViewHolder.personName.setTypeface(AppGlobals.regularTypeface);
-                mViewHolder.jobTitle.setTypeface(AppGlobals.regularTypeface);
-                mViewHolder.phoneNumber.setTypeface(AppGlobals.regularTypeface);
-                mViewHolder.emailAddress.setTypeface(AppGlobals.regularTypeface);
-                mViewHolder.organization.setTypeface(AppGlobals.regularTypeface);
-                mViewHolder.jobzyId.setTypeface(AppGlobals.regularTypeface);
-            } else if (cardData.get(String.valueOf(cardList.get(pos)))[6].equals("1")) {
+//                mViewHolder.jobTitle.setTypeface(AppGlobals.regularTypeface);
+//                mViewHolder.phoneNumber.setTypeface(AppGlobals.regularTypeface);
+//                mViewHolder.emailAddress.setTypeface(AppGlobals.regularTypeface);
+//                mViewHolder.organization.setTypeface(AppGlobals.regularTypeface);
+//                mViewHolder.jobzyId.setTypeface(AppGlobals.regularTypeface);
+            } else if (cardData.get(String.valueOf(cardList.get(pos)))[3].equals("1")) {
                 mViewHolder.mainLayout.setBackgroundColor(Color.TRANSPARENT);
                 mViewHolder.personName.setVisibility(View.GONE);
-                mViewHolder.jobTitle.setVisibility(View.GONE);
-                mViewHolder.phoneNumber.setVisibility(View.GONE);
-                mViewHolder.emailAddress.setVisibility(View.GONE);
-                mViewHolder.address.setVisibility(View.GONE);
-                mViewHolder.organization.setVisibility(View.GONE);
-                mViewHolder.jobzyId.setVisibility(View.GONE);
+//                mViewHolder.jobTitle.setVisibility(View.GONE);
+//                mViewHolder.phoneNumber.setVisibility(View.GONE);
+//                mViewHolder.emailAddress.setVisibility(View.GONE);
+//                mViewHolder.address.setVisibility(View.GONE);
+//                mViewHolder.organization.setVisibility(View.GONE);
+//                mViewHolder.jobzyId.setVisibility(View.GONE);
                 mViewHolder.cardImage.setVisibility(View.VISIBLE);
                 Uri imgUri = Uri.parse(cardData.get(String.valueOf(cardList.get(pos)))[7]);
                 Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
@@ -406,35 +369,36 @@ public class BusinessCardsList extends Fragment {
     public static class CustomView extends RecyclerView.ViewHolder {
 
         private TextView personName;
-        private TextView jobTitle;
-        private TextView phoneNumber;
-        private TextView emailAddress;
-        private TextView address;
-        private TextView organization;
-        private TextView jobzyId;
+        //        private TextView jobTitle;
+//        private TextView phoneNumber;
+//        private TextView emailAddress;
+//        private TextView address;
+//        private TextView organization;
+//        private TextView jobzyId;
         private ImageView cardImage;
         private RelativeLayout mainLayout;
         private TextView hiddenId;
-        private CircularImageView logo;
+//        private CircularImageView logo;
 
         public CustomView(View itemView) {
             super(itemView);
-            hiddenId = (TextView) itemView.findViewById(R.id.id);
-            personName = (TextView) itemView.findViewById(R.id.tv_name);
-            jobTitle = (TextView) itemView.findViewById(R.id.job_title);
-            phoneNumber = (TextView) itemView.findViewById(R.id.phone_number);
-            emailAddress = (TextView) itemView.findViewById(R.id.email_address);
-            address = (TextView) itemView.findViewById(R.id.location);
-            organization = (TextView) itemView.findViewById(R.id.tv_organization);
-            jobzyId = (TextView) itemView.findViewById(R.id.tv_jobzy_id);
-            cardImage = (ImageView) itemView.findViewById(R.id.card_image);
-            mainLayout = (RelativeLayout) itemView.findViewById(R.id.main_layout);
-            logo = (CircularImageView) itemView.findViewById(R.id.image_view);
+            hiddenId = (TextView) itemView.findViewById(R.id.invisible_id);
+            personName = (TextView) itemView.findViewById(R.id.person_name);
+//            jobTitle = (TextView) itemView.findViewById(R.id.job_title);
+//            phoneNumber = (TextView) itemView.findViewById(R.id.phone_number);
+//            emailAddress = (TextView) itemView.findViewById(R.id.email_address);
+//            address = (TextView) itemView.findViewById(R.id.location);
+//            organization = (TextView) itemView.findViewById(R.id.tv_organization);
+//            jobzyId = (TextView) itemView.findViewById(R.id.tv_jobzy_id);
+            cardImage = (ImageView) itemView.findViewById(R.id.background);
+            mainLayout = (RelativeLayout) itemView.findViewById(R.id.image_layout);
+//            logo = (CircularImageView) itemView.findViewById(R.id.image_view);
         }
     }
 
     public interface OnItemClickListener {
         void onItem(Integer item);
+
         void onItemLongClick(Integer position);
     }
 }

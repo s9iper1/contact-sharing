@@ -97,49 +97,57 @@ class DataTransferThread extends Thread {
                         Log.e("TAG", "received");
                         AppGlobals.sIncomingImage = true;
                         AppGlobals.imageOwner = receivedData.getString("name");
-                        AppGlobals.isImageState = receivedData.getInt(AppGlobals.IS_IMAGE_SHARE);
                     } else {
                         if (receivedData.getInt(AppGlobals.IS_IMAGE_SHARE) == 0) {
-                            String name = "";
-                            String address = "";
-                            String jobTitle = "";
-                            String jobzyId = "";
-                            String contectNumber = "";
-                            String email = "" ;
-                            String org = "";
-                            int design = 4;
                             if (receivedData.has(AppGlobals.NAME)) {
-                                name = receivedData.getString(AppGlobals.NAME);
+                                AppGlobals.name = receivedData.getString(AppGlobals.NAME);
                             }
                             if (receivedData.has(AppGlobals.ADDRESS)) {
-                                address = receivedData.getString(AppGlobals.ADDRESS);
+                                AppGlobals.address = receivedData.getString(AppGlobals.ADDRESS);
                             }
                             if (receivedData.has(AppGlobals.JOB_TITLE)) {
-                                jobTitle = receivedData.getString(AppGlobals.JOB_TITLE);
+                                AppGlobals.jobTitle = receivedData.getString(AppGlobals.JOB_TITLE);
                             }
                             if (receivedData.has(AppGlobals.JOBZY_ID)) {
-                                jobzyId = receivedData.getString(AppGlobals.JOBZY_ID);
+                                AppGlobals.jobzyId = receivedData.getString(AppGlobals.JOBZY_ID);
                             }
                             if (receivedData.has(AppGlobals.NUMBER)) {
-                                contectNumber = receivedData.getString(AppGlobals.NUMBER);
+                                AppGlobals.contectNumber = receivedData.getString(AppGlobals.NUMBER);
                             }
                             if (receivedData.has(AppGlobals.EMAIL)) {
-                                email = receivedData.getString(AppGlobals.EMAIL);
+                                AppGlobals.email = receivedData.getString(AppGlobals.EMAIL);
                             }
                             if (receivedData.has(AppGlobals.ORG)) {
-                                org = receivedData.getString(AppGlobals.ORG);
+                                AppGlobals.org = receivedData.getString(AppGlobals.ORG);
                             }
                             if (receivedData.has(AppGlobals.CARD_DESIGN)) {
-                                design = receivedData.getInt(AppGlobals.CARD_DESIGN);
+                                AppGlobals.design = receivedData.getInt(AppGlobals.CARD_DESIGN);
                             }
-                            CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
-                            cardsDatabase.createNewEntry(name, address, jobTitle, contectNumber, email
-                            , org, jobzyId, "", 0, design);
+                            if (receivedData.has(AppGlobals.KEY_LOGO)) {
+                                AppGlobals.sInComingLogo = true;
+                            }
                         }
                     }
 
                     Log.d("Data", str);
                     handler.sendMessage(message);
+                } else if (AppGlobals.sInComingLogo) {
+                    Message message = new Message();
+                    message.obj = data;
+                    message.what = MessageType.DATA_RECEIVED;
+                    handler.sendMessage(message);
+                    Log.i("TAG", "Received image");
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 2;
+                    Bitmap image = BitmapFactory.decodeByteArray(((byte[]) message.obj), 0,
+                            ((byte[]) message.obj).length, options);
+                        CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
+                    String path = Helpers.saveImage(image, AppGlobals.imageOwner);
+                        cardsDatabase.createNewEntry(AppGlobals.name, AppGlobals.address, AppGlobals.jobTitle,
+                                AppGlobals.contectNumber, AppGlobals.email
+                                , AppGlobals.org, AppGlobals.jobzyId, "", 0, AppGlobals.design, path);
+
                 } else {
                     Log.v(TAG, "Digest matches OK.");
                     Message message = new Message();
@@ -156,7 +164,7 @@ class DataTransferThread extends Thread {
                         String path = Helpers.saveImage(image, AppGlobals.imageOwner);
                         CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
                         cardsDatabase.createNewEntry(AppGlobals.imageOwner, "", "", "", "", "", "",
-                                path, 1, 4);
+                                path, 1, 4, "");
                     }
 
                     // Send the digest back to the client as a confirmation
