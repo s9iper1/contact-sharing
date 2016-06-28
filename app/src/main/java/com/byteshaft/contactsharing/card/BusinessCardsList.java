@@ -1,9 +1,10 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.card;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.byteshaft.contactsharing.CreateBusinessCard;
+import com.byteshaft.contactsharing.MainActivity;
+import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
@@ -200,6 +204,9 @@ public class BusinessCardsList extends Fragment {
             @Override
             public void onEditClick(View view, Integer cardId) {
                 Log.i("TAG", "onEditClick" + cardId);
+                Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
+                intent.putExtra("card_id", cardId);
+                startActivity(intent);
 
             }
 
@@ -406,7 +413,7 @@ public class BusinessCardsList extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Log.i("Cick", "done");
-                    mListener.onEditClick(view, getAdapterPosition());
+                    mListener.onEditClick(view, idsList.get(getAdapterPosition()));
                 }
             });
 
@@ -414,7 +421,7 @@ public class BusinessCardsList extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Log.i("Cick", "done");
-                    mListener.onShareClick(view, getAdapterPosition());
+                    mListener.onShareClick(view, idsList.get(getAdapterPosition()));
 
                 }
             });

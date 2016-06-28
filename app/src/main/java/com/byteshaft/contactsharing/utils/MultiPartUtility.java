@@ -1,9 +1,6 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.utils;
 
 import android.util.Log;
-
-import com.byteshaft.contactsharing.utils.AppGlobals;
-import com.byteshaft.contactsharing.utils.Helpers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

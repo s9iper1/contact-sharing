@@ -1,4 +1,4 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.card;
 
 import android.Manifest;
 import android.content.CursorLoader;
@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.byteshaft.contactsharing.R;
+import com.byteshaft.contactsharing.SelectDesignActivity;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;

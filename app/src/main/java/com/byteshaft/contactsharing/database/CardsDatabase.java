@@ -119,7 +119,6 @@ public class CardsDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
         HashMap<String, String[]> hashMap = new HashMap<>();
         while (cursor.moveToNext()) {
             int unique_id = cursor.getInt(
@@ -198,5 +197,59 @@ public class CardsDatabase extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return list;
+    }
+
+    public HashMap<String, String> getCardDetails(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME + "WHERE " +
+                DatabaseConstants.ID_COLUMN+ " =?" +id + " LIMIT 1";
+        Cursor cursor = db.rawQuery(query, null);
+        HashMap<String, String> hashMap = new HashMap<>();
+        while (cursor.moveToNext()) {
+            int unique_id = cursor.getInt(
+                    cursor.getColumnIndex(DatabaseConstants.ID_COLUMN));
+            String name = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.NAME_COLUMN));
+            String address = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.ADDRESS_COLUMN));
+            String jobTitle = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.JOB_TITLE_COLUMN));
+
+            String jobzyId = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.JOBZI_ID));
+
+            String contactNumber = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.CONTACT_NUMBER_COLUMN));
+
+            String emailAddress = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.EMAIL_ADDRESS_COLUMN));
+
+            String organization = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.ORGANIZATION_COLUMN));
+
+            int isImage = cursor.getInt(
+                    cursor.getColumnIndex(DatabaseConstants.IS_IMAGE_CARD_COLUMN));
+            String logoPath = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.LOGO_IMAGE));
+
+            String imageUri = cursor.getString(
+                    cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
+            int cardDesign = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.SELECTED_CARD_DESIGN));
+            hashMap.put("Name", name);
+            hashMap.put("Address", address);
+            hashMap.put("Job Title", jobTitle);
+            hashMap.put("Jobzy Id", jobzyId);
+            hashMap.put("Phone Number", contactNumber);
+            hashMap.put("Email", emailAddress);
+            hashMap.put("Organization", organization);
+            hashMap.put("logo", logoPath);
+            hashMap.put("design", String.valueOf(cardDesign));
+            hashMap.put("image", imageUri);
+            hashMap.put("is_image", String.valueOf(isImage));
+
+        }
+        db.close();
+        cursor.close();
+        return hashMap;
     }
 }

@@ -11,6 +11,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.byteshaft.contactsharing.card.CardInfo;
 import com.byteshaft.contactsharing.utils.Helpers;
 
 public class SplashScreen extends Activity implements View.OnClickListener {

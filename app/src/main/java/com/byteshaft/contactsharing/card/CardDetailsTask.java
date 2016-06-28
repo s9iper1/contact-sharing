@@ -1,9 +1,10 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.card;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.byteshaft.contactsharing.utils.MultiPartUtility;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
 import com.byteshaft.contactsharing.utils.WebServiceHelper;
