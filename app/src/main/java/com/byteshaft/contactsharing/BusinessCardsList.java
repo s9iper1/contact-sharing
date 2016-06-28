@@ -220,7 +220,6 @@ public class BusinessCardsList extends Fragment {
             RecyclerView.OnItemTouchListener {
 
         private ArrayList<Integer> cardList;
-
         private GestureDetector mGestureDetector;
         private HashMap<String, String[]> cardData;
 
@@ -405,7 +404,7 @@ public class BusinessCardsList extends Fragment {
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("Cick", "done");
+                    Log.i("Click", "done");
                     mListener.onEditClick(view, getAdapterPosition());
                 }
             });
@@ -413,7 +412,7 @@ public class BusinessCardsList extends Fragment {
             shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("Cick", "done");
+                    Log.i("Click", "done");
                     mListener.onShareClick(view, getAdapterPosition());
 
                 }
