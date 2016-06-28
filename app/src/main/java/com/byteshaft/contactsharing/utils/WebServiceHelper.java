@@ -186,6 +186,30 @@ public class WebServiceHelper {
         return readResponse(connection);
     }
 
+    public static int ActivationCodeConfirmation(String email, String activationKey) throws IOException, JSONException {
+        String data = getUserConfirmationData(email, activationKey);
+        System.out.println(data);
+        String urlMe = "http://128.199.195.245:8000/api/activate";
+        HttpURLConnection connection = openConnectionForUrl(urlMe, "POST");
+        sendRequestData(connection, data);
+        AppGlobals.setResponseCode(connection.getResponseCode());
+        return connection.getResponseCode();
+    }
+
+    public static String getUserConfirmationData(String email, String activationKey) {
+        JSONObject object = new JSONObject();
+        System.out.println(object);
+
+        try {
+            object.put("email", email);
+            object.put("activation_key", activationKey);
+        } catch (JSONException var4) {
+            var4.printStackTrace();
+        }
+
+        return object.toString();
+    }
+
     private static void sendRequestData(HttpURLConnection connection, String body) throws IOException {
         byte[] outputInBytes = body.getBytes("UTF-8");
         OutputStream os = connection.getOutputStream();

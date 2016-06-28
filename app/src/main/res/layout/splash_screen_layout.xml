@@ -38,4 +38,5 @@
             android:theme="@style/shareButton"/>
 
     </LinearLayout>
+>>>>>>> b7c7222578b6a179601fd9e2e568c3131515df57
 </RelativeLayout>

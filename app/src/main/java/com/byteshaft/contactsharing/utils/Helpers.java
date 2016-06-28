@@ -41,6 +41,28 @@ public class Helpers  {
         return sharedPreferences.getBoolean(AppGlobals.KEY_USER_LOGIN, false);
     }
 
+    public static void userActive(boolean value) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().putBoolean(AppGlobals.USER_ACTIVE, value).apply();
+    }
+
+    // get user login status and manipulate app functions by its returned boolean value
+    public static boolean isUserActive() {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        return sharedPreferences.getBoolean(AppGlobals.USER_ACTIVE, false);
+    }
+
+    public static void registrationDone(boolean value) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().putBoolean(AppGlobals.REGISTRATION_DONE, value).apply();
+    }
+
+    // get user login status and manipulate app functions by its returned boolean value
+    public static boolean isRegistered() {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        return sharedPreferences.getBoolean(AppGlobals.REGISTRATION_DONE, false);
+    }
+
     public static void alertDialog(Activity activity, String title, String msg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setTitle(title);
