@@ -67,6 +67,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
+
             <EditText
                 android:id="@+id/jobzi_id"
                 android:layout_width="match_parent"
@@ -124,26 +125,24 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-
             <Button
                 android:id="@+id/select_design"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/btn_bg"
+                style="@style/AppTheme.Button"
                 android:padding="15dp"
                 android:text="Select Design"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
-
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/btn_bg"
+                style="@style/AppTheme.Button"
                 android:padding="15dp"
                 android:text="Add"
                 android:textColor="@color/white"
