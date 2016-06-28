@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
     tools:context="com.byteshaft.contactsharing.RegisterActivity">
 
     <ScrollView
@@ -53,7 +52,7 @@
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/edit_text_bg"
             android:drawablePadding="9dp"
@@ -68,9 +67,9 @@
         <Button
             android:id="@+id/register_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/btn_bg"
+            style="@style/AppTheme.Button"
             android:layout_marginBottom="30dp"
             android:text="Register"
             android:textColor="@color/white"

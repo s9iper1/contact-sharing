@@ -70,7 +70,7 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
 
     private TextView mNameTitle;
     private TextView mNameAction;
-    
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
