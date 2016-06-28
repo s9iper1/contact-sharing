@@ -28,7 +28,7 @@
             <com.byteshaft.contactsharing.utils.SquareImage
                 android:id="@+id/square_image"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"/>

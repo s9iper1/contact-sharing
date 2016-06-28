@@ -23,23 +23,28 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SplashScreen">
+            android:theme="@style/AppTheme.NoActionBar">
 
+        </activity>
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait">
+
         </activity>
-        <activity android:name=".RegisterActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".bluetooth.BluetoothActivity"
+        <activity
+            android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".card.BusinessForm"/>
         <activity android:name=".ForgotPasswordActivity"/>
         <activity android:name=".CodeConfirmationActivity"/>
+
         <activity
             android:name=".card.CardDetailsActivity"
             android:screenOrientation="landscape"
@@ -48,7 +53,13 @@
         <activity
             android:name=".card.CardInfo"
             android:label="@string/title_activity_card_info"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CardsElements"
+            android:label="@string/title_activity_cards_elemetns"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

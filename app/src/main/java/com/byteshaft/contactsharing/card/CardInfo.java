@@ -1,12 +1,6 @@
 package com.byteshaft.contactsharing.card;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -16,23 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.database.CardsDatabase;
-import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.SquareImage;
 import com.github.siyamed.shapeimageview.CircularImageView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -179,10 +167,12 @@ public class CardInfo extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int pos) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
-            String currentIndex = cardList.get(pos);
-            mViewHolder.image.setImageDrawable();
+            mViewHolder.image.setImageDrawable(getResources().getDrawable(
+                    getDrawable(cardList.get(position))));
+            mViewHolder.textViewKey.setText(cardList.get(position));
+            mViewHolder.textViewValue.setText(cardData.get(cardList.get(position)));
         }
 
         private int getDrawable(String design) {
@@ -249,7 +239,7 @@ public class CardInfo extends AppCompatActivity {
     }
 
     public interface OnItemClickListener {
-        void onItem(Integer item);
+        void onItem(String item);
         void onItemLongClick(Integer position);
     }
 }
