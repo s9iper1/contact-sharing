@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/new_business_card_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="end"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="45dp"
+        />
+
+    <EditText
+        android:id="@+id/new_business_card_edittext"
+        android:layout_toRightOf="@+id/new_business_card_image"
+        android:hint="something"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_design"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/new_business_card_edittext_2"
+        android:layout_below="@+id/new_business_card_edittext"
+        android:hint="something"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_design"
+        android:layout_marginLeft="88dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.card;
 
 import android.app.Activity;
 
