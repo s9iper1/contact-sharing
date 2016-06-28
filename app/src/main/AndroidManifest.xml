@@ -41,28 +41,17 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".bluetooth.BluetoothActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".BusinessForm">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".card.BusinessForm"/>
+        <activity android:name=".ForgotPasswordActivity"/>
+        <activity android:name=".CodeConfirmationActivity"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".NewBusinessFormActivity">
-            
-        </activity>
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".CodeConfirmationActivity" />
         <activity
-            android:name=".CardDetailsActivity"
+            android:name=".card.CardDetailsActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".SelectDesignActivity" />
         <activity
-            android:name=".CardInfo"
+            android:name=".card.CardInfo"
             android:label="@string/title_activity_card_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

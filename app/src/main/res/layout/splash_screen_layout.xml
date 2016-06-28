@@ -22,7 +22,7 @@
 
         <Button
             android:id="@+id/button_login"
-            style="@style/AppTheme.Button"
+            android:theme="@style/AppTheme.Button"
             android:text="Login"
             android:layout_weight="0.5"
             android:layout_width="0dp"
@@ -38,5 +38,4 @@
             android:theme="@style/shareButton"/>
 
     </LinearLayout>
->>>>>>> b7c7222578b6a179601fd9e2e568c3131515df57
 </RelativeLayout>
