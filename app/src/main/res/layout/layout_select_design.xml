@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/bg">
 
     <ScrollView
@@ -12,46 +12,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/design_one_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-                <include
-                    android:id="@+id/design_one"
-                    layout="@layout/card_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/design_one"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/background_one"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp" />
 
-            <RelativeLayout
-                android:id="@+id/design_two_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/design_one_layout">
+            <ImageView
+                android:id="@+id/design_two"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/design_one"
+                android:layout_margin="5dp"
+                android:src="@drawable/background_two" />
 
-                <include
-                    android:id="@+id/design_two"
-                    layout="@layout/card_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/design_three_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/design_two_layout">
-
-                <include
-                    android:id="@+id/design_three"
-                    layout="@layout/card_three"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/design_three"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/design_two"
+                android:layout_margin="5dp"
+                android:src="@drawable/background_three" />
         </RelativeLayout>
 
     </ScrollView>

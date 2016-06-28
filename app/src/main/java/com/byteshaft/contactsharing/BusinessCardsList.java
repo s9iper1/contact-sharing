@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -22,16 +22,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ public class BusinessCardsList extends Fragment {
     private boolean gridView = false;
     private HashMap<String, String[]> cardData;
     public static final int MY_PERMISSIONS_REQUEST_STORAGE = 0;
+    public OnItemClickListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +62,7 @@ public class BusinessCardsList extends Fragment {
         gridView = true;
         mRecyclerView = (RecyclerView) mBaseView.findViewById(R.id.card_list);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
@@ -166,34 +167,46 @@ public class BusinessCardsList extends Fragment {
             @Override
             public void onItem(Integer item) {
                 JSONObject jsonObject = new JSONObject();
-                if (Integer.valueOf(cardData.get(String.valueOf(item))[6]) == 1) {
-                    try {
-                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
-                        jsonObject.put(AppGlobals.NAME, cardData.get(String.valueOf(item))[0]);
-                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(String.valueOf(item))[7]
-                                .replaceAll("/", "_"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
-                        jsonObject.put(AppGlobals.NAME, cardData.get(String.valueOf(item))[0]);
-                        jsonObject.put(AppGlobals.ADDRESS, cardData.get(String.valueOf(item))[1]);
-                        jsonObject.put(AppGlobals.EMAIL, cardData.get(String.valueOf(item))[4]);
-                        jsonObject.put(AppGlobals.JOB_TITLE, cardData.get(String.valueOf(item))[2]);
-                        jsonObject.put(AppGlobals.ORG, cardData.get(String.valueOf(item))[5]);
-                        jsonObject.put(AppGlobals.JOBZY_ID, cardData.get(String.valueOf(item))[8]);
-                        jsonObject.put(AppGlobals.NUMBER, cardData.get(String.valueOf(item))[3]);
-                        jsonObject.put(AppGlobals.CARD_DESIGN, cardData.get(String.valueOf(item))[9]);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        BluetoothActivity.class);
-                intent.putExtra(AppGlobals.DATA_TO_BE_SENT, jsonObject.toString());
-                startActivity(intent);
+//                if (Integer.valueOf(cardData.get(String.valueOf(item))[6]) == 1) {
+//                    try {
+//                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 1);
+//                        jsonObject.put(AppGlobals.NAME, cardData.get(String.valueOf(item))[0]);
+//                        jsonObject.put(AppGlobals.IMG_URI, cardData.get(String.valueOf(item))[7]
+//                                .replaceAll("/", "_"));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else {
+//                    try {
+//                        jsonObject.put(AppGlobals.IS_IMAGE_SHARE, 0);
+//                        jsonObject.put(AppGlobals.NAME, cardData.get(String.valueOf(item))[0]);
+//                        jsonObject.put(AppGlobals.ADDRESS, cardData.get(String.valueOf(item))[1]);
+//                        jsonObject.put(AppGlobals.EMAIL, cardData.get(String.valueOf(item))[4]);
+//                        jsonObject.put(AppGlobals.JOB_TITLE, cardData.get(String.valueOf(item))[2]);
+//                        jsonObject.put(AppGlobals.ORG, cardData.get(String.valueOf(item))[5]);
+//                        jsonObject.put(AppGlobals.JOBZY_ID, cardData.get(String.valueOf(item))[8]);
+//                        jsonObject.put(AppGlobals.NUMBER, cardData.get(String.valueOf(item))[3]);
+//                        jsonObject.put(AppGlobals.CARD_DESIGN, cardData.get(String.valueOf(item))[9]);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                Intent intent = new Intent(getActivity().getApplicationContext(),
+//                        BluetoothActivity.class);
+//                intent.putExtra(AppGlobals.DATA_TO_BE_SENT, jsonObject.toString());
+//                startActivity(intent);
+            }
+
+            @Override
+            public void onEditClick(View view, Integer cardId) {
+                Log.i("TAG", "onEditClick" + cardId);
+
+            }
+
+            @Override
+            public void onShareClick(View view, Integer cardId) {
+                Log.i("TAG", "onShareClick" + cardId);
+
             }
 
             @Override
@@ -207,14 +220,14 @@ public class BusinessCardsList extends Fragment {
             RecyclerView.OnItemTouchListener {
 
         private ArrayList<Integer> cardList;
-        private OnItemClickListener mListener;
+
         private GestureDetector mGestureDetector;
         private HashMap<String, String[]> cardData;
 
         public CardsAdapter(final ArrayList<Integer> cardList, HashMap<String, String[]> nameData,
                             Context context,
                             final OnItemClickListener listener) {
-            this.mListener = listener;
+            mListener = listener;
             this.cardList = cardList;
             this.cardData = nameData;
             this.mGestureDetector = new GestureDetector(context,
@@ -267,20 +280,6 @@ public class BusinessCardsList extends Fragment {
         }
 
         @Override
-        public int getItemViewType(int position) {
-            switch (Integer.valueOf(cardData.get(String.valueOf(cardList.get(position)))[9])) {
-                case 0:
-                    return 0;
-                case 1:
-                    return 1;
-                case 3:
-                    return 3;
-                default: return 3;
-
-            }
-        }
-
-        @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
             Log.i("TAG", "loading one");
@@ -305,6 +304,8 @@ public class BusinessCardsList extends Fragment {
 //                mViewHolder.jobzyId.setText(cardData.get(String.valueOf(cardList.get(pos)))[8]);
                 mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 mViewHolder.cardImage.setVisibility(View.VISIBLE);
+                mViewHolder.cardImage.setBackground(getResources().getDrawable(getDrawable(Integer.valueOf(cardData.
+                        get(String.valueOf(cardList.get(pos)))[1]))));
                 mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 //                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 //                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -330,12 +331,29 @@ public class BusinessCardsList extends Fragment {
 //                mViewHolder.organization.setVisibility(View.GONE);
 //                mViewHolder.jobzyId.setVisibility(View.GONE);
                 mViewHolder.cardImage.setVisibility(View.VISIBLE);
-                Uri imgUri = Uri.parse(cardData.get(String.valueOf(cardList.get(pos)))[7]);
+                Uri imgUri = Uri.parse(cardData.get(String.valueOf(cardList.get(pos)))[2]);
                 Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
                 int height = 1920;
                 int width = 1080;
                 Bitmap scaled = Bitmap.createScaledBitmap(bitmap, height, width, true);
                 mViewHolder.cardImage.setImageBitmap(scaled);
+            }
+        }
+
+        private int getDrawable(int design) {
+            switch (design) {
+                case 0:
+                    mViewHolder.personName.setTextColor(getResources().getColor(android.R.color.black));
+                    return R.drawable.background_one;
+                case 1:
+                    mViewHolder.personName.setTextColor(getResources().getColor(android.R.color.white));
+                    return R.drawable.background_two;
+                case 2:
+                    mViewHolder.personName.setTextColor(getResources().getColor(android.R.color.white));
+                    return R.drawable.background_three;
+                default:
+                    mViewHolder.personName.setTextColor(getResources().getColor(android.R.color.black));
+                    return R.drawable.background_one;
             }
         }
 
@@ -345,8 +363,8 @@ public class BusinessCardsList extends Fragment {
         }
 
         @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View childView = rv.findChildViewUnder(e.getX(), e.getY());
+        public boolean onInterceptTouchEvent(final RecyclerView rv, MotionEvent e) {
+            final View childView = rv.findChildViewUnder(e.getX(), e.getY());
             if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
                 mListener.onItem(cardList.get(rv.getChildPosition(childView)));
                 return true;
@@ -366,39 +384,47 @@ public class BusinessCardsList extends Fragment {
     }
 
     // custom class getting view cardList by giving view in constructor.
-    public static class CustomView extends RecyclerView.ViewHolder {
+    public class CustomView extends RecyclerView.ViewHolder {
 
         private TextView personName;
-        //        private TextView jobTitle;
-//        private TextView phoneNumber;
-//        private TextView emailAddress;
-//        private TextView address;
-//        private TextView organization;
-//        private TextView jobzyId;
         private ImageView cardImage;
         private RelativeLayout mainLayout;
         private TextView hiddenId;
-//        private CircularImageView logo;
+        private ImageButton editButton;
+        private ImageButton shareButton;
 
         public CustomView(View itemView) {
             super(itemView);
             hiddenId = (TextView) itemView.findViewById(R.id.invisible_id);
             personName = (TextView) itemView.findViewById(R.id.person_name);
-//            jobTitle = (TextView) itemView.findViewById(R.id.job_title);
-//            phoneNumber = (TextView) itemView.findViewById(R.id.phone_number);
-//            emailAddress = (TextView) itemView.findViewById(R.id.email_address);
-//            address = (TextView) itemView.findViewById(R.id.location);
-//            organization = (TextView) itemView.findViewById(R.id.tv_organization);
-//            jobzyId = (TextView) itemView.findViewById(R.id.tv_jobzy_id);
             cardImage = (ImageView) itemView.findViewById(R.id.background);
             mainLayout = (RelativeLayout) itemView.findViewById(R.id.image_layout);
-//            logo = (CircularImageView) itemView.findViewById(R.id.image_view);
+            editButton = (ImageButton) itemView.findViewById(R.id.edit);
+            shareButton = (ImageButton) itemView.findViewById(R.id.share);
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("Cick", "done");
+                    mListener.onEditClick(view, getAdapterPosition());
+                }
+            });
+
+            shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("Cick", "done");
+                    mListener.onShareClick(view, getAdapterPosition());
+
+                }
+            });
         }
     }
 
     public interface OnItemClickListener {
         void onItem(Integer item);
-
+        void onEditClick(View view, Integer cardId);
+        void onShareClick(View view, Integer cardId);
         void onItemLongClick(Integer position);
     }
 }
