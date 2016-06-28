@@ -34,4 +34,5 @@
     <string name="sign_up_text"><u>Sign Up</u></string>
     <string name="forgot_password"><u>Forgot Password?</u> </string>
     <string name="title_activity_card_info">CardInfo</string>
+    <string name="title_activity_cards_elemetns">CardsElemetns</string>
 </resources>
