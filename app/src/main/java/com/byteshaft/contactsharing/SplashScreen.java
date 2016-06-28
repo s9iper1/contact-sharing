@@ -27,6 +27,7 @@ public class SplashScreen extends Activity implements View.OnClickListener {
         mShare = (Button) findViewById(R.id.button_share);
         mLogo = (ImageView) findViewById(R.id.logo_img);
         mLogin.setOnClickListener(this);
+        mShare.setOnClickListener(this);
 
         blinkanimation = new AlphaAnimation(1, (float) 0.4);
         blinkanimation.setDuration(1000); // duration - half a second
@@ -43,7 +44,7 @@ public class SplashScreen extends Activity implements View.OnClickListener {
                 startActivity(new Intent(SplashScreen.this, LoginActivity.class));
                 break;
             case R.id.button_share:
-                // TODO: 27/06/2016 Share
+                startActivity(new Intent(SplashScreen.this, CardInfo.class));
                 break;
         }
     }
