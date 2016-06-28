@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    cardBackgroundColor="@android:color/transparent"
-    cardCornerRadius="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="10dp"
+    app:elevation="2dp"
+    app:cardUseCompatPadding="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
@@ -18,9 +21,8 @@
 
         <ImageView
             android:id="@+id/background"
-            android:background="@drawable/background_one"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="190dp"
             />
 
         <TextView
@@ -28,15 +30,12 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Your Name"
+            android:textStyle="bold"
             android:layout_margin="2dp"
             android:inputType="textCapSentences"
             android:id="@+id/person_name"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:layout_alignTop="@+id/background"
-            android:layout_alignRight="@+id/background"
-            android:layout_alignBottom="@+id/background"
-            android:layout_alignLeft="@+id/background"/>
+            android:gravity="center_vertical"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,28 +54,33 @@
         android:orientation="horizontal"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
 
-        <ImageView
-            android:src="@android:drawable/ic_menu_edit"
+        <ImageButton
+            android:background="@android:drawable/ic_menu_edit"
             android:id="@+id/edit"
-            android:padding="2dp"
-            android:layout_margin="2dp"
+            android:padding="10dp"
+            android:clickable="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp" />
+
+        <ImageButton
             android:id="@+id/share"
-            android:src="@android:drawable/ic_menu_share"
-            android:padding="2dp"
+            android:background="@android:drawable/ic_menu_share"
+            android:clickable="true"
+            android:layout_marginLeft="5dp"
+            android:padding="10dp"
             android:layout_margin="2dp"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
     </LinearLayout>
 
     </RelativeLayout>
-
-
 
 </android.support.v7.widget.CardView>

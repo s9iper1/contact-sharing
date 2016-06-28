@@ -11,15 +11,21 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.byteshaft.contactsharing.utils.Helpers;
+
 public class SplashScreen extends Activity implements View.OnClickListener {
 
     private Button mLogin;
     private Button mShare;
     private ImageView mLogo;
-    AlphaAnimation blinkanimation;
+    private AlphaAnimation blinkAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Helpers.isUserLoggedIn()) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
         setContentView(R.layout.splash_screen_layout);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -28,12 +34,12 @@ public class SplashScreen extends Activity implements View.OnClickListener {
         mLogo = (ImageView) findViewById(R.id.logo_img);
         mLogin.setOnClickListener(this);
 
-        blinkanimation = new AlphaAnimation(1, (float) 0.4);
-        blinkanimation.setDuration(1000); // duration - half a second
-        blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
-        blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
-        blinkanimation.setRepeatMode(Animation.REVERSE);
-        mLogo.startAnimation(blinkanimation);
+        blinkAnimation = new AlphaAnimation(1, (float) 0.4);
+        blinkAnimation.setDuration(1000); // duration - half a second
+        blinkAnimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        blinkAnimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        blinkAnimation.setRepeatMode(Animation.REVERSE);
+        mLogo.startAnimation(blinkAnimation);
     }
 
     @Override
