@@ -73,6 +73,8 @@ public class CardInfo extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         printMap(cardData);
+        Log.i("TAG", String.valueOf(cardData));
+        Log.i("TAG", String.valueOf(keysList));
         CardsAdapter cardsAdapter = new CardsAdapter(keysList, cardData);
         mRecyclerView.setAdapter(cardsAdapter);
     }
@@ -87,6 +89,7 @@ public class CardInfo extends AppCompatActivity {
                 if (!CardInfo.keysList.contains(pair.getKey())) {
                     Log.e("Adding", "adding video");
                     CardInfo.keysList.add((String) pair.getKey());
+                    Log.e("TAG", " "+ pair.getValue());
                     CardInfo.cardData.put((String) pair.getKey(), (String) pair.getValue());
                 }
             }
@@ -193,6 +196,7 @@ public class CardInfo extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
+            Log.e("TAG", cardList.get(position));
             mViewHolder.image.setImageDrawable(getResources().getDrawable(
                     Helpers.getDrawable(cardList.get(position))));
             mViewHolder.textViewKey.setText(cardList.get(position));

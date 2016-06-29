@@ -191,9 +191,14 @@ public class NewBusinessFormActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done_button:
                 Log.i("TAG", keyTextView.getText().toString());
-                CardInfo.keysList.add(keyTextView.getText().toString());
-                CardInfo.cardData.put(keyTextView.getText().toString(),
-                        valueEditText.getText().toString());
+                if (!CardInfo.keysList.contains(keyTextView.getText().toString())) {
+                    CardInfo.keysList.add(keyTextView.getText().toString());
+                    CardInfo.cardData.put(keyTextView.getText().toString(),
+                            valueEditText.getText().toString());
+                } else {
+                    CardInfo.cardData.put(keyTextView.getText().toString(),
+                            valueEditText.getText().toString());
+                }
                 Log.i("key", String.valueOf(CardInfo.keysList));
                 Log.i("carddata", String.valueOf(CardInfo.cardData));
                 BusinessForm.getInstance().finish();
