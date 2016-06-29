@@ -9,10 +9,6 @@ import android.widget.EditText;
 import com.byteshaft.contactsharing.R;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
-
-/**
- * Created by husnain on 6/28/16.
- */
 public class NewBusinessFormActivity extends AppCompatActivity {
 
     private EditText mEditText;
