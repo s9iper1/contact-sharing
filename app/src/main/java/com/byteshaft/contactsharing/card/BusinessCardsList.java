@@ -103,15 +103,15 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         cardData = new HashMap<>();
         cardData = cardsDatabase.getBusinessCard();
         if (cardData.isEmpty()) {
-            cardData.put("0", new String[] {"Dummy Card", "0", "0"});
+            cardData.put("0", new String[] {"Dummy Card", "0", "" , "0"});
         }
         mRecyclerView.setAdapter(null);
-        idsList = new ArrayList<>();
         if (idsList.size() == 0) {
             idsList.add(0, 0);
         } else {
             idsList = cardsDatabase.getIdOfSavedCards();
         }
+        Log.i("idsList", String.valueOf(idsList));
         if (idsList.size() == 0) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
             alertDialogBuilder.setTitle("Create Business card");
@@ -127,8 +127,6 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-        Log.i("TAG", "" + idsList);
-        Log.i("TAG", "" + cardData);
 //        if (ContextCompat.checkSelfPermission(getActivity(),
 //                Manifest.permission.WRITE_EXTERNAL_STORAGE)
 //                != PackageManager.PERMISSION_GRANTED) {
@@ -185,11 +183,11 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                         .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
-                if (!cardData.get(String.valueOf(idsList.get(item)))[0].equals("Dummy Card")) {
-                    Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
-                    intent.putExtra("card_id", item);
-                    startActivity(intent);
-                }
+//                if (!cardData.get(String.valueOf(idsList.get(item)))[0].equals("Dummy Card")) {
+//                    Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
+//                    intent.putExtra("card_id", item);
+//                    startActivity(intent);
+//                }
                 JSONObject jsonObject = new JSONObject();
 //                if (Integer.valueOf(cardData.get(String.valueOf(item))[6]) == 1) {
 //                    try {
@@ -397,9 +395,9 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             int currentIndex = cardList.get(pos);
             mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
             Log.i("TAG", "onBindViewHolder" + cardData);
-
-            if (cardData.get(String.valueOf(cardList.get(pos)))[2].equals("0")) {
+            if (cardData.get(String.valueOf(cardList.get(pos)))[3].equals("0")) {
                 Log.i("TAG", "onBindViewHolder");
+                Log.i("TAG", "this"+ cardData.get(String.valueOf(cardList.get(pos)))[0]);
                 mViewHolder.personName.setText(cardData.get(String.valueOf(cardList.get(pos)))[0]);
 //                mViewHolder.address.setText(cardData.get(String.valueOf(cardList.get(pos)))[1]);
 //                mViewHolder.jobTitle.setText(cardData.get(String.valueOf(cardList.get(pos)))[2]);
@@ -411,7 +409,6 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                 mViewHolder.cardImage.setVisibility(View.VISIBLE);
                 mViewHolder.cardImage.setBackground(getResources().getDrawable(getDrawable(Integer.valueOf(cardData.
                         get(String.valueOf(cardList.get(pos)))[1]))));
-                mViewHolder.personName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 //                    mViewHolder.address.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 //                    mViewHolder.jobTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 //                    mViewHolder.phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -426,7 +423,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
 //                mViewHolder.emailAddress.setTypeface(AppGlobals.regularTypeface);
 //                mViewHolder.organization.setTypeface(AppGlobals.regularTypeface);
 //                mViewHolder.jobzyId.setTypeface(AppGlobals.regularTypeface);
-            } else if (cardData.get(String.valueOf(cardList.get(pos)))[2].equals("1")) {
+            } else if (cardData.get(String.valueOf(cardList.get(pos)))[3].equals("1")) {
                 mViewHolder.mainLayout.setBackgroundColor(Color.TRANSPARENT);
                 mViewHolder.personName.setVisibility(View.GONE);
 //                mViewHolder.jobTitle.setVisibility(View.GONE);

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -189,9 +190,12 @@ public class NewBusinessFormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_button:
-                CardElements.keysList.add(keyTextView.getText().toString());
-                CardElements.cardData.put(keyTextView.getText().toString(),
+                Log.i("TAG", keyTextView.getText().toString());
+                CardInfo.keysList.add(keyTextView.getText().toString());
+                CardInfo.cardData.put(keyTextView.getText().toString(),
                         valueEditText.getText().toString());
+                Log.i("key", String.valueOf(CardInfo.keysList));
+                Log.i("carddata", String.valueOf(CardInfo.cardData));
                 BusinessForm.getInstance().finish();
                 finish();
                 break;
@@ -204,31 +208,31 @@ public class NewBusinessFormActivity extends AppCompatActivity {
     private int getIntentValues(int value) {
         switch (value) {
             case 0:
-                keyTextView.setHint("Full Name");
+                keyTextView.setText(AppGlobals.KEY_FULL_NAME);
                 if (AppGlobals.toBeCreatedCardName != null) {
                     valueEditText.setText(AppGlobals.toBeCreatedCardName);
                 }
                 return R.mipmap.male;
             case 1:
-                keyTextView.setHint("Address");
+                keyTextView.setText(AppGlobals.KEY_ADDRESS);
                 return R.drawable.address;
             case 2:
-                keyTextView.setHint("Email");
+                keyTextView.setText(AppGlobals.KEY_MAIL);
                 return R.drawable.email;
             case 3:
-                keyTextView.setHint("Job Title");
+                keyTextView.setText(AppGlobals.KEY_JOB_TITLE);
                 return R.drawable.job_title;
             case 4:
-                keyTextView.setHint("Jobzy id");
+                keyTextView.setText(AppGlobals.KEY_JOBZY_ID);
                 return R.drawable.jobzi_id;
             case 5:
-                keyTextView.setHint("Contact Number");
+                keyTextView.setText(AppGlobals.KEY_CONTACT_NUMBER);
                 return R.drawable.contact_number;
             case 6:
-                keyTextView.setHint("Organization");
+                keyTextView.setText(AppGlobals.KEY_ORG);
                 return R.drawable.company;
             default:
-                keyTextView.setHint("Full Name");
+                keyTextView.setText(AppGlobals.KEY_FULL_NAME);
                 return R.mipmap.male;
         }
     }

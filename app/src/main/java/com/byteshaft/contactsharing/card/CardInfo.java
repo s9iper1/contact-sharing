@@ -36,8 +36,8 @@ public class CardInfo extends AppCompatActivity {
     private CardsDatabase cardsDatabase;
     private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
-    private HashMap<String, String> cardData;
-    private ArrayList<String> keysList;
+    public static HashMap<String, String> cardData;
+    public static ArrayList<String> keysList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +77,25 @@ public class CardInfo extends AppCompatActivity {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             String key = (String) pair.getKey();
-            if (!pair.getValue().toString().trim().isEmpty() && !key.equals("is_image") &&
+            if (!key.equals("is_image") &&
                     !key.equals("design")) {
-                keysList.add((String) pair.getKey());
+                if (!CardInfo.keysList.contains(pair.getKey())) {
+                    Log.e("Adding", "adding video");
+                    CardInfo.keysList.add((String) pair.getKey());
+                    CardInfo.cardData.put((String) pair.getKey(), (String) pair.getValue());
+                }
             }
             System.out.println(pair.getKey() + " = " + pair.getValue());
             it.remove(); // avoids a ConcurrentModificationException
+        }
+        if (!it.hasNext()) {
+            if (AppGlobals.toBeCreatedCardName != null) {
+                if (!CardInfo.keysList.contains(AppGlobals.KEY_FULL_NAME)) {
+                    Log.e("toBeCreatedCardName", "adding video");
+                    CardInfo.keysList.add(AppGlobals.KEY_FULL_NAME);
+                    CardInfo.cardData.put(AppGlobals.KEY_FULL_NAME, AppGlobals.toBeCreatedCardName);
+                }
+            }
         }
     }
 
