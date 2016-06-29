@@ -32,7 +32,7 @@ public class NewBusinessFormActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.delete);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.delete3);
         }
         mCircularImageView.setBackground(getResources().getDrawable(getIntentValues(data)));
     }
