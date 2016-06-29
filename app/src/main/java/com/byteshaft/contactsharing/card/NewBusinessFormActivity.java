@@ -1,5 +1,6 @@
 package com.byteshaft.contactsharing.card;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.byteshaft.contactsharing.R;
+import com.byteshaft.contactsharing.bluetooth.BluetoothActivity;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 public class NewBusinessFormActivity extends AppCompatActivity {
@@ -31,7 +33,7 @@ public class NewBusinessFormActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.delete);
+            getSupportActionBar().setHomeAsUpIndicator(R.mipmap.delete3);
         }
         mCircularImageView.setBackground(getResources().getDrawable(getIntentValues(data)));
     }
@@ -48,7 +50,11 @@ public class NewBusinessFormActivity extends AppCompatActivity {
             case R.id.done_button:
                 editTextString = mEditText.getText().toString();
                 editTextString2 = mEditText.getText().toString();
+                BusinessForm.getInstance().finish();
+                finish();
                 break;
+            case android.R.id.home:
+                onBackPressed();
         }
         return false;
     }
