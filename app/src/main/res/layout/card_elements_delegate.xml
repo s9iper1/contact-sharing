@@ -25,12 +25,12 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_toLeftOf="@+id/checkbox"
-                android:layout_toStartOf="@+id/checkbox"
+                android:layout_toLeftOf="@+id/element_checkbox"
+                android:layout_toStartOf="@+id/element_checkbox"
                 android:layout_toRightOf="@+id/element_logo"
                 android:layout_toEndOf="@+id/element_logo" >
                 <TextView
-                    android:id="@+id/text_key"
+                    android:id="@+id/key"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:text="Large Text"
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/text_value"
+                    android:id="@+id/value"
                     android:layout_marginLeft="4dp"
                     android:layout_marginStart="4dp"
                     android:textSize="16sp"
