@@ -49,17 +49,17 @@
             android:name=".card.CardDetailsActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity android:name=".SelectDesignActivity" />
+        <activity android:name=".card.SelectDesignActivity" />
         <activity
             android:name=".card.CardInfo"
             android:label="@string/title_activity_card_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CardElements"
+            android:name=".card.CardElements"
             android:label="@string/title_activity_cards_elemetns"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".NewBusinessFormActivity"/>
+        <activity android:name=".card.NewBusinessFormActivity"/>
     </application>
 
 </manifest>

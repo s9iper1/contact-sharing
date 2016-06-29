@@ -1,4 +1,4 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.card;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 
 public class SelectDesignActivity extends AppCompatActivity implements View.OnClickListener {

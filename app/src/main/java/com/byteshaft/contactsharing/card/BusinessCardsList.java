@@ -226,7 +226,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                 Log.i("TAG", "onEditClick" + cardId);
                 if (!cardData.get(String.valueOf(idsList.get(cardId)))[0].equals("Dummy Card")) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
-                    intent.putExtra("card_id", cardId);
+                    intent.putExtra(AppGlobals.PROCESS_CARD_ID, cardId);
                     startActivity(intent);
                 }
             }

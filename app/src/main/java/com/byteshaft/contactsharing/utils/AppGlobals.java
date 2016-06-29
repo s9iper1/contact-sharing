@@ -86,7 +86,7 @@ public class AppGlobals extends Application {
     public static String email = "" ;
     public static String org = "";
     public static int design = 4;
-
+    public static String PROCESS_CARD_ID = "card_id";
 
 
     @Override
