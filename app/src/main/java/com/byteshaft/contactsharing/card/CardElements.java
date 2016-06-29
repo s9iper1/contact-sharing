@@ -36,10 +36,9 @@ public class CardElements extends AppCompatActivity {
 
     private RecyclerView elementRecyclerView;
     private CardsDatabase cardsDatabase;
-    private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
-    private HashMap<String, String> cardData;
-    private ArrayList<String> keysList;
+    public static HashMap<String, String> cardData;
+    public static ArrayList<String> keysList;
     private int cardId;
 
     @Override
@@ -72,15 +71,21 @@ public class CardElements extends AppCompatActivity {
 
         cardData = cardsDatabase.getCardDetails(cardId);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView = (RecyclerView) findViewById(R.id.elements_list);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.canScrollVertically(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.canScrollVertically(1);
-        mRecyclerView.setHasFixedSize(true);
+        elementRecyclerView = (RecyclerView) findViewById(R.id.elements_list);
+        elementRecyclerView.setLayoutManager(linearLayoutManager);
+        elementRecyclerView.canScrollVertically(LinearLayoutManager.VERTICAL);
+        elementRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        elementRecyclerView.canScrollVertically(1);
+        elementRecyclerView.setHasFixedSize(true);
         printMap(cardData);
         CardElementsAdapter cardsAdapter = new CardElementsAdapter(keysList, cardData);
-        mRecyclerView.setAdapter(cardsAdapter);
+        elementRecyclerView.setAdapter(cardsAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        elementRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public void printMap(Map mp) {
