@@ -91,6 +91,13 @@ public class AppGlobals extends Application {
     // Card Creation
 
     public static String toBeCreatedCardName;
+    public static String toBeCreatedAddress;
+    public static String toBeCreatedJobTitle;
+    public static String toBeCreatedjobzyId;
+    public static String toBeCreatedcontactNumber;
+    public static String toBeCreatedEmail;
+    public static String toBeCreatedOrg;
+
 
 
     @Override
