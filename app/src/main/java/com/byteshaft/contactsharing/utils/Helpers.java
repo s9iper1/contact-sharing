@@ -138,19 +138,19 @@ public class Helpers  {
 
     public static int getDrawable(String design) {
         switch (design) {
-            case "Name":
+            case AppGlobals.KEY_FULL_NAME:
                 return R.mipmap.male;
-            case "Address":
+            case AppGlobals.KEY_ADDRESS:
                 return R.drawable.address;
-            case "Job Title":
+            case AppGlobals.KEY_JOB_TITLE:
                 return R.drawable.job_title;
-            case "Jobzy Id":
+            case AppGlobals.KEY_JOBZY_ID:
                 return R.drawable.ic_jobzy;
-            case "Phone Number":
+            case AppGlobals.KEY_CONTACT_NUMBER:
                 return R.drawable.contact_number;
-            case "Email":
+            case AppGlobals.KEY_MAIL:
                 return R.drawable.email;
-            case "Organization":
+            case AppGlobals.ORG:
                 return R.drawable.company;
             default:
                 return R.mipmap.male;

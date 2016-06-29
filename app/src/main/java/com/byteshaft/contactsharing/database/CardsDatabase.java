@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.byteshaft.contactsharing.utils.AppGlobals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -236,17 +238,17 @@ public class CardsDatabase extends SQLiteOpenHelper {
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
             int cardDesign = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.SELECTED_CARD_DESIGN));
-            hashMap.put("Name", name);
-            hashMap.put("Address", address);
-            hashMap.put("Job Title", jobTitle);
-            hashMap.put("Jobzy Id", jobzyId);
-            hashMap.put("Phone Number", contactNumber);
-            hashMap.put("Email", emailAddress);
-            hashMap.put("Organization", organization);
-            hashMap.put("logo", logoPath);
-            hashMap.put("design", String.valueOf(cardDesign));
-            hashMap.put("image", imageUri);
-            hashMap.put("is_image", String.valueOf(isImage));
+            hashMap.put(AppGlobals.KEY_FULL_NAME, name);
+            hashMap.put(AppGlobals.KEY_ADDRESS, address);
+            hashMap.put(AppGlobals.KEY_JOB_TITLE, jobTitle);
+            hashMap.put(AppGlobals.KEY_JOBZY_ID, jobzyId);
+            hashMap.put(AppGlobals.KEY_CONTACT_NUMBER, contactNumber);
+            hashMap.put(AppGlobals.KEY_MAIL, emailAddress);
+            hashMap.put(AppGlobals.KEY_ORG, organization);
+            hashMap.put(AppGlobals.KEY_LOGO, logoPath);
+            hashMap.put(AppGlobals.KEY_DESIGN, String.valueOf(cardDesign));
+            hashMap.put(AppGlobals.KEY_IMAGE, imageUri);
+            hashMap.put(AppGlobals.KEY_ISIMAGE, String.valueOf(isImage));
 
         }
         db.close();
