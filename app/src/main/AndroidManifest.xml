@@ -60,6 +60,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".card.NewBusinessFormActivity"/>
+        <activity android:name=".bluetooth.BluetoothActivity"/>
     </application>
 
 </manifest>
