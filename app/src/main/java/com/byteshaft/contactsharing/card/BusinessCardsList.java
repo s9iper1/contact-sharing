@@ -394,6 +394,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             int currentIndex = cardList.get(pos);
             mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
             Log.i("TAG", "onBindViewHolder" + cardData);
+
             if (cardData.get(String.valueOf(cardList.get(pos)))[2].equals("0")) {
                 Log.i("TAG", "onBindViewHolder");
                 mViewHolder.personName.setText(cardData.get(String.valueOf(cardList.get(pos)))[0]);
