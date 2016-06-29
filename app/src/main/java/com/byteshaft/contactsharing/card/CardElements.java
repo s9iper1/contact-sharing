@@ -45,7 +45,7 @@ public class CardElements extends AppCompatActivity {
         setContentView(R.layout.activity_cards_elements);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
-        toolbar.setTitle("Available Elements");
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -199,7 +199,7 @@ public class CardElements extends AppCompatActivity {
             holder.setIsRecyclable(false);
             mViewHolder.key.setText(cardList.get(position));
             Log.i("TAG", cardList.get(position));
-            Log.e("TAG", cardData.get(cardList.get(position)));
+//            Log.e("TAG", cardData.get(cardList.get(position)));
             mViewHolder.value.setText(cardData.get(cardList.get(position)));
             if (Helpers.getElementState((cardId + cardList.get(position)))) {
                 mViewHolder.checkBox.setChecked(true);
