@@ -98,6 +98,14 @@ public class AppGlobals extends Application {
     public static String toBeCreatedEmail;
     public static String toBeCreatedOrg;
 
+    public static final String KEY_FULL_NAME= "Full Name";
+    public static final String KEY_ADDRESS = "Address";
+    public static final String KEY_JOB_TITLE = "Job Title";
+    public static final String KEY_JOBZY_ID = "Jobzy Id";
+    public static final String KEY_CONTACT_NUMBER = "Contact Number";
+    public static final String KEY_MAIL = "Email";
+    public static final String KEY_ORG = "Organization";
+
 
 
     @Override

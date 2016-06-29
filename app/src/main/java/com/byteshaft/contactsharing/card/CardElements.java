@@ -36,10 +36,7 @@ public class CardElements extends AppCompatActivity {
 
     private RecyclerView elementRecyclerView;
     private CardsDatabase cardsDatabase;
-    private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
-    private HashMap<String, String> cardData;
-    private ArrayList<String> keysList;
     private int cardId;
 
     @Override
@@ -56,7 +53,6 @@ public class CardElements extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.delete3);
         }
-        keysList = new ArrayList<>();
         cardsDatabase = new CardsDatabase(getApplicationContext());
         cardId = getIntent().getIntExtra(AppGlobals.PROCESS_CARD_ID, 0);
 
@@ -69,18 +65,74 @@ public class CardElements extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        cardData = cardsDatabase.getCardDetails(cardId);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView = (RecyclerView) findViewById(R.id.elements_list);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.canScrollVertically(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.canScrollVertically(1);
-        mRecyclerView.setHasFixedSize(true);
-        printMap(cardData);
-        CardElementsAdapter cardsAdapter = new CardElementsAdapter(keysList, cardData);
-        mRecyclerView.setAdapter(cardsAdapter);
+        elementRecyclerView = (RecyclerView) findViewById(R.id.elements_list);
+        elementRecyclerView.setLayoutManager(linearLayoutManager);
+        elementRecyclerView.canScrollVertically(LinearLayoutManager.VERTICAL);
+        elementRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        elementRecyclerView.canScrollVertically(1);
+        elementRecyclerView.setHasFixedSize(true);
+        printMap(CardInfo.cardData);
+        Log.e("TAG", String.valueOf(CardInfo.keysList));
+        CardElementsAdapter cardsAdapter = new CardElementsAdapter(CardInfo.keysList,
+                CardInfo.cardData);
+        elementRecyclerView.setAdapter(cardsAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.card_element, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.done_button:
+                String name = "";
+                String address = "";
+                String jobTitle = "";
+                String jobzyId = "";
+                String contactNumber = "";
+                String email = "";
+                String org = "";
+                if (CardInfo.cardData.get(AppGlobals.KEY_FULL_NAME) != null) {
+                    name = CardInfo.cardData.get(AppGlobals.KEY_FULL_NAME);
+                }
+                if (CardInfo.cardData.get(AppGlobals.KEY_ADDRESS) != null) {
+                    address = CardInfo.cardData.get(AppGlobals.KEY_ADDRESS);
+                }
+                if (CardInfo.cardData.get(AppGlobals.KEY_JOB_TITLE) != null) {
+                    jobTitle = CardInfo.cardData.get(AppGlobals.KEY_JOB_TITLE);
+                }
+                if (CardInfo.cardData.get(AppGlobals.KEY_JOBZY_ID) != null) {
+                    jobzyId = CardInfo.cardData.get(AppGlobals.KEY_JOBZY_ID);
+                }
+                if (CardInfo.cardData.get(AppGlobals.KEY_CONTACT_NUMBER) != null) {
+                    contactNumber = CardInfo.cardData.get(AppGlobals.KEY_CONTACT_NUMBER);
+                }
+                if (CardInfo.cardData.get(AppGlobals.KEY_MAIL) != null) {
+                    email = CardInfo.cardData.get(AppGlobals.KEY_MAIL);
+                }
+                if (CardInfo.cardData.get(AppGlobals.KEY_ORG) != null) {
+                    org = CardInfo.cardData.get(AppGlobals.KEY_ORG);
+                }
+                Log.e("TAg", "name " + name);
+                cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, email,
+                        org, jobzyId, "", 0, 0, "");
+                finish();
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        elementRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public void printMap(Map mp) {
@@ -88,9 +140,9 @@ public class CardElements extends AppCompatActivity {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             String key = (String) pair.getKey();
-            if (!pair.getValue().toString().trim().isEmpty() && !key.equals("is_image") &&
-                    !key.equals("design")) {
-                keysList.add((String) pair.getKey());
+            if (!CardInfo.keysList.contains(pair.getKey())) {
+                CardInfo.keysList.add((String) pair.getKey());
+                CardInfo.cardData.put((String) pair.getKey(), (String) pair.getValue());
             }
             System.out.println(pair.getKey() + " = " + pair.getValue());
             it.remove();
@@ -107,8 +159,8 @@ public class CardElements extends AppCompatActivity {
         private OnItemClickListener mListener;
 
         public CardElementsAdapter(final ArrayList<String> cardList, HashMap<String, String> nameData,
-                            Context context,
-                            final OnItemClickListener listener) {
+                                   Context context,
+                                   final OnItemClickListener listener) {
             mListener = listener;
             this.cardList = cardList;
             this.cardData = nameData;
@@ -135,7 +187,7 @@ public class CardElements extends AppCompatActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
-            Log.i("TAG", "loading one");
+
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_elements_delegate,
                     parent, false);
             mViewHolder = new CustomView(view);
@@ -146,14 +198,15 @@ public class CardElements extends AppCompatActivity {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
             mViewHolder.key.setText(cardList.get(position));
+            Log.i("TAG", cardList.get(position));
+            Log.e("TAG", cardData.get(cardList.get(position)));
             mViewHolder.value.setText(cardData.get(cardList.get(position)));
-            if (Helpers.getElementState((cardId+cardList.get(position)))) {
+            if (Helpers.getElementState((cardId + cardList.get(position)))) {
                 mViewHolder.checkBox.setChecked(true);
             } else {
                 mViewHolder.checkBox.setChecked(false);
             }
-            mViewHolder.elementLogo.setImageDrawable(getResources().getDrawable(
-                    Helpers.getDrawable(cardList.get(position))));
+            mViewHolder.elementLogo.setImageResource(Helpers.getDrawable(cardList.get(position)));
         }
 
 
@@ -183,25 +236,6 @@ public class CardElements extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.card_element, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.done_button:
-                finish();
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-        return false;
-    }
-
     // custom class getting view cardList by giving view in constructor.
     public class CustomView extends RecyclerView.ViewHolder {
 
@@ -218,8 +252,10 @@ public class CardElements extends AppCompatActivity {
             elementLogo = (CircularImageView) itemView.findViewById(R.id.element_logo);
         }
     }
+
     public interface OnItemClickListener {
         void onItem(String item);
+
         void onItemLongClick(Integer position);
     }
 }

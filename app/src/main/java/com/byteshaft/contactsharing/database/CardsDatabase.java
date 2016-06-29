@@ -151,6 +151,7 @@ public class CardsDatabase extends SQLiteOpenHelper {
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(DatabaseConstants.IMG_COLUMN));
             int cardDesign = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.SELECTED_CARD_DESIGN));
+            Log.i("Name", name);
             String[] data = new String[] {name, String.valueOf(cardDesign), imageUri,
                     String.valueOf(isImage)};
             hashMap.put(String.valueOf(unique_id), data);
