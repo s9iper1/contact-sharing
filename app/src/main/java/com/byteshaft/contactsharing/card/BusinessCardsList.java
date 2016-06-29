@@ -76,8 +76,13 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
-        loadData();
         return mBaseView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
     }
 
     @Override
