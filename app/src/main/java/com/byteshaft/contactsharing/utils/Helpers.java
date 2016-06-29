@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 
+import com.byteshaft.contactsharing.R;
+
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -122,5 +124,36 @@ public class Helpers  {
             e.printStackTrace();
         }
         return internalFolder + File.separator + personName;
+    }
+
+    public static void saveElementState(String key, boolean value) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().putBoolean(key, value).apply();
+    }
+
+    public static boolean getElementState(String key) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        return sharedPreferences.getBoolean(key, false);
+    }
+
+    public static int getDrawable(String design) {
+        switch (design) {
+            case "Name":
+                return R.drawable.male;
+            case "Address":
+                return R.drawable.address;
+            case "Job Title":
+                return R.drawable.job_title;
+            case "Jobzy Id":
+                return R.drawable.ic_jobzy;
+            case "Phone Number":
+                return R.drawable.contact_number;
+            case "Email":
+                return R.drawable.email;
+            case "Organization":
+                return R.drawable.company;
+            default:
+                return R.drawable.male;
+        }
     }
 }

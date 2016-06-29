@@ -248,8 +248,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         final EditText input;
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity());
         // Setting Dialog Title
-        alertDialog.setTitle("Set Name for this Card");
-        alertDialog.setMessage("Enter name");
+        alertDialog.setTitle("Card Title");
 
         // outside touch disable
 
@@ -260,7 +259,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         input.requestFocus();
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        input.setHint("Type here ");
+        input.setHint("ex. Software Developer");
         alertDialog.setView(input);
 
         // Setting Positive "Yes" Button
@@ -290,8 +289,12 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
 
                 if (name.equals("")) {
                     Toast.makeText(getActivity(), "Please enter a name", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (cardsDatabase.hasObject(name)) {
+                    Toast.makeText(getActivity(), "Name already exists", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     dialog.dismiss();
+                    AppGlobals.toBeCreatedCardName = name;
                     getActivity().startActivity(new Intent(getActivity().getApplicationContext(),
                             CardInfo.class));
 
@@ -394,6 +397,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             int currentIndex = cardList.get(pos);
             mViewHolder.hiddenId.setText(String.valueOf(currentIndex));
             Log.i("TAG", "onBindViewHolder" + cardData);
+
             if (cardData.get(String.valueOf(cardList.get(pos)))[2].equals("0")) {
                 Log.i("TAG", "onBindViewHolder");
                 mViewHolder.personName.setText(cardData.get(String.valueOf(cardList.get(pos)))[0]);

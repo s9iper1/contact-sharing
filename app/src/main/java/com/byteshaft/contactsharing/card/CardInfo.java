@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
+import com.byteshaft.contactsharing.utils.Helpers;
 import com.byteshaft.contactsharing.utils.SquareImage;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
@@ -36,7 +36,6 @@ public class CardInfo extends AppCompatActivity {
     private CardsDatabase cardsDatabase;
     private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private HashMap<String, String> cardData;
     private ArrayList<String> keysList;
 
@@ -46,7 +45,7 @@ public class CardInfo extends AppCompatActivity {
         setContentView(R.layout.activity_card_info);
         keysList = new ArrayList<>();
         cardsDatabase = new CardsDatabase(getApplicationContext());
-        final int cardId = getIntent().getIntExtra("card_id", 0);
+        final int cardId = getIntent().getIntExtra(AppGlobals.PROCESS_CARD_ID, 0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         squareImage = (SquareImage) findViewById(R.id.square_image);
@@ -177,30 +176,9 @@ public class CardInfo extends AppCompatActivity {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
             mViewHolder.image.setImageDrawable(getResources().getDrawable(
-                    getDrawable(cardList.get(position))));
+                    Helpers.getDrawable(cardList.get(position))));
             mViewHolder.textViewKey.setText(cardList.get(position));
             mViewHolder.textViewValue.setText(cardData.get(cardList.get(position)));
-        }
-
-        private int getDrawable(String design) {
-            switch (design) {
-                case "Name":
-                    return R.drawable.male;
-                case "Address":
-                    return R.drawable.address;
-                case "Job Title":
-                    return R.drawable.job_title;
-                case "Jobzy Id":
-                    return R.drawable.ic_jobzy;
-                case "Phone Number":
-                    return R.drawable.contact_number;
-                case "Email":
-                    return R.drawable.email;
-                case "Organization":
-                    return R.drawable.company;
-                default:
-                    return R.drawable.male;
-            }
         }
 
         @Override
