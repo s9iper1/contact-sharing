@@ -27,8 +27,9 @@
 
             <com.byteshaft.contactsharing.utils.SquareImage
                 android:id="@+id/square_image"
+                android:background="@drawable/background_two"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"/>
@@ -75,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:tint="@color/blue_color"
+        android:tint="@color/white"
         android:src="@mipmap/add" />
 
 </android.support.design.widget.CoordinatorLayout>

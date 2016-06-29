@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -52,18 +53,20 @@ public class CardInfo extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("fab clicked");
+                
             }
         });
         cardData = cardsDatabase.getCardDetails(cardId);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView = (RecyclerView) findViewById(R.id.card_details_info_recycler_view);
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView = (RecyclerView) findViewById(R.id.card_list);
-        mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.canScrollVertically(LinearLayoutManager.VERTICAL);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         printMap(cardData);
+        CardsAdapter cardsAdapter = new CardsAdapter(keysList, cardData);
+        mRecyclerView.setAdapter(cardsAdapter);
     }
 
     public void printMap(Map mp) {
@@ -178,21 +181,21 @@ public class CardInfo extends AppCompatActivity {
         private int getDrawable(String design) {
             switch (design) {
                 case "Name":
-                    return R.drawable.background_one;
+                    return R.drawable.male;
                 case "Address":
-                    return R.drawable.background_two;
+                    return R.drawable.address;
                 case "Job Title":
-                    return R.drawable.background_three;
+                    return R.drawable.job_title;
                 case "Jobzy Id":
-                    return R.drawable.background_three;
+                    return R.drawable.ic_jobzy;
                 case "Phone Number":
-                    return R.drawable.background_three;
+                    return R.drawable.contact_number;
                 case "Email":
-                    return R.drawable.background_three;
+                    return R.drawable.email;
                 case "Organization":
-                    return R.drawable.background_three;
+                    return R.drawable.company;
                 default:
-                    return R.drawable.background_one;
+                    return R.drawable.male;
             }
         }
 

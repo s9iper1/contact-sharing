@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     private static MainActivity sInstance;
     private View navHeader;
     private TextView navUserName;
-    CircularImageView circularImageView;
+    private CircularImageView circularImageView;
     private TextView navEmail;
     public static MainActivity getInstance() {
         return sInstance;
@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!Helpers.isUserLoggedIn()) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
+//        if (!Helpers.isUserLoggedIn()) {
+//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        }
         sInstance = this;
-        loadFragment(new CreateBusinessCard());
+        loadFragment(new BusinessCardsList());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -142,9 +142,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_cards:
                 loadFragment(new BusinessCardsList());
                 break;
-            case R.id.nav_create_card:
-                loadFragment(new CreateBusinessCard());
-                break;
+//            case R.id.nav_create_card:
+//                loadFragment(new CreateBusinessCard());
+//                break;
             case R.id.nav_logout:
                 if (Helpers.isUserLoggedIn()) {
                     showLogoutDialog();

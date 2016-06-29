@@ -58,8 +58,8 @@
             android:name=".CardsElements"
             android:label="@string/title_activity_cards_elemetns"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
+        <activity android:name=".NewBusinessFormActivity"/>
     </application>
 
 </manifest>

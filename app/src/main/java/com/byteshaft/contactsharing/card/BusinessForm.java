@@ -1,6 +1,5 @@
 package com.byteshaft.contactsharing.card;
 
-import android.Manifest;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,8 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,8 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.byteshaft.contactsharing.NewBusinessFormActivity;
 import com.byteshaft.contactsharing.R;
-import com.byteshaft.contactsharing.SelectDesignActivity;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
@@ -165,7 +162,7 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(getApplicationContext(),NewBusinessFormActivity.class);
+        Intent intent = new Intent(getApplicationContext(), NewBusinessFormActivity.class);
         switch (view.getId()) {
 //            case R.id.select_design:
 //                startActivity(new Intent(getApplicationContext(),
