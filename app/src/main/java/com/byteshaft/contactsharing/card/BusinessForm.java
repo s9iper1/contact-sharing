@@ -57,6 +57,12 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
     private Uri selectedImageUri;
     public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 0;
 
+    public static BusinessForm sInstance;
+
+    public static BusinessForm getInstance() {
+        return sInstance;
+    }
+
     private RelativeLayout layout_name;
     private RelativeLayout layout_address;
     private RelativeLayout layout_email;
@@ -74,6 +80,7 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.business_card_form);
+        sInstance = this;
         cardsDatabase = new CardsDatabase(AppGlobals.getContext());
         layout_name = (RelativeLayout) findViewById(R.id.main_relayout_layout_name);
         layout_address = (RelativeLayout) findViewById(R.id.main_relayout_layout_address);

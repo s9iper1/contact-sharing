@@ -193,6 +193,10 @@ public class CardElements extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_button:
+                finish();
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return false;
