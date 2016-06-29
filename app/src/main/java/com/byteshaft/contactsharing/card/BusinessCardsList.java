@@ -360,7 +360,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                                         public void onClick(DialogInterface arg0, int arg1) {
                                             cardsDatabase.deleteEntry(cardList.get(mRecyclerView.getChildPosition(childView)));
                                             cardList.remove(cardList.get(mRecyclerView.getChildPosition(childView)));
-                                            notifyDataSetChanged();
+                                            mRecyclerView.getAdapter().notifyDataSetChanged();
                                         }
                                     });
 
