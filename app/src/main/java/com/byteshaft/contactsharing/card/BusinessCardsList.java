@@ -320,7 +320,6 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             RecyclerView.OnItemTouchListener {
 
         private ArrayList<Integer> cardList;
-
         private GestureDetector mGestureDetector;
         private HashMap<String, String[]> cardData;
 
@@ -517,7 +516,6 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                 public void onClick(View view) {
                     Log.i("Cick", "done");
                     mListener.onShareClick(view, idsList.get(getAdapterPosition()));
-
                 }
             });
         }

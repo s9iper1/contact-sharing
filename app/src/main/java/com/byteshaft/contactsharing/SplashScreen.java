@@ -51,6 +51,7 @@ public class SplashScreen extends Activity implements View.OnClickListener {
                 break;
             case R.id.button_share:
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
+
                 break;
         }
     }
