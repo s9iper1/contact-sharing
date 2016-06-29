@@ -7,6 +7,8 @@
     <color name="button_pressed">#0288D1</color>
     <color name="blue_color">#03A9F4</color>
 
+    <color name="signup_text_color">#03A9F4</color>
+
     <!--//color for business card Text View-->
     <color name="white">#ffffff</color>
     <color name="header_color">#566992</color>
