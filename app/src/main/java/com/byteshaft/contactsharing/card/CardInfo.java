@@ -1,6 +1,7 @@
 package com.byteshaft.contactsharing.card;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.database.CardsDatabase;
+import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.SquareImage;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
@@ -44,7 +46,7 @@ public class CardInfo extends AppCompatActivity {
         setContentView(R.layout.activity_card_info);
         keysList = new ArrayList<>();
         cardsDatabase = new CardsDatabase(getApplicationContext());
-        int cardId = getIntent().getIntExtra("card_id", 0);
+        final int cardId = getIntent().getIntExtra("card_id", 0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         squareImage = (SquareImage) findViewById(R.id.square_image);
@@ -53,7 +55,9 @@ public class CardInfo extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getApplicationContext(), CardElements.class);
+                intent.putExtra(AppGlobals.PROCESS_CARD_ID, cardId);
+                startActivity(intent);
             }
         });
         cardData = cardsDatabase.getCardDetails(cardId);

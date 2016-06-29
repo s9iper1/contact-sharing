@@ -1,4 +1,4 @@
-package com.byteshaft.contactsharing;
+package com.byteshaft.contactsharing.card;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.byteshaft.contactsharing.R;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 
