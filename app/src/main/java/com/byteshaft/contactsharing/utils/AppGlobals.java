@@ -88,6 +88,10 @@ public class AppGlobals extends Application {
     public static int design = 4;
     public static String PROCESS_CARD_ID = "card_id";
 
+    // Card Creation
+
+    public static String toBeCreatedCardName;
+
 
     @Override
     public void onCreate() {
