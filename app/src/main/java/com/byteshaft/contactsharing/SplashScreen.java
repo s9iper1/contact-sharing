@@ -11,7 +11,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.byteshaft.contactsharing.card.CardInfo;
 import com.byteshaft.contactsharing.utils.Helpers;
 
 public class SplashScreen extends Activity implements View.OnClickListener {
@@ -51,7 +50,8 @@ public class SplashScreen extends Activity implements View.OnClickListener {
                 startActivity(new Intent(SplashScreen.this, LoginActivity.class));
                 break;
             case R.id.button_share:
-                startActivity(new Intent(SplashScreen.this, CardElements.class));
+                startActivity(new Intent(SplashScreen.this, MainActivity.class));
+
                 break;
         }
     }

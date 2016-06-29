@@ -201,8 +201,8 @@ public class CardsDatabase extends SQLiteOpenHelper {
 
     public HashMap<String, String> getCardDetails(int id) {
         SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME + "WHERE " +
-                DatabaseConstants.ID_COLUMN+ " =?" +id + " LIMIT 1";
+        String query = "SELECT * FROM " + DatabaseConstants.TABLE_NAME + " WHERE " +
+                DatabaseConstants.ID_COLUMN+ " = " +id + " LIMIT 1";
         Cursor cursor = db.rawQuery(query, null);
         HashMap<String, String> hashMap = new HashMap<>();
         while (cursor.moveToNext()) {

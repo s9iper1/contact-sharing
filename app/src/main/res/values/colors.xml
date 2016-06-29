@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#2C4477</color>
     <color name="colorPrimaryDark">#23365f</color>
-    <color name="colorAccent">#fff</color>
+    <color name="colorAccent">#0288D1</color>
     <color name="green_button">#4CAF50</color>
     <color name="button_pressed">#0288D1</color>
     <color name="blue_color">#03A9F4</color>

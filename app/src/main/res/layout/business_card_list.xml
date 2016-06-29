@@ -14,4 +14,13 @@
         android:layout_height="match_parent"
         />
 
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Create New Card"
+        android:theme="@style/AppTheme.Button"
+        android:id="@+id/new_card"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

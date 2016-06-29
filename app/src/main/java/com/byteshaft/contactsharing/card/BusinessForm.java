@@ -162,7 +162,7 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(getApplicationContext(),NewBusinessFormActivity.class);
+        Intent intent = new Intent(getApplicationContext(), NewBusinessFormActivity.class);
         switch (view.getId()) {
 //            case R.id.select_design:
 //                startActivity(new Intent(getApplicationContext(),
