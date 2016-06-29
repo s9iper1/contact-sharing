@@ -21,15 +21,13 @@
                 android:layout_height="wrap_content"
                 android:clickable="true">
 
-                <com.github.siyamed.shapeimageview.CircularImageView
+                <ImageView
                     android:id="@+id/name_image"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/male"
-                    app:siBorderColor="#fff"
-                    app:siBorderWidth="1dp" />
+                    android:src="@mipmap/male"/>
 
 
                 <LinearLayout

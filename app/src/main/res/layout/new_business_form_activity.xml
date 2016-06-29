@@ -13,10 +13,9 @@
         android:layout_marginTop="45dp"
         />
 
-    <EditText
-        android:id="@+id/new_business_card_edittext"
+    <TextView
+        android:id="@+id/new_business_card_text_view"
         android:layout_toRightOf="@+id/new_business_card_image"
-        android:hint="something"
         android:padding="10dp"
         android:background="@drawable/edit_text_design"
         android:layout_marginLeft="8dp"
@@ -25,9 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
-        android:id="@+id/new_business_card_edittext_2"
-        android:layout_below="@+id/new_business_card_edittext"
-        android:hint="something"
+        android:id="@+id/new_business_card_edit_text"
+        android:layout_below="@+id/new_business_card_text_view"
         android:padding="10dp"
         android:background="@drawable/edit_text_design"
         android:layout_marginLeft="88dp"

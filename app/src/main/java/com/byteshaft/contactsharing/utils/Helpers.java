@@ -139,7 +139,7 @@ public class Helpers  {
     public static int getDrawable(String design) {
         switch (design) {
             case "Name":
-                return R.drawable.male;
+                return R.mipmap.male;
             case "Address":
                 return R.drawable.address;
             case "Job Title":
@@ -153,7 +153,7 @@ public class Helpers  {
             case "Organization":
                 return R.drawable.company;
             default:
-                return R.drawable.male;
+                return R.mipmap.male;
         }
     }
 }
