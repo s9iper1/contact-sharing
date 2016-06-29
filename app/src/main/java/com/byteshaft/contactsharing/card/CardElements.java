@@ -72,7 +72,7 @@ public class CardElements extends AppCompatActivity {
         elementRecyclerView.setItemAnimator(new DefaultItemAnimator());
         elementRecyclerView.canScrollVertically(1);
         elementRecyclerView.setHasFixedSize(true);
-        printMap(CardInfo.cardData);
+//        printMap(CardInfo.cardData);
         Log.e("TAG", String.valueOf(CardInfo.keysList));
         CardElementsAdapter cardsAdapter = new CardElementsAdapter(CardInfo.keysList,
                 CardInfo.cardData);
@@ -198,8 +198,8 @@ public class CardElements extends AppCompatActivity {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
             mViewHolder.key.setText(cardList.get(position));
-            Log.i("TAG", cardList.get(position));
-            Log.e("TAG", cardData.get(cardList.get(position)));
+            Log.e("cardData", String.valueOf(cardList.get(position)));
+            Log.e("cardData", cardData.get(cardList.get(position)));
             mViewHolder.value.setText(cardData.get(cardList.get(position)));
             if (Helpers.getElementState((cardId + cardList.get(position)))) {
                 mViewHolder.checkBox.setChecked(true);

@@ -67,6 +67,11 @@ public class CardInfo extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         printMap(cardData);
         CardsAdapter cardsAdapter = new CardsAdapter(keysList, cardData);
         mRecyclerView.setAdapter(cardsAdapter);
