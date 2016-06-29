@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.byteshaft.contactsharing.R;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 public class NewBusinessFormActivity extends AppCompatActivity {
 
-    private EditText mEditText;
+    private TextView mEditText;
     private EditText mEditText2;
     private CircularImageView mCircularImageView;
     private String editTextString;
@@ -21,8 +22,8 @@ public class NewBusinessFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_business_form_activity);
-        mEditText = (EditText) findViewById(R.id.new_business_card_edittext);
-        mEditText2 = (EditText) findViewById(R.id.new_business_card_edittext_2);
+        mEditText = (TextView) findViewById(R.id.new_business_card_text_view);
+        mEditText2 = (EditText) findViewById(R.id.new_business_card_edit_text);
         mCircularImageView = (CircularImageView) findViewById(R.id.new_business_card_image);
         int data = getIntent().getIntExtra("data", 0);
         System.out.println(getSupportActionBar() == null);
@@ -56,7 +57,8 @@ public class NewBusinessFormActivity extends AppCompatActivity {
     private int getIntentValues(int value) {
         switch (value) {
             case 0:
-                return R.drawable.male;
+                mEditText.setHint("Full Name");
+                return R.mipmap.male;
             case 1:
                 return R.drawable.address;
             case 2:
@@ -70,7 +72,7 @@ public class NewBusinessFormActivity extends AppCompatActivity {
             case 6:
                 return R.drawable.company;
             default:
-                return R.drawable.male;
+                return R.mipmap.male;
         }
     }
 }
