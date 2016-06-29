@@ -76,13 +76,14 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         idsList = cardsDatabase.getIdOfSavedCards();
+        loadData();
         return mBaseView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+        mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -188,7 +189,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                         .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
-                Log.i("TAG", "" + cardData.get(String.valueOf(idsList.get(item)))[0]);
+//                Log.i("TAG", "" + cardData.get(String.valueOf(idsList.get(item)))[0]);
                 if (!cardData.get(String.valueOf(idsList.get(item)))[0].equals("Dummy Card")) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
                     intent.putExtra("card_id", item);

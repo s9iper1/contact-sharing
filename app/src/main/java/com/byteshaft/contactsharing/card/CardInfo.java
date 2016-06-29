@@ -51,6 +51,9 @@ public class CardInfo extends AppCompatActivity {
         squareImage = (SquareImage) findViewById(R.id.square_image);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
+        if (AppGlobals.toBeCreatedCardName == null) {
+            fab.setVisibility(View.GONE);
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,15 +70,15 @@ public class CardInfo extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
+        printMap(CardInfo.cardData);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        printMap(cardData);
-        Log.i("TAG", String.valueOf(cardData));
-        Log.i("TAG", String.valueOf(keysList));
-        CardsAdapter cardsAdapter = new CardsAdapter(keysList, cardData);
+        Log.i("TAG", String.valueOf(CardInfo.cardData));
+        Log.i("TAG", String.valueOf(CardInfo.keysList));
+        CardsAdapter cardsAdapter = new CardsAdapter(CardInfo.keysList, CardInfo.cardData);
         mRecyclerView.setAdapter(cardsAdapter);
     }
 
@@ -84,18 +87,22 @@ public class CardInfo extends AppCompatActivity {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             String key = (String) pair.getKey();
+            Log.e("TAH", "" + pair.getValue().toString() + " " + String.valueOf(!CardInfo.keysList
+                    .contains(pair.getKey()) && !pair.getValue().toString().trim().isEmpty()));
             if (!key.equals("is_image") &&
                     !key.equals("design")) {
-                if (!CardInfo.keysList.contains(pair.getKey())) {
-                    Log.e("Adding", "adding video");
+                if (!CardInfo.keysList.contains(pair.getKey()) && !pair.getValue().toString()
+                        .trim().isEmpty() && !pair.getValue().toString().equals("0")) {
+                    Log.e("Adding", "" + pair.getValue());
                     CardInfo.keysList.add((String) pair.getKey());
                     Log.e("TAG", " "+ pair.getValue());
                     CardInfo.cardData.put((String) pair.getKey(), (String) pair.getValue());
                 }
             }
             System.out.println(pair.getKey() + " = " + pair.getValue());
-            it.remove(); // avoids a ConcurrentModificationException
+//            it.remove(); // avoids a ConcurrentModificationException
         }
+        Log.e("HashMap", String.valueOf(CardInfo.cardData));
         if (!it.hasNext()) {
             if (AppGlobals.toBeCreatedCardName != null) {
                 if (!CardInfo.keysList.contains(AppGlobals.KEY_FULL_NAME)) {
@@ -196,7 +203,7 @@ public class CardInfo extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
-            Log.e("TAG", cardList.get(position));
+            Log.e("TAG", "test "+ cardData.get(cardList.get(position)));
             mViewHolder.image.setImageDrawable(getResources().getDrawable(
                     Helpers.getDrawable(cardList.get(position))));
             mViewHolder.textViewKey.setText(cardList.get(position));

@@ -105,6 +105,9 @@ public class AppGlobals extends Application {
     public static final String KEY_CONTACT_NUMBER = "Contact Number";
     public static final String KEY_MAIL = "Email";
     public static final String KEY_ORG = "Organization";
+    public static final String KEY_DESIGN = "Design";
+    public static final String KEY_IMAGE = "Image";
+    public static final String KEY_ISIMAGE = "is_image";
 
 
 
