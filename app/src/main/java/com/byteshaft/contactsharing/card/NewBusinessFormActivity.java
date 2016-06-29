@@ -1,5 +1,6 @@
 package com.byteshaft.contactsharing.card;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -191,9 +192,11 @@ public class NewBusinessFormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done_button:
-                editTextString = keyTextView.getText().toString();
-                editTextString2 = keyTextView.getText().toString();
+                BusinessForm.getInstance().finish();
+                finish();
                 break;
+            case android.R.id.home:
+                onBackPressed();
         }
         return false;
     }
