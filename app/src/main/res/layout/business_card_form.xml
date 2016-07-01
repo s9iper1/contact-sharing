@@ -69,7 +69,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/address"
+                    android:src="@mipmap/address"
                     app:siBorderColor="#fff"
                     app:siBorderWidth="1dp" />
 
@@ -113,7 +113,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/job_title"
+                    android:src="@mipmap/job_title"
                     app:siBorderColor="#fff"
                     app:siBorderWidth="1dp" />
 
@@ -158,7 +158,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/jobzi_id"
+                    android:src="@mipmap/jobzi_id"
                     app:siBorderColor="#fff"
                     app:siBorderWidth="1dp" />
 
@@ -202,7 +202,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/phone"
+                    android:src="@mipmap/phone"
                     app:siBorderColor="#fff"
                     app:siBorderWidth="1dp" />
 
@@ -246,7 +246,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/email"
+                    android:src="@mipmap/e_mail"
                     app:siBorderColor="#fff"
                     app:siBorderWidth="1dp" />
 
@@ -290,7 +290,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="end"
                     android:layout_margin="10dp"
-                    android:src="@drawable/company"
+                    android:src="@mipmap/company"
                     app:siBorderColor="#fff"
                     app:siBorderWidth="1dp" />
 
