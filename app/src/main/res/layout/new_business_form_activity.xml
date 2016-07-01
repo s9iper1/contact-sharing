@@ -8,28 +8,27 @@
         android:id="@+id/new_business_card_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_gravity="end"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="45dp"
-        />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/new_business_card_text_view"
-        android:layout_toRightOf="@+id/new_business_card_image"
-        android:padding="10dp"
+        android:padding="15dp"
         android:background="@drawable/edit_text_design"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="90dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/new_business_card_edit_text"
         android:layout_below="@+id/new_business_card_text_view"
-        android:padding="10dp"
+        android:padding="15dp"
         android:background="@drawable/edit_text_design"
-        android:layout_marginLeft="88dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
