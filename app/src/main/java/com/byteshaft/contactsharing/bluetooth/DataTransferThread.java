@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.byteshaft.contactsharing.database.CardsDatabase;
+import com.byteshaft.contactsharing.database.ReceivedCardsDB;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
 
@@ -142,7 +142,7 @@ class DataTransferThread extends Thread {
                     options.inSampleSize = 2;
                     Bitmap image = BitmapFactory.decodeByteArray(((byte[]) message.obj), 0,
                             ((byte[]) message.obj).length, options);
-                        CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
+                        ReceivedCardsDB cardsDatabase = new ReceivedCardsDB(AppGlobals.getContext());
                     String path = Helpers.saveImage(image, AppGlobals.imageOwner);
                         cardsDatabase.createNewEntry(AppGlobals.name, AppGlobals.address, AppGlobals.jobTitle,
                                 AppGlobals.contectNumber, AppGlobals.email
@@ -162,7 +162,7 @@ class DataTransferThread extends Thread {
                             ((byte[]) message.obj).length, options);
                     if (!AppGlobals.imageOwner.trim().isEmpty()) {
                         String path = Helpers.saveImage(image, AppGlobals.imageOwner);
-                        CardsDatabase cardsDatabase = new CardsDatabase(AppGlobals.getContext());
+                        ReceivedCardsDB cardsDatabase = new ReceivedCardsDB(AppGlobals.getContext());
                         cardsDatabase.createNewEntry(AppGlobals.imageOwner, "", "", "", "", "", "",
                                 path, 1, 4, "");
                     }
