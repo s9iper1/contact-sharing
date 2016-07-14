@@ -16,13 +16,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.R;
 import com.byteshaft.contactsharing.database.CardsDatabase;
 import com.byteshaft.contactsharing.utils.AppGlobals;
 import com.byteshaft.contactsharing.utils.Helpers;
-import com.byteshaft.contactsharing.utils.SquareImage;
 import com.github.siyamed.shapeimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class CardInfo extends AppCompatActivity {
 
-    private SquareImage squareImage;
+    private ImageView squareImage;
     private CardsDatabase cardsDatabase;
     private RecyclerView mRecyclerView;
     private CustomView mViewHolder;
@@ -48,7 +48,7 @@ public class CardInfo extends AppCompatActivity {
         final int cardId = getIntent().getIntExtra(AppGlobals.PROCESS_CARD_ID, 0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        squareImage = (SquareImage) findViewById(R.id.square_image);
+        squareImage = (ImageView) findViewById(R.id.backdrop);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         if (AppGlobals.toBeCreatedCardName == null) {
