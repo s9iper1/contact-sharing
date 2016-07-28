@@ -1,10 +1,11 @@
 package com.byteshaft.contactsharing.database;
 
-public class DatabaseConstants {
 
-    public static final String DATABASE_NAME = "BusinessCards.db";
+public class ReceiveCardsDatabseConstants {
+
+    public static final String DATABASE_NAME = "ReceivedCards.db";
     public static final int DATABASE_VERSION = 1;
-    public static final String TABLE_NAME = "CardsDatabase";
+    public static final String TABLE_NAME = "ReceivedCardsDatabase";
     public static final String JOBZI_ID = "jobzi_id";
     public static final String NAME_COLUMN = "NAME";
     public static final String ADDRESS_COLUMN = "ADDRESS";
@@ -38,4 +39,3 @@ public class DatabaseConstants {
             + LOGO_IMAGE + " TEXT"
             + CLOSING_BRACE;
 }
-

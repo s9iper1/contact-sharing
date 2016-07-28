@@ -220,22 +220,22 @@ public class NewBusinessFormActivity extends AppCompatActivity {
                 return R.mipmap.male;
             case 1:
                 keyTextView.setText(AppGlobals.KEY_ADDRESS);
-                return R.drawable.address;
+                return R.mipmap.address;
             case 2:
                 keyTextView.setText(AppGlobals.KEY_MAIL);
-                return R.drawable.email;
+                return R.mipmap.e_mail;
             case 3:
                 keyTextView.setText(AppGlobals.KEY_JOB_TITLE);
-                return R.drawable.job_title;
+                return R.mipmap.job_title;
             case 4:
                 keyTextView.setText(AppGlobals.KEY_JOBZY_ID);
-                return R.drawable.jobzi_id;
+                return R.mipmap.jobzi_id;
             case 5:
                 keyTextView.setText(AppGlobals.KEY_CONTACT_NUMBER);
-                return R.drawable.contact_number;
+                return R.mipmap.phone;
             case 6:
                 keyTextView.setText(AppGlobals.KEY_ORG);
-                return R.drawable.company;
+                return R.mipmap.company;
             default:
                 keyTextView.setText(AppGlobals.KEY_FULL_NAME);
                 return R.mipmap.male;
