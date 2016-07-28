@@ -37,7 +37,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
     private View mBaseView;
     private Button formButton;
     private Button picButton;
-
     private CardsDatabase cardsDatabase;
     private String fileName;
     private EditText input;
@@ -56,7 +55,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         picButton = (Button) mBaseView.findViewById(R.id.button_pic);
         formButton.setOnClickListener(this);
         picButton.setOnClickListener(this);
-
         return mBaseView;
     }
 
@@ -85,7 +83,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
                     enterNameDialog();
                 }
                 break;
-
         }
     }
 
@@ -94,7 +91,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-
                 if (grantResults.length > 0) {
                     Log.i("TAG", "permissions  granted");
                     enterNameDialog();
@@ -131,7 +127,6 @@ public class CreateBusinessCard extends Fragment implements View.OnClickListener
         // Setting Dialog Title
         alertDialog.setTitle("Set Name for this Card");
         alertDialog.setMessage("Enter name");
-
         // outside touch disable
 
         input = new EditText(getActivity());
