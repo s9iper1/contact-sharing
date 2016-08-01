@@ -70,7 +70,9 @@ public class CardInfo extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
-        printMap(CardInfo.cardData);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        Log.e("card data!", String.valueOf(cardData));
+        printMap(cardData);
     }
 
     @Override
@@ -85,6 +87,10 @@ public class CardInfo extends AppCompatActivity {
     public void printMap(Map mp) {
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
+            if (!keysList.contains("Full Name")) {
+                CardInfo.keysList.add("Full Name");
+                CardInfo.cardData.put("Full Name", (String) mp.get("Full Name"));
+            }
             Map.Entry pair = (Map.Entry)it.next();
             String key = (String) pair.getKey();
             Log.e("TAH", "" + pair.getValue().toString() + " " + String.valueOf(!CardInfo.keysList

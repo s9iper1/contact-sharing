@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".card.CardInfo">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -27,7 +25,6 @@
 
             <ImageView
                 android:id="@+id/backdrop"
-                android:background="@drawable/background_one"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -46,29 +43,27 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="24dp">
 
             <android.support.v7.widget.RecyclerView
                 android:layout_margin="5dp"
                 android:id="@+id/card_details_info_recycler_view"
-                android:scrollbars="none"
+                android:scrollbars="vertical"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        </FrameLayout>
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-    <include layout="@layout/content_card_info" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -77,7 +72,7 @@
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end"
         android:src="@android:drawable/ic_input_add"
+        android:tint="@color/white"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"/>
-
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>

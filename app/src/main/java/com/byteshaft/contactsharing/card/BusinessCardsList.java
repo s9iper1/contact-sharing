@@ -189,8 +189,9 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                         .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
-//                Log.i("TAG", "" + cardData.get(String.valueOf(idsList.get(item)))[0]);
-                if (!cardData.get(String.valueOf(idsList.get(item)))[0].equals("Dummy Card")) {
+                Log.i("IdsList", String.valueOf(idsList));
+                Log.i("cardids", String.valueOf(cardData));
+                if (!cardData.get(String.valueOf(item))[0].equals("Dummy Card")) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
                     intent.putExtra("card_id", item);
                     startActivity(intent);
