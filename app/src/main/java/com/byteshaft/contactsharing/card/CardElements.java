@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.byteshaft.contactsharing.R;
@@ -38,6 +39,8 @@ public class CardElements extends AppCompatActivity {
     private CardsDatabase cardsDatabase;
     private CustomView mViewHolder;
     private int cardId;
+    private CardElements.OnItemClickListener mListener;
+    public ArrayList<String> mCardList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,24 @@ public class CardElements extends AppCompatActivity {
         CardElementsAdapter cardsAdapter = new CardElementsAdapter(CardInfo.keysList,
                 CardInfo.cardData);
         elementRecyclerView.setAdapter(cardsAdapter);
+        elementRecyclerView.addOnItemTouchListener(new CardElementsAdapter(CardInfo.keysList,
+                CardInfo.cardData, getApplicationContext(), new OnItemClickListener() {
+            @Override
+            public void onItem(String item) {
+
+            }
+
+            @Override
+            public void onCheckChange(String checkedId) {
+                Log.i("TAG", "check change" + checkedId);
+
+            }
+
+            @Override
+            public void onItemLongClick(Integer position) {
+
+            }
+        }));
     }
 
     @Override
@@ -153,16 +174,14 @@ public class CardElements extends AppCompatActivity {
     class CardElementsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
             RecyclerView.OnItemTouchListener {
 
-        private ArrayList<String> cardList;
         private GestureDetector mGestureDetector;
         private HashMap<String, String> cardData;
-        private OnItemClickListener mListener;
 
         public CardElementsAdapter(final ArrayList<String> cardList, HashMap<String, String> nameData,
                                    Context context,
                                    final OnItemClickListener listener) {
             mListener = listener;
-            this.cardList = cardList;
+            mCardList = cardList;
             this.cardData = nameData;
             this.mGestureDetector = new GestureDetector(context,
                     new GestureDetector.SimpleOnGestureListener() {
@@ -180,7 +199,7 @@ public class CardElements extends AppCompatActivity {
         }
 
         public CardElementsAdapter(ArrayList<String> cardList, HashMap<String, String> nameData) {
-            this.cardList = cardList;
+            mCardList = cardList;
             this.cardData = nameData;
         }
 
@@ -197,30 +216,30 @@ public class CardElements extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
-            mViewHolder.key.setText(cardList.get(position));
-            Log.i("TAG", cardList.get(position));
-            mViewHolder.value.setText(cardData.get(cardList.get(position)));
-            if (Helpers.getElementState((cardId + cardList.get(position)))) {
+            mViewHolder.key.setText(mCardList.get(position));
+            Log.i("TAG", mCardList.get(position));
+            mViewHolder.value.setText(cardData.get(mCardList.get(position)));
+            if (Helpers.getElementState((cardId + mCardList.get(position)))) {
                 mViewHolder.checkBox.setChecked(true);
             } else {
                 mViewHolder.checkBox.setChecked(false);
             }
-            mViewHolder.elementLogo.setImageResource(Helpers.getDrawable(cardList.get(position)));
+            mViewHolder.elementLogo.setImageResource(Helpers.getDrawable(mCardList.get(position)));
         }
 
 
         @Override
         public int getItemCount() {
-            return cardList.size();
+            return mCardList.size();
         }
 
         @Override
         public boolean onInterceptTouchEvent(final RecyclerView rv, MotionEvent e) {
             final View childView = rv.findChildViewUnder(e.getX(), e.getY());
-            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-                mListener.onItem(cardList.get(rv.getChildPosition(childView)));
-                return true;
-            }
+//            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+////                mListener.onItem(mCardList.get(rv.getChildPosition(childView)));
+//                return true;
+//            }
             return false;
         }
 
@@ -249,12 +268,20 @@ public class CardElements extends AppCompatActivity {
             value = (TextView) itemView.findViewById(R.id.value);
             checkBox = (AppCompatCheckBox) itemView.findViewById(R.id.element_checkbox);
             elementLogo = (CircularImageView) itemView.findViewById(R.id.element_logo);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    Log.i("TAG", "check" + b);
+                    Log.i("TAG", String.valueOf(mCardList));
+                    mListener.onCheckChange(mCardList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
     public interface OnItemClickListener {
         void onItem(String item);
-
+        void onCheckChange(String checkedId);
         void onItemLongClick(Integer position);
     }
 }

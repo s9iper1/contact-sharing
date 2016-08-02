@@ -255,7 +255,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         final EditText input;
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity());
         // Setting Dialog Title
-        alertDialog.setTitle("Card Title");
+        alertDialog.setTitle("Enter Your Name");
 
         // outside touch disable
 
@@ -523,7 +523,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("Cick", "done");
+                    Log.i("Cilck", "done");
                     mListener.onEditClick(view, idsList.get(getAdapterPosition()));
                 }
             });
@@ -531,7 +531,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("Cick", "done");
+                    Log.i("Click", "done");
                     mListener.onShareClick(view, idsList.get(getAdapterPosition()));
                 }
             });
