@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +33,6 @@ import java.io.IOException;
 
 public class BusinessForm extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText mName;
-    private EditText mJobTitle;
-    private EditText mContactNumber;
-    private EditText mEmailAddress;
-    private EditText mOrganization;
-    private EditText mAddress;
-    private EditText mJobzyId;
-    private Button mSaveButton;
     private CardsDatabase cardsDatabase;
     private String name;
     private String contactNumber;
@@ -56,13 +47,10 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
     private Bitmap logoPicture;
     private Uri selectedImageUri;
     public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 0;
-
     public static BusinessForm sInstance;
-
     public static BusinessForm getInstance() {
         return sInstance;
     }
-
     private RelativeLayout layout_name;
     private RelativeLayout layout_address;
     private RelativeLayout layout_email;
@@ -71,9 +59,20 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
     private RelativeLayout layout_contact;
     private RelativeLayout layout_company;
     private AlphaAnimation clickEffect = new AlphaAnimation(10F, 0.1F);
-
     private TextView mNameTitle;
     private TextView mNameAction;
+    private TextView mAddress;
+    private TextView mAddressAction;
+    private TextView mJobTitle;
+    private TextView mJobTitleAction;
+    private TextView mJobziId;
+    private TextView mJobziIdAction;
+    private TextView mContactNumber;
+    private TextView mContactNumberAction;
+    private TextView mEmail;
+    private TextView mEmailAction;
+    private TextView mOrganization;
+    private TextView mOrganizationAction;
 
 
     @Override
@@ -96,74 +95,42 @@ public class BusinessForm extends AppCompatActivity implements View.OnClickListe
         layout_jobzi_id.setOnClickListener(this);
         layout_contact.setOnClickListener(this);
         layout_company.setOnClickListener(this);
-//        mSaveButton = (Button) findViewById(R.id.save_button);
-//        selectImage = (Button) findViewById(R.id.select_design);
-//        selectImage.setOnClickListener(this);
-//        Intent idIntent = getIntent();
-//        id = idIntent.getIntExtra("id", defaultValue);
-//        if (id != defaultValue) {
-//            mSaveButton.setText("Update Card");
-//        }
-//        mSaveButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                if (id == defaultValue) {
-//                    if (validateEditTexts()) {
-//                        String jobTitle = mJobTitle.getText().toString();
-//                        String emailAddress = mEmailAddress.getText().toString();
-//                        String organization = mOrganization.getText().toString();
-//                        String address = mAddress.getText().toString();
-//                        String jobzyId = mJobzyId.getText().toString();
-//                        contactNumber = mContactNumber.getText().toString();
-//                        Log.i("First Log", "splash_background one");
-//                        cardsDatabase.createNewEntry(name, address, jobTitle, contactNumber, emailAddress,
-//                                organization, jobzyId, "", 0, AppGlobals.sSelectedDesign, imageUrl);
-////                        CardDetailsTask cardDetailsTask = new CardDetailsTask(
-////                                BusinessForm.this,
-////                                address,
-////                                contactNumber,
-////                                emailAddress,
-////                                0,
-////                                jobTitle,
-////                                name,
-////                                organization,
-////                                "", AppGlobals.sSelectedDesign, imageUrl);
-////                        cardDetailsTask.execute();
-//                        Log.i("Third", "splash_background 3");
-////                        AppGlobals.sNewEntryCreated = true;
-//                    }
-//                } else {
-//                    validateEditTexts();
-//                    Log.i("Second Log", "splash_background else part");
-//
-//                    String jobTitle = mJobTitle.getText().toString();
-//                    String emailAddress = mEmailAddress.getText().toString();
-//                    String organization = mOrganization.getText().toString();
-//                    String address = mAddress.getText().toString();
-//                    String jobzyId = mJobzyId.getText().toString();
-//                    cardsDatabase.updateEntries(id, name, address, jobTitle,
-//                            contactNumber, emailAddress, organization, jobzyId);
-//                }
-//
-//                finish();
-//            }
-//
-//
-//        });
-    }
-
-    private boolean validateEditTexts() {
-        boolean valid = true;
-        name = mName.getText().toString();
-
-        if (name.trim().isEmpty() || name.length() < 4) {
-            mName.setError("must contain 4 character");
-            valid = false;
-        } else {
-            mName.setError(null);
+        mNameTitle = (TextView) findViewById(R.id.name_text_view_title);
+        mNameAction = (TextView) findViewById(R.id.name_text_view_action);
+        if (CardInfo.cardData.containsKey("Full Name")) {
+            mNameAction.setText(CardInfo.cardData.get("Full Name"));
         }
-        return valid;
+        mAddress = (TextView) findViewById(R.id.address_text_view_title);
+        mAddressAction = (TextView) findViewById(R.id.address_text_view_action);
+        if (CardInfo.cardData.containsKey("Address")) {
+            mAddressAction.setText(CardInfo.cardData.get("Address"));
+        }
+        mJobTitle = (TextView) findViewById(R.id.job_title_text_view_title);
+        mJobTitleAction = (TextView) findViewById(R.id.job_title_text_view_action);
+        if (CardInfo.cardData.containsKey("Job Title")) {
+            mJobTitleAction.setText(CardInfo.cardData.get("Job Title"));
+        }
+        mJobziId = (TextView) findViewById(R.id.jobzi_id_text_view_title);
+        mJobziIdAction = (TextView) findViewById(R.id.jobzi_id_text_view_action);
+        if (CardInfo.cardData.containsKey("Jobzy Id")) {
+            mJobziIdAction.setText(CardInfo.cardData.get("Jobzy Id"));
+        }
+        mContactNumber = (TextView) findViewById(R.id.contact_number_text_view_title);
+        mContactNumberAction = (TextView) findViewById(R.id.contact_number_text_view_action);
+        if (CardInfo.cardData.containsKey("Contact Number")) {
+            mContactNumberAction.setText(CardInfo.cardData.get("Contact Number"));
+        }
+        mEmail = (TextView) findViewById(R.id.email_text_view_title);
+        mEmailAction = (TextView) findViewById(R.id.email_text_view_action);
+        if (CardInfo.cardData.containsKey("Email")) {
+            mEmailAction.setText(CardInfo.cardData.get("Email"));
+        }
+        mOrganization = (TextView) findViewById(R.id.company_text_view_title);
+        mOrganizationAction = (TextView) findViewById(R.id.company_text_view_action);
+        if (CardInfo.cardData.containsKey("Organization")) {
+            mOrganizationAction.setText(CardInfo.cardData.get("Organization"));
+        }
+
     }
 
     @Override

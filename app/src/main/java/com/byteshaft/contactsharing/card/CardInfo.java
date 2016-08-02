@@ -52,20 +52,16 @@ public class CardInfo extends AppCompatActivity {
         squareImage = (ImageView) findViewById(R.id.backdrop);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_card_info);
         assert fab != null;
-        Log.i("TAG", "condition " + fab.isShown());
         if (AppGlobals.toBeCreatedCardName == null) {
             fab.show();
         } else {
             fab.hide();
         }
         if (AppGlobals.sIsEdit) {
-            Log.i("TAG", "condition if");
             fab.show();
         } else {
-            Log.i("TAG", "condition else if");
             fab.hide();
         }
-        Log.i("TAG", "condition " + fab.isShown());
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +79,6 @@ public class CardInfo extends AppCompatActivity {
         mRecyclerView.canScrollVertically(1);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
-        Log.e("card data!", String.valueOf(cardData));
     }
 
     @Override
@@ -123,7 +118,6 @@ public class CardInfo extends AppCompatActivity {
                     CardInfo.cardData.put((String) pair.getKey(), (String) pair.getValue());
                 }
             }
-            System.out.println(pair.getKey() + " = " + pair.getValue());
 //            it.remove(); // avoids a ConcurrentModificationException
         }
         Log.e("HashMap", String.valueOf(CardInfo.cardData));
@@ -135,6 +129,7 @@ public class CardInfo extends AppCompatActivity {
                 }
             }
         }
+        Log.i("DATA", String.valueOf(cardData));
     }
 
     private void initToolbar() {
