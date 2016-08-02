@@ -88,9 +88,10 @@ public class CardElements extends AppCompatActivity {
             }
 
             @Override
-            public void onCheckChange(String checkedId) {
-                Log.i("TAG", "check change" + checkedId);
-
+            public void onCheckChange(String element, boolean checkboxState) {
+                Log.i("TAG", "check change" + element);
+                String key = cardId + "_" + element;
+                Helpers.saveElementState(key, checkboxState);
             }
 
             @Override
@@ -219,7 +220,7 @@ public class CardElements extends AppCompatActivity {
             mViewHolder.key.setText(mCardList.get(position));
             Log.i("TAG", mCardList.get(position));
             mViewHolder.value.setText(cardData.get(mCardList.get(position)));
-            if (Helpers.getElementState((cardId + mCardList.get(position)))) {
+            if (Helpers.getElementState((cardId+"_"+ mCardList.get(position)))) {
                 mViewHolder.checkBox.setChecked(true);
             } else {
                 mViewHolder.checkBox.setChecked(false);
@@ -273,7 +274,7 @@ public class CardElements extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     Log.i("TAG", "check" + b);
                     Log.i("TAG", String.valueOf(mCardList));
-                    mListener.onCheckChange(mCardList.get(getAdapterPosition()));
+                    mListener.onCheckChange(mCardList.get(getAdapterPosition()), b);
                 }
             });
         }
@@ -281,7 +282,7 @@ public class CardElements extends AppCompatActivity {
 
     public interface OnItemClickListener {
         void onItem(String item);
-        void onCheckChange(String checkedId);
+        void onCheckChange(String element, boolean checkboxState);
         void onItemLongClick(Integer position);
     }
 }

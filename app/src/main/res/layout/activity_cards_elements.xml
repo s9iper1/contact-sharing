@@ -8,6 +8,7 @@
     tools:context=".card.CardElements">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/elements_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -35,11 +36,13 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@id/elements_app_bar"
+        app:layout_anchorGravity="bottom|right|end"
+        android:src="@android:drawable/ic_input_add"
         android:tint="@color/white"
-        android:src="@android:drawable/ic_input_add" />
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true" />
 
 </android.support.design.widget.CoordinatorLayout>
