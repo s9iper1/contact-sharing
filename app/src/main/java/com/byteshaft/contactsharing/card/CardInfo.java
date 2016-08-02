@@ -49,11 +49,22 @@ public class CardInfo extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         squareImage = (ImageView) findViewById(R.id.backdrop);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_card_info);
         assert fab != null;
+        Log.i("TAG", "condition " + fab.isShown());
         if (AppGlobals.toBeCreatedCardName == null) {
-            fab.setVisibility(View.GONE);
+            fab.show();
+        } else {
+            fab.hide();
         }
+        if (AppGlobals.sIsEdit) {
+            Log.i("TAG", "condition if");
+            fab.show();
+        } else {
+            Log.i("TAG", "condition else if");
+            fab.hide();
+        }
+        Log.i("TAG", "condition " + fab.isShown());
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

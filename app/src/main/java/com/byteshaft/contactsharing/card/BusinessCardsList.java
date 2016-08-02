@@ -83,6 +83,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
+        AppGlobals.sIsEdit = false;
         mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
@@ -189,8 +190,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
                         .getApplicationContext(), new OnItemClickListener() {
             @Override
             public void onItem(Integer item) {
-                Log.i("IdsList", String.valueOf(idsList));
-                Log.i("cardids", String.valueOf(cardData));
+                Log.i("IdsList", String.valueOf(item));
                 if (!cardData.get(String.valueOf(item))[0].equals("Dummy Card")) {
                     Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
                     intent.putExtra("card_id", item);
@@ -230,7 +230,8 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             @Override
             public void onEditClick(View view, Integer cardId) {
                 Log.i("TAG", "onEditClick" + cardId);
-                if (!cardData.get(String.valueOf(idsList.get(cardId)))[0].equals("Dummy Card")) {
+                if (!cardData.get(String.valueOf((cardId)))[0].equals("Dummy Card")) {
+                    AppGlobals.sIsEdit = true;
                     Intent intent = new Intent(getActivity().getApplicationContext(), CardInfo.class);
                     intent.putExtra(AppGlobals.PROCESS_CARD_ID, cardId);
                     startActivity(intent);
@@ -265,7 +266,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
         input.requestFocus();
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-        input.setHint("ex. Software Developer");
+        input.setHint("ex. John");
         alertDialog.setView(input);
 
         // Setting Positive "Yes" Button
@@ -474,11 +475,11 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
 
         @Override
         public boolean onInterceptTouchEvent(final RecyclerView rv, MotionEvent e) {
-            final View childView = rv.findChildViewUnder(e.getX(), e.getY());
-            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-                mListener.onItem(cardList.get(rv.getChildPosition(childView)));
-                return true;
-            }
+//            final View childView = rv.findChildViewUnder(e.getX(), e.getY());
+//            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+//                mListener.onItem(cardList.get(rv.getChildPosition(childView)));
+//                return true;
+//            }
             return false;
         }
 
@@ -511,6 +512,13 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
             mainLayout = (RelativeLayout) itemView.findViewById(R.id.image_layout);
             editButton = (ImageButton) itemView.findViewById(R.id.edit);
             shareButton = (ImageButton) itemView.findViewById(R.id.share);
+
+            cardImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItem(idsList.get(getAdapterPosition()));
+                }
+            });
 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override

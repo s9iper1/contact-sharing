@@ -108,6 +108,7 @@ public class AppGlobals extends Application {
     public static final String KEY_DESIGN = "Design";
     public static final String KEY_IMAGE = "Image";
     public static final String KEY_ISIMAGE = "is_image";
+    public static boolean sIsEdit = false;
 
 
 
