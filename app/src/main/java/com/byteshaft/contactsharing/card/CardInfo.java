@@ -38,14 +38,15 @@ public class CardInfo extends AppCompatActivity {
     private CustomView mViewHolder;
     public static HashMap<String, String> cardData;
     public static ArrayList<String> keysList;
+    private int cardId;
+    private ArrayList<String> keyListForAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_info);
-        keysList = new ArrayList<>();
         cardsDatabase = new CardsDatabase(getApplicationContext());
-        final int cardId = getIntent().getIntExtra(AppGlobals.PROCESS_CARD_ID, 0);
+        cardId = getIntent().getIntExtra(AppGlobals.PROCESS_CARD_ID, 0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         squareImage = (ImageView) findViewById(R.id.backdrop);
@@ -83,15 +84,15 @@ public class CardInfo extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
         Log.e("card data!", String.valueOf(cardData));
-        printMap(cardData);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("TAG", String.valueOf(CardInfo.cardData));
-        Log.i("TAG", String.valueOf(CardInfo.keysList));
-        CardsAdapter cardsAdapter = new CardsAdapter(CardInfo.keysList, CardInfo.cardData);
+        keysList = new ArrayList<>();
+        keyListForAdapter = new ArrayList<>();
+        printMap(cardData);
+        CardsAdapter cardsAdapter = new CardsAdapter(keyListForAdapter, CardInfo.cardData);
         mRecyclerView.setAdapter(cardsAdapter);
     }
 
@@ -99,6 +100,9 @@ public class CardInfo extends AppCompatActivity {
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             if (!keysList.contains("Full Name")) {
+                if (Helpers.getElementState(cardId+"_" + "Full Name")) {
+                    keyListForAdapter.add("Full Name");
+                }
                 CardInfo.keysList.add("Full Name");
                 CardInfo.cardData.put("Full Name", (String) mp.get("Full Name"));
             }
@@ -111,6 +115,9 @@ public class CardInfo extends AppCompatActivity {
                 if (!CardInfo.keysList.contains(pair.getKey()) && !pair.getValue().toString()
                         .trim().isEmpty() && !pair.getValue().toString().equals("0")) {
                     Log.e("Adding", "" + pair.getValue());
+                    if (Helpers.getElementState(cardId + "_" + pair.getKey())) {
+                        keyListForAdapter.add((String) pair.getKey());
+                    }
                     CardInfo.keysList.add((String) pair.getKey());
                     Log.e("TAG", " "+ pair.getValue());
                     CardInfo.cardData.put((String) pair.getKey(), (String) pair.getValue());
@@ -123,7 +130,6 @@ public class CardInfo extends AppCompatActivity {
         if (!it.hasNext()) {
             if (AppGlobals.toBeCreatedCardName != null) {
                 if (!CardInfo.keysList.contains(AppGlobals.KEY_FULL_NAME)) {
-                    Log.e("toBeCreatedCardName", "adding video");
                     CardInfo.keysList.add(AppGlobals.KEY_FULL_NAME);
                     CardInfo.cardData.put(AppGlobals.KEY_FULL_NAME, AppGlobals.toBeCreatedCardName);
                 }
@@ -220,11 +226,13 @@ public class CardInfo extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             holder.setIsRecyclable(false);
-            Log.e("TAG", "test "+ cardData.get(cardList.get(position)));
-            mViewHolder.image.setImageDrawable(getResources().getDrawable(
-                    Helpers.getDrawable(cardList.get(position))));
-            mViewHolder.textViewKey.setText(cardList.get(position));
-            mViewHolder.textViewValue.setText(cardData.get(cardList.get(position)));
+            Log.e("TEST", "TEST "+ cardList.get(position));
+            if (Helpers.getElementState(cardId + "_" + cardList.get(position))) {
+                mViewHolder.image.setImageDrawable(getResources().getDrawable(
+                        Helpers.getDrawable(cardList.get(position))));
+                mViewHolder.textViewKey.setText(cardList.get(position));
+                mViewHolder.textViewValue.setText(cardData.get(cardList.get(position)));
+            }
         }
 
         @Override
