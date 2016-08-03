@@ -443,6 +443,7 @@ public class BusinessCardsList extends Fragment implements View.OnClickListener 
 //                mViewHolder.jobzyId.setVisibility(View.GONE);
                 mViewHolder.cardImage.setVisibility(View.VISIBLE);
                 Uri imgUri = Uri.parse(cardData.get(String.valueOf(cardList.get(pos)))[2]);
+                Log.e("IMAGE", cardData.get(String.valueOf(cardList.get(pos)))[2]);
                 Bitmap bitmap = BitmapFactory.decodeFile(imgUri.getPath());
                 int height = 1920;
                 int width = 1080;
